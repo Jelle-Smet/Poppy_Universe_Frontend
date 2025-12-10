@@ -8,7 +8,7 @@
 
         <div class="navbar-nav">
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'home' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('home')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('home')">
               Home
             </a>
             <ul v-if="selectedMenu === 'home'" class="dropdown-menu">
@@ -19,16 +19,16 @@
                 <router-link to="/sign-up-login" class="dropdown-item">Sign Up / Login</router-link>
               </li>
               <li>
-                <router-link to="/Latest_News" class="dropdown-item" href="#">Latest News</router-link>
+                <router-link to="/Latest_News" class="dropdown-item">Latest News</router-link>
               </li>
               <li>
-                <router-link to="/More" class="dropdown-item" href="#">More</router-link>
+                <router-link to="/More" class="dropdown-item">More</router-link>
               </li>
             </ul>
           </li>
 
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'account' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('account')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('account')">
               Account
             </a>
             <ul v-if="selectedMenu === 'account'" class="dropdown-menu">
@@ -45,16 +45,16 @@
                 <router-link to="/spot/favorite" class="dropdown-item">My Favorites</router-link>
               </li>
               <li>
-                <router-link to="/Notifications" class="dropdown-item" href="#">Notifications & Alerts</router-link>
+                <router-link to="/Notifications" class="dropdown-item">Notifications & Alerts</router-link>
               </li>
               <li>
-                <router-link to="/settings" class="dropdown-item" href="#">Settings</router-link>
+                <router-link to="/settings" class="dropdown-item">Settings</router-link>
               </li>
             </ul>
           </li>
 
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'encyclopedia' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('encyclopedia')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('encyclopedia')">
               Encyclopedia 
             </a>
             <ul v-if="selectedMenu === 'encyclopedia'" class="dropdown-menu">
@@ -71,7 +71,7 @@
           </li>
 
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'objects' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('objects')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('objects')">
               Objects
             </a>
             <ul v-if="selectedMenu === 'objects'" class="dropdown-menu">
@@ -88,13 +88,13 @@
                 <router-link class="dropdown-item" to="/owner-spots">Owners</router-link>
               </li>
               <li>
-                <router-link to="/Search-Spots" class="dropdown-item" href="#">Search Objects</router-link>
+                <router-link to="/Search-Spots" class="dropdown-item">Search Objects</router-link>
               </li>
             </ul>
           </li>
 
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'exploration' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('exploration')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('exploration')">
               Exploration
             </a>
             <ul v-if="selectedMenu === 'exploration'" class="dropdown-menu">
@@ -108,7 +108,7 @@
           </li>
           
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'recommendations' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('recommendations')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('recommendations')">
               Recommendations
             </a>
             <ul v-if="selectedMenu === 'recommendations'" class="dropdown-menu">
@@ -128,7 +128,7 @@
           </li>
 
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'poppys-guide' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('poppys-guide')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('poppys-guide')">
               Poppy's Guide
             </a>
             <ul v-if="selectedMenu === 'poppys-guide'" class="dropdown-menu">
@@ -148,30 +148,30 @@
           </li>
 
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'about-us' }">
-            <a class="nav-link dropdown-toggle" href="#" @click="toggleSubMenu('about-us')">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('about-us')">
               About Us
             </a>
             <ul v-if="selectedMenu === 'about-us'" class="dropdown-menu">
               <li>
-                <router-link to="/Our_Story" class="dropdown-item" href="#">Our Story</router-link>
+                <router-link to="/Our_Story" class="dropdown-item">Our Story</router-link>
               </li>
               <li>
-                <router-link to="/Official-Partners" class="dropdown-item" href="#">Official Partners</router-link>
+                <router-link to="/Official-Partners" class="dropdown-item">Official Partners</router-link>
               </li>
               <li>
-                <router-link to="/privacy-policy" class="dropdown-item" href="#">Privacy Policy</router-link>
+                <router-link to="/privacy-policy" class="dropdown-item">Privacy Policy</router-link>
               </li>
               <li>
-                <router-link to="/terms-and-conditions" class="dropdown-item" href="#">Terms & Conditions</router-link>
+                <router-link to="/terms-and-conditions" class="dropdown-item">Terms & Conditions</router-link>
               </li>
               <li>
-                <router-link to="/Merchandise" class="dropdown-item" href="#">Merchandise</router-link>
+                <router-link to="/Merchandise" class="dropdown-item">Merchandise</router-link>
                 </li>
             </ul>
           </li>
 
           <li class="nav-item category">
-            <router-link to="/Contact" class="nav-link" href="#">Contact</router-link>
+            <router-link to="/Contact" class="nav-link">Contact</router-link>
           </li>
         </div>
         <a class="extra space" href="#">
@@ -189,15 +189,49 @@
 export default {
   data() {
     return {
-      // Added 'exploration', 'cosmic-picks', and 'guides' to the potential values
-      selectedMenu: null, // To track which category is selected
+      selectedMenu: null, // Controls menu state via *click* (sticky open/close)
+      hoverMenu: null,    // Controls menu state via *hover*
+      // Added a small delay to close on mouseleave for better user experience
+      closeTimer: null,
+      CLOSE_DELAY: 150, // 150ms delay to allow mouse to move to the dropdown
     };
   },
   methods: {
-    // Method to toggle sub-menu visibility based on selected menu
+    // 1. Toggles the menu state on click (your original click behavior)
     toggleSubMenu(menu) {
+      // Clear any pending close actions
+      clearTimeout(this.closeTimer);
+      
+      // If the same menu is clicked, close it. Otherwise, open the new menu and clear hover state.
       this.selectedMenu = this.selectedMenu === menu ? null : menu;
+      this.hoverMenu = null; 
     },
+
+    // 2. Opens menu on hover
+    openSubMenu(menu) {
+      // Clear any pending close actions
+      clearTimeout(this.closeTimer);
+
+      // Only open via hover if no menu is actively opened by click
+      if (this.selectedMenu === null) {
+        this.hoverMenu = menu;
+      }
+    },
+
+    // 3. Closes menu when moving mouse away from the category block OR when a dropdown item is clicked
+    closeSubMenu() {
+      // Set a slight delay before closing to allow the mouse to move from the <li> title 
+      // to the dropdown <ul> without closing the menu prematurely.
+      clearTimeout(this.closeTimer);
+      this.closeTimer = setTimeout(() => {
+        // Only clear the hover state if the menu is NOT open via a click
+        if (this.selectedMenu === null) {
+          this.hoverMenu = null;
+        }
+        // Always clear the click state
+        this.selectedMenu = null;
+      }, this.CLOSE_DELAY);
+    }
   },
 };
 </script>
@@ -208,15 +242,18 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  /* RESTORED: width: auto; */
   width: auto;
   z-index: 999;
   background-color: #0b0c1a; /* Deep space navy */
   padding: 0px;
   border: 2px solid #7fdbff; /* Starry light blue */
+  /* RESTORED: original border radius styles */
   border-radius: 5px;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
-  overflow: hidden;
+  overflow:hidden;
+  height: auto; /* RESTORED: Full height for the fixed sidebar */
 }
 
 /* Logo styling */

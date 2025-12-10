@@ -9,8 +9,7 @@
 </template>
 
 <script setup>
-// CRITICAL: Import your Nav component
-import Nav from './components/Navigation_Bar.vue'; 
+
 </script>
 
 <style>
