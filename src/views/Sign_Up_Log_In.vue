@@ -73,11 +73,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 export default {
   setup() {
-    // STATE MANAGEMENT
     const currentForm = ref('login');
     const errorMessage = ref('');
     const successMessage = ref('');
@@ -87,10 +86,9 @@ export default {
     });
     const loginForm = ref({ email: '', password: '' });
 
-    // UTILITY FUNCTIONS
     const clearMessages = () => {
-        errorMessage.value = '';
-        successMessage.value = '';
+      errorMessage.value = '';
+      successMessage.value = '';
     };
 
     const toggleForm = (formType) => {
@@ -98,31 +96,28 @@ export default {
       currentForm.value = formType;
     };
 
-    // REGISTRATION HANDLER (Logic remains the same)
+    // ---------------- REGISTER ----------------
     const submitRegister = async () => {
       clearMessages();
-      if (registerForm.value.password.length < 8) {
-          errorMessage.value = "Encryption Key must be at least 8 characters.";
-          return;
-      }
-      
-      const finalUsername = registerForm.value.username.trim() 
-          ? registerForm.value.username 
-          : `${registerForm.value.firstName.trim()} ${registerForm.value.lastName.trim()}`;
 
-      if (!finalUsername) {
-          errorMessage.value = "First Name or Last Name cannot be empty if no Username is provided.";
-          return;
+      if (registerForm.value.password.length < 8) {
+        errorMessage.value = "Encryption Key must be at least 8 characters.";
+        return;
+      }
+
+      if (!registerForm.value.termsAccepted) {
+        errorMessage.value = "You must accept the Terms & Privacy Policy to join.";
+        return;
       }
 
       try {
-        const response = await fetch('http://localhost:3000/api/signup', {
+        const response = await fetch('http://localhost:5000/api/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             User_FN: registerForm.value.firstName,
             User_LN: registerForm.value.lastName,
-            User_Username: finalUsername,
+            User_Username: registerForm.value.username, // leave empty if user didn’t type
             User_Email: registerForm.value.email,
             User_Password: registerForm.value.password,
           }),
@@ -131,7 +126,8 @@ export default {
         const data = await response.json();
 
         if (response.ok) {
-          successMessage.value = data.message || `Welcome, ${finalUsername}! Proceed to Login Protocol.`;
+          successMessage.value = data.message || `Welcome, Explorer! Proceed to Login Protocol.`;
+          // Reset form
           Object.keys(registerForm.value).forEach(key => registerForm.value[key] = key === 'termsAccepted' ? false : '');
           toggleForm('login');
         } else {
@@ -143,11 +139,12 @@ export default {
       }
     };
 
-    // LOGIN HANDLER (Logic remains the same)
+    // ---------------- LOGIN ----------------
     const submitLogin = async () => {
       clearMessages();
+
       try {
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch('http://localhost:5000/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -171,8 +168,6 @@ export default {
         errorMessage.value = "Login failed. The cosmic winds say try again.";
       }
     };
-
-    // REMOVED STARFIELD onMounted LOGIC HERE
 
     return {
       currentForm, registerForm, loginForm, toggleForm, submitRegister, submitLogin,

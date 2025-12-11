@@ -152,12 +152,25 @@ export default {
 <style scoped>
 .footer {
   position: relative;
-  width: 100%;
-  background: linear-gradient(180deg, #1f013d 0%, #0a0015 100%);
+  width: 100vw; /* ensures full width even inside container layouts */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 0, 30, 0.75) 0%,
+    rgba(32, 0, 70, 0.85) 50%,
+    rgba(45, 0, 90, 0.95) 100%
+  ); /* stronger, deeper cosmic gradient */
+
   color: #bfdbfe;
   overflow: hidden;
-  padding-top: 15px; /* FIX 2: Reduced top padding */
+  padding-top: 20px;
   text-align: center;
+  backdrop-filter: blur(8px); 
+  border-top: 1px solid rgba(255, 255, 255, 0.15); 
 }
 
 #footer-stars {
@@ -165,7 +178,15 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* FIX 2: Reduced height to match script */
+  height: 100px;
+  pointer-events: none;
+
+  /* darker tint behind stars so they actually show up */
+  background: radial-gradient(
+    circle at 50% 20%,
+    rgba(255, 255, 255, 0.05),
+    rgba(0, 0, 0, 0)
+  );
   z-index: -1;
 }
 
@@ -188,11 +209,11 @@ h3 {
 .footer-cta {
   width: 100%;
   max-width: 500px;
-  padding: 10px; /* FIX 2: Reduced padding inside CTA box */
-  margin-bottom: 15px; /* FIX 2: Reduced bottom margin */
+  padding: 10px;
+  margin-bottom: 15px;
   border-radius: 12px;
-  background: rgba(31, 1, 61, 0.6); 
-  box-shadow: 0 0 30px rgba(252, 165, 165, 0.5); 
+  background: rgba(31, 1, 61, 0.3); /* lowered alpha for see-through */
+  box-shadow: 0 0 30px rgba(252, 165, 165, 0.5);
   animation: pulseBorder 3s infinite ease-in-out;
 }
 

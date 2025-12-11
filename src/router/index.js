@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../views/Home_Page.vue';
 import MainLayout from '../components/Main_Layout.vue'; 
 import Sign_Up_Log_In from '../views/Sign_Up_Log_In.vue';
+import Latest_News from '../views/Latest_News.vue'; // import the LatestNews Component
 
 // define your routes
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
         path: '/sign-up-login', // Define the route for the sign up / login page
         name: 'signUpLogin',
         component: Sign_Up_Log_In,
+      },
+      {
+        path: '/Latest_News',
+        name: "Latest News",
+        component: Latest_News
       },
     ],
   },
