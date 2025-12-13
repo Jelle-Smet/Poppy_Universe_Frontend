@@ -4,6 +4,7 @@ import HomePage from '../views/Home_Page.vue';
 import MainLayout from '../components/Main_Layout.vue'; 
 import Sign_Up_Log_In from '../views/Sign_Up_Log_In.vue';
 import Latest_News from '../views/Latest_News.vue'; // import the LatestNews Component
+import Status_Check from '../views/Status_Check.vue';
 
 // define your routes
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
         path: '/Latest_News',
         name: "Latest News",
         component: Latest_News
+      },
+      {
+        path: '/System-Status',
+        name: "Status",
+        component: Status_Check
       },
     ],
   },

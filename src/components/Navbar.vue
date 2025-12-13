@@ -22,6 +22,9 @@
                 <router-link to="/Latest_News" class="dropdown-item">Latest News</router-link>
               </li>
               <li>
+                <router-link to="/System-Status" class="dropdown-item"> Status </router-link>
+              </li>
+              <li>
                 <router-link to="/More" class="dropdown-item">More</router-link>
               </li>
             </ul>
