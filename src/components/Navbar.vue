@@ -36,10 +36,10 @@
             </a>
             <ul v-if="selectedMenu === 'account'" class="dropdown-menu">
               <li>
-                <router-link to="/profile" class="dropdown-item">Profile</router-link>
+                <router-link to="/Profile_Page" class="dropdown-item">Profile</router-link>
               </li>
                <li>
-                <router-link to="/upcoming_bookings" class="dropdown-item">My Bookings</router-link>
+                <router-link to="/My_Stars" class="dropdown-item">My Stars</router-link>
               </li>
               <li>
                 <router-link to="/past-cancelled-bookings" class="dropdown-item">My History</router-link>

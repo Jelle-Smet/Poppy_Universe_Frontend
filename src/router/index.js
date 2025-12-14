@@ -5,6 +5,9 @@ import MainLayout from '../components/Main_Layout.vue';
 import Sign_Up_Log_In from '../views/Sign_Up_Log_In.vue';
 import Latest_News from '../views/Latest_News.vue'; // import the LatestNews Component
 import Status_Check from '../views/Status_Check.vue';
+import Profile_Page from '../views/Profile_Page.vue';
+import My_Stars from '../views/My_Stars.vue';
+import Star_Details from '../views/Star_Details.vue';
 
 // define your routes
 const routes = [
@@ -32,6 +35,23 @@ const routes = [
         name: "Status",
         component: Status_Check
       },
+      {
+        path: '/Profile_Page',
+        name: "Profile Page",
+        component: Profile_Page
+      },
+      {
+        path: '/My_Stars',
+        name: "My Stars",
+        component: My_Stars
+      },
+      {
+        path: '/star/:id',   
+        name: 'Star',
+        component: Star_Details,
+        props: true           
+      }
+
     ],
   },
   // you can add more routes here later (e.g., path: 'about', component: AboutPage)
