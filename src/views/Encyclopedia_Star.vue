@@ -1,9 +1,8 @@
 <template>
-  <div class="my-stars-container">
-    <h1>Stellar Vault 🌟</h1>
+  <div class="encyclopedia-container">
+    <h1>⭐ Star Encyclopedia</h1>
     <p class="intro">
-      Greetings, cosmic explorer! Step into your personal vault of stars in Poppy Universe.
-      Each glowing orb represents a star you own—its color shows its type, and its brightness reflects luminosity.
+      Explore the known stars in Poppy Universe. Each glowing orb shows a star’s type, while its brightness reflects luminosity.
     </p>
 
     <div class="stars-grid">
@@ -24,11 +23,18 @@
           <p><span class="label">Age:</span> {{ formatNumber(star.Star_Age) }}</p>
           <p><span class="label">Radial Velocity:</span> {{ star.Star_RV_Category || 'Unknown' }}</p>
 
-          <button class="details-button" @click="goToStar(star.Star_ID)">
+          <!-- Updated button -->
+          <button class="details-button" @click.prevent="goToStar(star.Star_ID)">
             Open Star Details ✨
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="load-more-wrapper">
+      <button class="load-more-btn" @click="loadMore" :disabled="loading || noMore">
+        {{ noMore ? 'No more stars ✨' : loading ? 'Loading…' : 'Load more stars' }}
+      </button>
     </div>
   </div>
 </template>
@@ -36,11 +42,52 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 export default {
   setup() {
-    const stars = ref([]);
     const router = useRouter();
+    const stars = ref([]);
+    const limit = 25;
+    const offset = ref(0);
+    const loading = ref(false);
+    const noMore = ref(false);
+
+    const axiosWithAuth = axios.create({
+      baseURL: 'http://localhost:5000',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      },
+    });
+
+    const fetchStars = async () => {
+      if (loading.value || noMore.value) return;
+      loading.value = true;
+      try {
+        const res = await axiosWithAuth.get('/api/stars/encyclopedia', {
+          params: { limit, offset: offset.value, random: true },
+        });
+
+        if (!res.data.stars || res.data.stars.length === 0) {
+          noMore.value = true;
+        } else {
+          const shuffledStars = res.data.stars.sort(() => Math.random() - 0.5);
+          stars.value.push(...shuffledStars);
+          offset.value += res.data.stars.length;
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    onMounted(fetchStars);
+
+    const goToStar = (id) => {
+      if (!id) return;
+      router.push(`/star/${id}`);
+    };
 
     // Fixed: Now handles both full star objects AND just spectral type strings
     const starColor = (starOrType) => {
@@ -79,65 +126,34 @@ export default {
       }
     };
 
-    // Scale luminosity to a glow around the orb
     const starLuminosityGlow = (lum, color) => {
       if (!lum) return '0 0 10px rgba(255,255,255,0.3)';
       const intensity = Math.min(Math.sqrt(lum) * 5, 50);
       return `0 0 ${intensity}px ${color}`;
     };
 
-    // Round numbers to 2 digits, handle unknown
     const formatNumber = (num) => {
       if (num === null || num === undefined) return 'Unknown';
       return Number(num).toFixed(2);
     };
 
-    const fetchStars = async () => {
-      try {
-        const token = localStorage.getItem('authToken');
-        if (!token) return;
-
-        const res = await fetch('http://localhost:5000/api/stars/mystars', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) throw new Error('Failed to fetch stars');
-
-        const data = await res.json();
-        stars.value = data.stars;
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    const goToStar = (id) => {
-      router.push(`/star/${id}`);
-    };
-
-    const viewOnMap = (id) => {
-      router.push(`/map/${id}`);
-    };
-
-    onMounted(() => {
-      fetchStars();
-    });
-
     return {
       stars,
+      fetchStars,
+      loading,
+      noMore,
+      goToStar,
       starColor,
       starLuminosityGlow,
       formatNumber,
-      goToStar,
-      viewOnMap,
+      loadMore: fetchStars,
     };
   },
 };
 </script>
 
 <style scoped>
-.my-stars-container {
+.encyclopedia-container {
   min-height: 100vh;
   padding: 60px 20px;
   font-family: 'Poppins', sans-serif;
@@ -156,49 +172,49 @@ h1 {
   margin-bottom: 45px;
   opacity: 0.9;
   max-width: 750px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   line-height: 1.6;
 }
 
 .stars-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px; /* more space between cards */
   justify-items: center;
   width: 100%;
+  padding: 0 10px; /* avoid touching edges */
 }
 
 .star-card {
   display: flex;
+  flex-wrap: wrap; /* allow orb + info to wrap */
   align-items: center;
   background: rgba(10, 10, 30, 0.98);
   border-radius: 20px;
   padding: 25px;
   width: 100%;
-  max-width: 350px;
-  box-sizing: border-box;
-  box-shadow: 0 0 25px rgba(125, 95, 255, 0.4),
-              0 15px 40px rgba(0, 0, 0, 0.5);
+  max-width: 320px; /* slightly smaller to give spacing */
+  box-shadow: 0 0 25px rgba(125, 95, 255, 0.4), 0 15px 40px rgba(0, 0, 0, 0.5);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .star-card:hover {
   transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 0 35px rgba(125, 95, 255, 0.7),
-              0 20px 50px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 35px rgba(125, 95, 255, 0.7), 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .star-orb {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  margin-right: 25px;
+  margin-right: 20px;
+  margin-bottom: 0;
   flex-shrink: 0;
-  transition: box-shadow 0.3s ease;
 }
 
 .star-info {
+  min-width: 0; /* allow content to shrink inside flex */
+  flex: 1 1 auto;
   text-align: left;
 }
 
@@ -217,14 +233,50 @@ h1 {
   font-weight: 600;
   background: linear-gradient(135deg, #ff596b, #ff7d5f);
   color: #fff;
-  box-shadow: 0 0 15px rgba(255, 89, 107, 0.6),
-              0 0 35px rgba(255, 125, 95, 0.3);
+  box-shadow: 0 0 15px rgba(255, 89, 107, 0.6), 0 0 35px rgba(255, 125, 95, 0.3);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .details-button:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 0 25px rgba(255, 89, 107, 0.9),
-              0 0 50px rgba(255, 125, 95, 0.6);
+  box-shadow: 0 0 25px rgba(255, 89, 107, 0.9), 0 0 50px rgba(255, 125, 95, 0.6);
+}
+
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0;
+}
+
+.load-more-btn {
+  padding: 0.7rem 2rem;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  background: linear-gradient(135deg, #9aa4ff, #7f7fff);
+  color: #fff;
+  cursor: pointer;
+}
+
+.load-more-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Small screens: stack orb above info */
+@media (max-width: 400px) {
+  .star-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .star-orb {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .star-info {
+    text-align: center;
+  }
 }
 </style>

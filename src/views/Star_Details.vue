@@ -71,7 +71,7 @@ export default {
   setup() {
     const star = ref(null);
     const router = useRouter();
-    const isLiked = ref(false); // track like status
+    const isLiked = ref(false);
     const ratingMessage = ref('');
 
     const axiosWithAuth = axios.create({
@@ -85,7 +85,6 @@ export default {
         const response = await axiosWithAuth.get(`/api/stars/${starId}`);
         star.value = response.data.star;
 
-        // ✅ Check if already liked using the correct route
         const likeStatus = await axiosWithAuth.get(`/api/likes/status?type=Star&id=${starId}`);
         isLiked.value = likeStatus.data.isLiked;
 
@@ -108,6 +107,7 @@ export default {
       let r, g, b;
 
       if (T) {
+        // Temperature-based color
         if (T >= 10000) { r = 155; g = 180; b = 255; }
         else if (T >= 7500) { r = 170; g = 190; b = 255; }
         else if (T >= 6000) { r = 200; g = 215; b = 255; }
@@ -116,12 +116,14 @@ export default {
         else if (T >= 3500) { r = 255; g = 210; b = 160; }
         else { r = 255; g = 204; b = 111; }
 
+        // BP-RP color correction (only on detail page for accuracy)
         if (star.value.Star_BPMag && star.value.Star_RPMag) {
           const bv = star.value.Star_BPMag - star.value.Star_RPMag;
           r = Math.min(255, r + bv * 10);
           g = Math.min(255, g + bv * 5);
         }
       } else {
+        // Fallback to spectral type
         switch (star.value.Star_SpType) {
           case 'O': return '#9bb0ff';
           case 'B': return '#aabfff';
@@ -179,25 +181,25 @@ export default {
 
     const userRating = ref(0);
     const setRating = (n) => {
-      userRating.value = n; 
+      userRating.value = n;
     };
 
     const submitRating = async () => {
-        try {
-            await axiosWithAuth.post('/api/interactions/rate', {
-            objectType: 'Star',
-            objectId: star.value.Star_ID,
-            rating: userRating.value
-            });
+      try {
+        await axiosWithAuth.post('/api/interactions/rate', {
+          objectType: 'Star',
+          objectId: star.value.Star_ID,
+          rating: userRating.value
+        });
 
-            ratingMessage.value = '⭐ Successfully rated this star!';
-            setTimeout(() => {
-            ratingMessage.value = '';
-            }, 2500);
+        ratingMessage.value = '⭐ Successfully rated this star!';
+        setTimeout(() => {
+          ratingMessage.value = '';
+        }, 2500);
 
-        } catch (err) {
-            console.error('Error sending rating:', err);
-        }
+      } catch (err) {
+        console.error('Error sending rating:', err);
+      }
     };
 
     const toggleLike = async () => {

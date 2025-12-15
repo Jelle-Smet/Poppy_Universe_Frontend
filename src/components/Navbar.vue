@@ -62,10 +62,10 @@
             </a>
             <ul v-if="selectedMenu === 'encyclopedia'" class="dropdown-menu">
               <li>
-                <router-link to="/Booking_Management" class="dropdown-item" > Stars</router-link>
+                <router-link to="/Encyclopedia_stars" class="dropdown-item" > Stars</router-link>
               </li>
               <li>
-                <router-link to="/spot-overview" class="dropdown-item">Planets</router-link>
+                <router-link to="/Encyclopedia_Planets" class="dropdown-item">Planets</router-link>
               </li>
               <li>
                 <router-link to= "/add-spot" class="dropdown-item"> Moons</router-link>

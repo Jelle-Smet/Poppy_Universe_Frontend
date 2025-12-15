@@ -8,6 +8,8 @@ import Status_Check from '../views/Status_Check.vue';
 import Profile_Page from '../views/Profile_Page.vue';
 import My_Stars from '../views/My_Stars.vue';
 import Star_Details from '../views/Star_Details.vue';
+import Star_Encyclopedia from '../views/Encyclopedia_Star.vue';
+import Planet_Encyclopedia from '../views/Encyclopedia_Planets.vue';
 
 // define your routes
 const routes = [
@@ -50,7 +52,17 @@ const routes = [
         name: 'Star',
         component: Star_Details,
         props: true           
-      }
+      },
+      {
+        path: '/Encyclopedia_stars',   
+        name: 'Encyclopedia Planets',
+        component: Star_Encyclopedia,
+      },
+      {
+        path: '/Encyclopedia_Planets',   
+        name: 'Encyclopedia planets',
+        component: Planet_Encyclopedia,
+      },
 
     ],
   },
