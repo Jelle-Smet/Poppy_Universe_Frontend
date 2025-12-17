@@ -1,27 +1,30 @@
 <template>
   <div v-if="star" class="star-detail-container">
-    <!-- Star Orb and Title -->
     <div class="star-header">
-      <div class="star-orb-container">
-        <p class="star-intro">Appearance of this Star:</p>
-        <div
-          class="star-orb"
-          :style="{ backgroundColor: starColorRGB, boxShadow: starGlow }"
-          title="Color and glow represent temperature, color index, and luminosity"
-        ></div>
+      
+      <div class="header-left-group">
+        <div class="star-orb-container">
+          <p class="star-intro">Appearance of this Star:</p>
+          <div
+            class="star-orb"
+            :style="{ backgroundColor: starColorRGB, boxShadow: starGlow }"
+            title="Color and glow represent temperature, color index, and luminosity"
+          ></div>
+        </div>
+
+        <div class="star-title">
+          <p class="star-name-label">Star Name:</p>
+          <h1>{{ star.Star_Name || 'Unknown Star' }}</h1>
+          <p class="star-type"><strong>Spectral Type:</strong> {{ star.Star_SpType || 'Unknown Type' }}</p>
+        </div>
       </div>
-      <div class="star-title">
-        <p class="star-name-label">Star Name:</p>
-        <h1>{{ star.Star_Name || 'Unknown Star' }}</h1>
-        <p class="star-type"><strong>Spectral Type:</strong> {{ star.Star_SpType || 'Unknown Type' }}</p>
-      </div>
+
       <div class="star-buttons">
         <button class="map-btn" @click="viewOnMap">View on Interactive Map 🌌</button>
         <button class="like-btn" @click="toggleLike">
           {{ isLiked ? '💔 Unlike this star' : '⭐ Like this star ⭐' }}
         </button>
 
-        <!-- Rating Box -->
         <div class="rating-box">
           <p class="rate-label">Rate this Star:</p>
           
@@ -35,14 +38,13 @@
             >★</span>
           </div>
           <p v-if="ratingMessage" class="rating-success">
-                {{ ratingMessage }}
+            {{ ratingMessage }}
           </p>
           <button class="send-rating-btn" @click="submitRating">Send Rating</button>
         </div>
       </div>
     </div>
 
-    <!-- Star Info Grid -->
     <div class="star-info-grid">
       <div class="info-card" v-for="(value, label) in starData" :key="label">
         <span class="label">{{ label }}:</span> 
@@ -50,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Owner Info -->
     <div class="owner-info">
       <h2>Owner Info</h2>
       <p><strong>Name:</strong> {{ ownerFullName || "No owner yet"}}</p>
@@ -266,14 +267,22 @@ export default {
 .star-header {
   display: flex;
   align-items: flex-start;
+  /* This pushes the "left-group" and the "buttons" to opposite sides */
+  justify-content: space-between; 
   gap: 2rem;
   margin-bottom: 2rem;
   position: relative;
-
   background-color: rgba(0,0,30,0.8);
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(125, 95, 255, 0.4);
+}
+
+/* This new class keeps the Orb and Title together on the left */
+.header-left-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
 }
 
 .star-orb-container {
@@ -301,6 +310,7 @@ export default {
 .star-title {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .star-title h1 {
@@ -320,17 +330,23 @@ export default {
 .star-buttons {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
+  align-items: flex-end; /* Pins buttons/rating box to the right edge */
+}
+
+.map-btn, .like-btn, .rating-box {
+  width: 250px;
+  box-sizing: border-box;
 }
 
 .map-btn, .like-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 12px;
   border: none;
   cursor: pointer;
   font-weight: 600;
   transition: transform 0.2s ease;
+  text-align: center;
 }
 
 .map-btn {
@@ -347,12 +363,10 @@ export default {
   transform: scale(1.05);
 }
 
-/* Rating box */
 .rating-box {
   background-color: rgba(0,0,50,0.8);
-  padding: 0.75rem 1rem;
+  padding: 1rem;
   border-radius: 12px;
-  margin-top: 0.5rem;
   text-align: center;
   box-shadow: 0 0 12px rgba(125, 95, 255, 0.4);
   display: flex;
@@ -400,8 +414,9 @@ export default {
 }
 
 .send-rating-btn {
+  width: 100%;
   margin-top: 0.25rem;
-  padding: 0.3rem 0.8rem;
+  padding: 0.5rem;
   border-radius: 8px;
   border: none;
   font-weight: 600;
@@ -427,17 +442,23 @@ export default {
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(125, 95, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .info-card .label {
   font-weight: 600;
+  font-size: 0.9rem;
   color: #9aa4ff;
   text-shadow: 0 0 8px rgba(125, 95, 255, 0.6);
 }
 
 .info-card .value {
-  float: right;
   font-weight: 500;
+  font-size: 1.1rem;
+  color: #fff;
+  text-align: right;
 }
 
 .owner-info {
@@ -461,8 +482,7 @@ export default {
 
 .owner-info p strong {
   font-weight: 600;
-  color: #9aa4ff; /* same neon purple as .info-card .label */
+  color: #9aa4ff; 
   text-shadow: 0 0 8px rgba(125, 95, 255, 0.6);
 }
-
 </style>

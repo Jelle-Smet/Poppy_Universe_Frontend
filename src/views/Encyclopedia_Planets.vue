@@ -45,20 +45,20 @@ import axios from 'axios';
 
 // Map descriptive color strings from your API to valid CSS Hex codes
 const COLOR_MAP = {
-  'Grey': '#9a9a9a',
-  'Brown-Grey': '#a86f00',
-  'Blue-Green-Brown-Whi': '#0066ff',
-  'Red-Brown-Tan': '#ff5900',
-  'Brown-Orange-Tan-Whi': '#ff9900',
-  'Golden-Brown-Blue-Gr': '#ccaa66',
-  'Blue-Green': '#33ccff',
-  'Blue': '#0033ff',
-  'Light-Brown-Grey': '#e0c8a8',
-  'Grey-Brown': '#856333',
-  'Grey-White': '#e6e6e6',
-  'White (Ice)': '#ffffff',
-  'Reddish-Brown': '#a3301a',
-  'DEFAULT': '#cccccc' 
+  'Grey': '#A0A0A0',                  // neutral grey
+  'Brown-Grey': '#8B7D6B',            // earthy brownish-grey
+  'Blue-Green-Brown-White': '#6699CC', // Earth-like mix
+  'Red-Brown-Tan': '#C1440E',         // Mars-ish
+  'Brown-Orange-Tan-White': '#D99466', // Jupiter-ish
+  'Golden-Brown-Blue-Grey': '#CCB877', // Saturn-ish
+  'Blue-Green': '#66CCCC',             // Uranus-ish
+  'Blue': '#3366FF',                   // Neptune-ish
+  'Light-Brown-Grey': '#D9C4A6',       // minor planets / moons
+  'Grey-Brown': '#7F6A55',             // asteroid-ish
+  'Grey-White': '#E0E0E0',             // icy objects
+  'White (Ice)': '#FFFFFF',             // icy dwarf planets
+  'Reddish-Brown': '#A63D2A',          // Pluto / Makemake style
+  'DEFAULT': '#CCCCCC'                  // fallback
 };
 
 export default {

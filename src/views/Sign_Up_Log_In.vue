@@ -2,16 +2,16 @@
   <div class="auth-outer">
     <div class="auth-card">
       <div class="toggle-row">
-        <button 
-          @click="toggleForm('register')" 
+        <button
+          @click="toggleForm('register')"
           :class="{ active: currentForm === 'register' }"
           class="toggle-btn"
         >
           Join Poppy Universe
         </button>
 
-        <button 
-          @click="toggleForm('login')" 
+        <button
+          @click="toggleForm('login')"
           :class="{ active: currentForm === 'login' }"
           class="toggle-btn"
         >
@@ -24,8 +24,8 @@
 
       <div class="forms">
         <transition name="nebula" mode="out-in">
-          <form 
-            v-if="currentForm === 'register'" 
+          <form
+            v-if="currentForm === 'register'"
             class="space-form"
             @submit.prevent="submitRegister"
             key="register-form"
@@ -34,19 +34,35 @@
 
             <input type="text" v-model="registerForm.firstName" placeholder="First Name (Required)" required />
             <input type="text" v-model="registerForm.lastName" placeholder="Last Name (Required)" required />
-            <input 
-              type="text" 
-              v-model="registerForm.username" 
-              placeholder="Username (Optional - Defaults to First Name + Last Name)" 
+
+            <input
+              type="text"
+              v-model="registerForm.username"
+              placeholder="Username (Optional - Defaults to First Name + Last Name)"
             />
+
             <input type="email" v-model="registerForm.email" placeholder="Email (Required)" required />
-            <input type="password" v-model="registerForm.password" placeholder="Password (Min 8 Chars)" required minlength="8" />
+
+            <input
+              type="password"
+              v-model="registerForm.password"
+              placeholder="Password (Min 8 Chars)"
+              required
+              minlength="8"
+            />
+
+            <input
+              type="password"
+              v-model="registerForm.confirmPassword"
+              placeholder="Confirm Password"
+              required
+            />
 
             <label class="terms">
               <input type="checkbox" v-model="registerForm.termsAccepted" />
-              I accept the  
-              <router-link to="/terms-and-conditions">Terms & Conditions</router-link>  
-              &  
+              I accept the&nbsp;
+              <router-link to="/terms-and-conditions">Terms & Conditions</router-link>
+              &nbsp;&amp;&nbsp;
               <router-link to="/privacy-policy">Privacy Policy</router-link>
             </label>
 
@@ -55,15 +71,17 @@
         </transition>
 
         <transition name="nebula" mode="out-in">
-          <form 
-            v-if="currentForm === 'login'" 
+          <form
+            v-if="currentForm === 'login'"
             class="space-form"
             @submit.prevent="submitLogin"
             key="login-form"
           >
             <h2>Welcome Back, Explorer</h2>
+
             <input type="email" v-model="loginForm.email" placeholder="Email" required />
             <input type="password" v-model="loginForm.password" placeholder="Password" required />
+
             <button type="submit" class="cosmic-btn">Log In</button>
           </form>
         </transition>
@@ -82,9 +100,19 @@ export default {
     const successMessage = ref('');
 
     const registerForm = ref({
-      firstName: '', lastName: '', username: '', email: '', password: '', termsAccepted: false,
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      termsAccepted: false,
     });
-    const loginForm = ref({ email: '', password: '' });
+
+    const loginForm = ref({
+      email: '',
+      password: '',
+    });
 
     const clearMessages = () => {
       errorMessage.value = '';
@@ -105,6 +133,11 @@ export default {
         return;
       }
 
+      if (registerForm.value.password !== registerForm.value.confirmPassword) {
+        errorMessage.value = "Encryption keys do not match.";
+        return;
+      }
+
       if (!registerForm.value.termsAccepted) {
         errorMessage.value = "You must accept the Terms & Privacy Policy to join.";
         return;
@@ -117,7 +150,7 @@ export default {
           body: JSON.stringify({
             User_FN: registerForm.value.firstName,
             User_LN: registerForm.value.lastName,
-            User_Username: registerForm.value.username, // leave empty if user didn’t type
+            User_Username: registerForm.value.username,
             User_Email: registerForm.value.email,
             User_Password: registerForm.value.password,
           }),
@@ -126,16 +159,21 @@ export default {
         const data = await response.json();
 
         if (response.ok) {
-          successMessage.value = data.message || `Welcome, Explorer! Proceed to Login Protocol.`;
-          // Reset form
-          Object.keys(registerForm.value).forEach(key => registerForm.value[key] = key === 'termsAccepted' ? false : '');
+          successMessage.value =
+            data.message || 'Welcome, Explorer! Proceed to Login Protocol.';
+
+          Object.keys(registerForm.value).forEach((key) => {
+            registerForm.value[key] = key === 'termsAccepted' ? false : '';
+          });
+
           toggleForm('login');
         } else {
-          errorMessage.value = data.message || "Registration failed. Check your coordinates.";
+          errorMessage.value = data.message || 'Registration failed. Check your coordinates.';
         }
-      } catch (e) {
-        console.error(e);
-        errorMessage.value = "Something exploded in hyperspace during registration. Please check your connection.";
+      } catch (err) {
+        console.error(err);
+        errorMessage.value =
+          'Something exploded in hyperspace during registration. Please check your connection.';
       }
     };
 
@@ -156,22 +194,30 @@ export default {
         const data = await response.json();
 
         if (response.ok) {
-          successMessage.value = data.message || "Login successful! Welcome aboard, Explorer.";
+          successMessage.value =
+            data.message || 'Login successful! Welcome aboard, Explorer.';
+
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('userDetails', JSON.stringify(data.user));
           localStorage.setItem('Owner_ID', data.user.ownerId);
         } else {
-          errorMessage.value = data.message || "Login failed. Invalid credentials.";
+          errorMessage.value = data.message || 'Login failed. Invalid credentials.';
         }
-      } catch (e) {
-        console.error(e);
-        errorMessage.value = "Login failed. The cosmic winds say try again.";
+      } catch (err) {
+        console.error(err);
+        errorMessage.value = 'Login failed. The cosmic winds say try again.';
       }
     };
 
     return {
-      currentForm, registerForm, loginForm, toggleForm, submitRegister, submitLogin,
-      errorMessage, successMessage
+      currentForm,
+      registerForm,
+      loginForm,
+      toggleForm,
+      submitRegister,
+      submitLogin,
+      errorMessage,
+      successMessage,
     };
   },
 };

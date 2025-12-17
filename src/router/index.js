@@ -8,8 +8,12 @@ import Status_Check from '../views/Status_Check.vue';
 import Profile_Page from '../views/Profile_Page.vue';
 import My_Stars from '../views/My_Stars.vue';
 import Star_Details from '../views/Star_Details.vue';
+import Planet_Details from '../views/Planet_Details.vue';
+import Moon_Details from '../views/Moon_Details.vue';
 import Star_Encyclopedia from '../views/Encyclopedia_Star.vue';
 import Planet_Encyclopedia from '../views/Encyclopedia_Planets.vue';
+import Moon_Encyclopedia from '../views/Encyclopedia_Moons.vue';
+import Liked_Objects from '../views/Liked_Objects.vue';
 
 // define your routes
 const routes = [
@@ -54,6 +58,18 @@ const routes = [
         props: true           
       },
       {
+        path: '/planet/:id',   
+        name: 'planet',
+        component: Planet_Details,
+        props: true           
+      },
+      {
+        path: '/moon/:id',   
+        name: 'moon',
+        component: Moon_Details,
+        props: true           
+      },
+      {
         path: '/Encyclopedia_stars',   
         name: 'Encyclopedia Planets',
         component: Star_Encyclopedia,
@@ -62,6 +78,16 @@ const routes = [
         path: '/Encyclopedia_Planets',   
         name: 'Encyclopedia planets',
         component: Planet_Encyclopedia,
+      },
+      {
+        path: '/Encyclopedia_Moons',   
+        name: 'Encyclopedia Moons',
+        component: Moon_Encyclopedia,
+      },
+      {
+        path: '/Liked_Objects',   
+        name: 'liked Objects',
+        component: Liked_Objects,
       },
 
     ],

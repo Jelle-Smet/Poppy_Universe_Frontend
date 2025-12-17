@@ -187,13 +187,13 @@ h1 {
 
 .star-card {
   display: flex;
-  flex-wrap: wrap; /* allow orb + info to wrap */
-  align-items: center;
+  flex-wrap: nowrap; /* Forces orb and info to stay side-by-side */
+  align-items: center; /* Vertically centers the orb on the left side */
   background: rgba(10, 10, 30, 0.98);
   border-radius: 20px;
   padding: 25px;
   width: 100%;
-  max-width: 320px; /* slightly smaller to give spacing */
+  max-width: 320px;
   box-shadow: 0 0 25px rgba(125, 95, 255, 0.4), 0 15px 40px rgba(0, 0, 0, 0.5);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -266,17 +266,17 @@ h1 {
 /* Small screens: stack orb above info */
 @media (max-width: 400px) {
   .star-card {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row; 
+    align-items: center; /* Keeps it centered vertically next to text */
   }
 
   .star-orb {
-    margin-right: 0;
-    margin-bottom: 15px;
+    margin-right: 15px;
+    margin-bottom: 0; /* Prevents it from jumping above text */
   }
 
   .star-info {
-    text-align: center;
+    text-align: left;
   }
 }
 </style>

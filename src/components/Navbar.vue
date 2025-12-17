@@ -45,7 +45,7 @@
                 <router-link to="/past-cancelled-bookings" class="dropdown-item">My History</router-link>
               </li>
               <li>
-                <router-link to="/spot/favorite" class="dropdown-item">My Favorites</router-link>
+                <router-link to="/Liked_Objects" class="dropdown-item">My Favorites</router-link>
               </li>
               <li>
                 <router-link to="/Notifications" class="dropdown-item">Notifications & Alerts</router-link>
@@ -68,7 +68,7 @@
                 <router-link to="/Encyclopedia_Planets" class="dropdown-item">Planets</router-link>
               </li>
               <li>
-                <router-link to= "/add-spot" class="dropdown-item"> Moons</router-link>
+                <router-link to= "/Encyclopedia_Moons" class="dropdown-item"> Moons</router-link>
               </li>
             </ul>
           </li>
