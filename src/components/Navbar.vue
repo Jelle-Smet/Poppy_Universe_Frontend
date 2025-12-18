@@ -42,7 +42,7 @@
                 <router-link to="/My_Stars" class="dropdown-item">My Stars</router-link>
               </li>
               <li>
-                <router-link to="/past-cancelled-bookings" class="dropdown-item">My History</router-link>
+                <router-link to="/Interacted_Objects" class="dropdown-item">My History</router-link>
               </li>
               <li>
                 <router-link to="/Liked_Objects" class="dropdown-item">My Favorites</router-link>
@@ -51,7 +51,27 @@
                 <router-link to="/Notifications" class="dropdown-item">Notifications & Alerts</router-link>
               </li>
               <li>
-                <router-link to="/settings" class="dropdown-item">Settings</router-link>
+                <router-link to="/User_Settings" class="dropdown-item">Settings</router-link>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'recommendations' }">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('recommendations')">
+              Recommendations
+            </a>
+            <ul v-if="selectedMenu === 'recommendations'" class="dropdown-menu">
+              <li>
+                <router-link to="/all-recommendations" class="dropdown-item poppys-pick-highlight">Poppy's Pick</router-link>
+              </li>
+              <li>
+                <router-link to="/personal-recommendations" class="dropdown-item">Activity Suggestions</router-link>
+              </li>
+              <li>
+                <router-link to="/popular-by-users" class="dropdown-item">Community Populars</router-link>
+              </li>
+              <li>
+                <router-link to="/matrix-factorization" class="dropdown-item">Category Deep Dive</router-link>
               </li>
             </ul>
           </li>
@@ -106,26 +126,6 @@
               </li>
               <li>
                 <router-link to="/star-gazing-forecast" class="dropdown-item">Stargazing Forecast</router-link>
-              </li>
-            </ul>
-          </li>
-          
-          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'recommendations' }">
-            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('recommendations')">
-              Recommendations
-            </a>
-            <ul v-if="selectedMenu === 'recommendations'" class="dropdown-menu">
-              <li>
-                <router-link to="/all-recommendations" class="dropdown-item poppys-pick-highlight">Poppy's Pick</router-link>
-              </li>
-              <li>
-                <router-link to="/personal-recommendations" class="dropdown-item">Activity Suggestions</router-link>
-              </li>
-              <li>
-                <router-link to="/popular-by-users" class="dropdown-item">Community Populars</router-link>
-              </li>
-              <li>
-                <router-link to="/matrix-factorization" class="dropdown-item">Category Deep Dive</router-link>
               </li>
             </ul>
           </li>

@@ -1,16 +1,23 @@
 <template>
   <div class="dashboard-container">
     <div class="glass-header">
-      <h1>🌌 Galactic Dashboard</h1>
-      <p class="intro">Manage and compare your discovered celestial collection.</p>
+      <h1>🌌 Galactic Collection</h1>
+      <p class="intro">Manage your discovered celestial interactions.</p>
+
+      <div class="interaction-toggle">
+        <button 
+          :class="{ active: viewMode === 'LIKE' }" 
+          @click="viewMode = 'LIKE'"
+        >❤️ Liked</button>
+        <button 
+          :class="{ active: viewMode === 'RATE' }" 
+          @click="viewMode = 'RATE'"
+        >⭐ Rated</button>
+      </div>
 
       <div class="search-and-filters">
         <div class="search-box">
-          <input 
-            type="text" 
-            v-model="searchQuery" 
-            placeholder="Search by name..."
-          />
+          <input type="text" v-model="searchQuery" placeholder="Search by name..." />
         </div>
 
         <div class="filter-group">
@@ -33,10 +40,14 @@
       <div class="dashboard-grid">
         <div 
           v-for="item in filteredObjects" 
-          :key="item.type + '-' + item.id" 
-          :class="['galactic-card']"
+          :key="viewMode + '-' + item.type + '-' + item.id" 
+          class="galactic-card"
         >
           <span class="type-badge">{{ item.type.slice(0, -1).toUpperCase() }}</span>
+          
+          <div v-if="viewMode === 'RATE'" class="rating-badge">
+            ⭐ {{ item.rating }}
+          </div>
 
           <div class="card-content">
             <div class="orb-container">
@@ -48,14 +59,14 @@
             </div>
 
             <div class="info">
-              <p><span class="label">Name:</span> {{ item.name }}</p>
+              <p class="name-text">{{ item.name }}</p>
               
               <p v-if="item.type === 'stars'"><span class="label">Spectral:</span> {{ item.spectralType }}</p>
               <p v-if="item.type === 'planets'"><span class="label">Magnitude:</span> {{ item.magnitude?.toFixed(2) }}</p>
               <p v-if="item.type === 'moons'"><span class="label">Parent:</span> {{ item.parent }}</p>
               
               <button class="details-link" @click="goTo(item.type.slice(0, -1), item.id)">
-                Details ✨
+                View Record ✨
               </button>
             </div>
           </div>
@@ -63,7 +74,7 @@
       </div>
 
       <div v-if="filteredObjects.length === 0" class="empty-msg">
-        No objects found for the selected filters. 🔭
+        No {{ viewMode.toLowerCase() }}s found. Explore the galaxy to add some! 🔭
       </div>
     </div>
   </div>
@@ -74,81 +85,97 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
-const PLANET_MAP = { 'Grey': '#A0A0A0', 'Blue-Green-Brown-White': '#6699CC', 'Red-Brown-Tan': '#C1440E', 'DEFAULT': '#CCCCCC' };
-const MOON_MAP = { 'Grey': '#A0A0A0', 'White': '#FFFFFF', 'Yellowish': '#E3D6A2', 'DEFAULT': '#CCCCCC' };
-
 export default {
   setup() {
     const router = useRouter();
     const loading = ref(true);
     const searchQuery = ref('');
+    const viewMode = ref('LIKE'); // Matches your DB Interaction_Type
     const selectedTypes = ref(['stars', 'planets', 'moons']);
-    const likedData = ref({ stars: [], planets: [], moons: [] });
+    const rawData = ref({ stars: [], planets: [], moons: [] });
 
     const axiosWithAuth = axios.create({
       baseURL: 'http://localhost:5000',
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
-    const fetchLikes = async () => {
+    const fetchInteractions = async () => {
+      loading.value = true;
       try {
-        const res = await axiosWithAuth.get('/api/likes/user-likes');
-        likedData.value = res.data;
-      } catch (err) { console.error(err); } 
-      finally { loading.value = false; }
+        const res = await axiosWithAuth.get('/api/interactions/user-interactions');
+        rawData.value = res.data;
+      } catch (err) {
+        console.error("Error fetching interactions:", err);
+      } finally {
+        loading.value = false;
+      }
     };
 
-    onMounted(fetchLikes);
+    onMounted(fetchInteractions);
 
     const filteredObjects = computed(() => {
-      let combined = [];
-      if (selectedTypes.value.includes('stars')) combined.push(...likedData.value.stars.map(s => ({ ...s, type: 'stars' })));
-      if (selectedTypes.value.includes('planets')) combined.push(...likedData.value.planets.map(p => ({ ...p, type: 'planets' })));
-      if (selectedTypes.value.includes('moons')) combined.push(...likedData.value.moons.map(m => ({ ...m, type: 'moons' })));
-      
-      return combined.filter(obj => 
-        obj.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-      ).sort((a, b) => a.name.localeCompare(b.name));
+        let combined = [];
+        
+        // Merge categories
+        selectedTypes.value.forEach(type => {
+            if (rawData.value[type] && Array.isArray(rawData.value[type])) {
+            combined.push(...rawData.value[type].map(item => ({ ...item, type })));
+            }
+        });
+        
+        return combined.filter(obj => {
+            // 1. Case-insensitive check for Interaction Type (LIKE vs RATE)
+            // We use .toUpperCase() on both sides to be 100% sure
+            const matchType = obj.interactionType && 
+                            obj.interactionType.toUpperCase() === viewMode.value.toUpperCase();
+
+            // 2. Filter by Search Query
+            const matchSearch = obj.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+
+            return matchType && matchSearch;
+        }).sort((a, b) => a.name.localeCompare(b.name));
     });
 
-    // Visual logic mapped to your specific styles
+    // --- Dynamic Styles ---
     const starStyle = (s) => {
       const colors = { 'O': '#9bb0ff', 'B': '#aabfff', 'A': '#cad7ff', 'F': '#f8f7ff', 'G': '#fff4ea', 'K': '#ffd2a1', 'M': '#ffcc6f' };
       const c = colors[s.spectralType?.[0]] || '#fff';
-      const glow = Math.min(Math.sqrt(s.luminosity || 1) * 5, 40);
-      return { backgroundColor: c, boxShadow: `0 0 ${glow}px ${c}, inset -5px -5px 10px rgba(0,0,0,0.4)` };
+      return { backgroundColor: c, boxShadow: `0 0 25px ${c}, inset -5px -5px 10px rgba(0,0,0,0.4)` };
     };
 
     const planetStyle = (p) => {
-      const c = PLANET_MAP[p.color] || PLANET_MAP['DEFAULT'];
-      const glow = Math.min(Math.sqrt(Math.abs(p.magnitude || 1)) * 5, 30);
-      return { backgroundColor: c, boxShadow: `0 0 ${glow}px ${c}, inset -5px -5px 15px rgba(0,0,0,0.4)` };
+      const colors = { 'Grey': '#A0A0A0', 'Blue-Green-Brown-White': '#6699CC', 'Red-Brown-Tan': '#C1440E' };
+      const c = colors[p.color] || '#CCCCCC';
+      return { backgroundColor: c, boxShadow: `0 0 20px ${c}, inset -5px -5px 15px rgba(0,0,0,0.4)` };
     };
 
     const moonStyle = (m) => {
-      const c = MOON_MAP[m.color] || MOON_MAP['DEFAULT'];
-      return { backgroundColor: c, boxShadow: `0 0 15px ${c}66, inset -5px -5px 15px rgba(0,0,0,0.4)` };
+      return { backgroundColor: '#A0A0A0', boxShadow: `0 0 15px rgba(160,160,160,0.4), inset -5px -5px 15px rgba(0,0,0,0.4)` };
     };
 
     const getIcon = (t) => t === 'stars' ? '⭐' : t === 'planets' ? '🪐' : '🌙';
     const goTo = (type, id) => router.push(`/${type}/${id}`);
 
-    return { loading, searchQuery, selectedTypes, filteredObjects, goTo, starStyle, planetStyle, moonStyle, getIcon };
+    return { 
+      loading, searchQuery, viewMode, selectedTypes, 
+      filteredObjects, goTo, starStyle, planetStyle, 
+      moonStyle, getIcon 
+    };
   }
 };
 </script>
 
 <style scoped>
+/* I have used your exact requested clean CSS formatting below */
+
 .dashboard-container {
   min-height: 100vh;
   padding: 40px 20px;
   font-family: 'Poppins', sans-serif;
   color: #fff;
-  /* Dark background instead of the previous blue */
   background-color: transparent; 
 }
 
-/* HEADER STYLE - MATCHES STAR HEADER */
 .glass-header {
   max-width: 1200px;
   margin: 0 auto 40px;
@@ -171,12 +198,12 @@ h1 {
   margin-top: 10px;
 }
 
-/* INTERACTION TOGGLE */
 .interaction-toggle {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .interaction-toggle button {
@@ -238,7 +265,6 @@ h1 {
   box-shadow: 0 0 15px rgba(127, 127, 255, 0.6);
 }
 
-/* GRID SYSTEM - PREVENTS STRETCHING */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -247,7 +273,6 @@ h1 {
   margin: 0 auto;
 }
 
-/* CARD STYLE - MATCHES ENCYCLOPEDIA CARDS */
 .galactic-card {
   position: relative;
   display: flex;
@@ -255,7 +280,6 @@ h1 {
   background-color: rgba(0, 0, 30, 0.8);
   border-radius: 12px;
   padding: 20px;
-  /* Forces cards to stay compact */
   max-width: 320px; 
   box-shadow: 0 0 20px rgba(125, 95, 255, 0.3);
   transition: transform 0.25s ease;
@@ -318,6 +342,13 @@ h1 {
   flex: 1;
 }
 
+.name-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
 .label {
   font-weight: 600;
   font-size: 0.9rem;
@@ -330,11 +361,16 @@ h1 {
   padding: 8px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg, #ff596b, #ff7d5f);
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
   color: #fff;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
+  transition: opacity 0.2s;
+}
+
+.details-link:hover {
+  opacity: 0.9;
 }
 
 .loading-state, 

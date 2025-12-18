@@ -14,6 +14,8 @@ import Star_Encyclopedia from '../views/Encyclopedia_Star.vue';
 import Planet_Encyclopedia from '../views/Encyclopedia_Planets.vue';
 import Moon_Encyclopedia from '../views/Encyclopedia_Moons.vue';
 import Liked_Objects from '../views/Liked_Objects.vue';
+import Interacted_Objects from '../views/Interacted_Objects.vue';
+import User_Settings from '../views/User_Settings.vue';
 
 // define your routes
 const routes = [
@@ -89,7 +91,16 @@ const routes = [
         name: 'liked Objects',
         component: Liked_Objects,
       },
-
+      {
+        path: '/Interacted_Objects',   
+        name: 'interacted Objects',
+        component: Interacted_Objects,
+      },
+      {
+        path: '/User_Settings',   
+        name: 'User Settings',
+        component: User_Settings,
+      },
     ],
   },
   // you can add more routes here later (e.g., path: 'about', component: AboutPage)
