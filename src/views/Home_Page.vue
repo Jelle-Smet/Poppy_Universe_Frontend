@@ -1,6 +1,174 @@
+<template>
+  <div class="poppy-universe-home"> 
+    <header class="hero">
+      <h1 :class="['hero-title', { 'loaded': isLoaded }]">
+        Welcome to the <span class="universe-highlight">Poppy Universe</span>
+      </h1>
+      <p class="hero-subtitle">
+        Explore planets, moons, and Gaia stars while logging your cosmic discoveries.
+      </p>
+      <button class="cta-button" @click="console.log('Start Exploring Clicked!')">
+        Begin Expedition &rarr;
+      </button>
+    </header>
+
+    <main class="content-section">
+      
+      <section class="project-mission cosmic-panel large-panel">
+        <h2>✨ Project Core</h2>
+
+        <p class="mission-text">
+          <strong>Poppy Universe</strong> is a cosmic exploration platform designed to
+          <strong>collect, structure, and analyze celestial data</strong>.
+          It allows users to explore planets, moons, and stars while receiving
+          <strong>intelligent, transparent recommendations</strong> tailored to their interests.
+        </p>
+
+        <p class="mission-text subtle">
+          Rather than replacing exploration, the system supports it —
+          helping users decide <em>what</em> to observe next and <em>why</em>.
+        </p>
+
+        <div class="mission-details">
+          <strong class="section-label">Core Features</strong>
+          <ul class="feature-list">
+            <li>
+              <span class="bullet-glow">🌍</span>
+              Structured planet and moon database <span class="note">(Solar System)</span>
+            </li>
+            <li>
+              <span class="bullet-glow">🌟</span>
+              Stellar data derived from <strong>Gaia observations</strong>
+            </li>
+            <li>
+              <span class="bullet-glow">🤖</span>
+              Multi-layer recommendation engine for discovery guidance
+            </li>
+            <li>
+              <span class="bullet-glow">🔐</span>
+              Secure authentication and user interaction logging
+            </li>
+          </ul>
+        </div>
+      </section>
+
+
+      <section class="architecture-hint cosmic-panel large-panel">
+        <h2>🏗️ Data Flow Overview</h2>
+        <p class="mission-text">
+          All explorer observations and logs are processed through a structured data flow. Below is the full pipeline from frontend to backend:
+        </p>
+        <div class="diagram-placeholder">
+          <pre class="dataflow-md">
+            {{ dataFlowMd }}
+          </pre>
+        </div>
+      </section>
+
+      <div class="content-row">
+        <section class="tech-overview cosmic-panel">
+          <h2>💻 Core Components</h2>
+          <div class="tech-grid">
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> Frontend</h3>
+              <p>
+                <strong>Vue 3 (Composition API)</strong><br>
+                Responsive, modular interfaces for exploring celestial data and interacting with recommendations in real-time.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> Backend</h3>
+              <p>
+                <strong>Node.js & Express</strong><br>
+                Handles all user requests, orchestrates the ML-models & recommendation engine, and serves data efficiently and securely.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> Database</h3>
+              <p>
+                <strong>MySQL</strong><br>
+                Stores structured celestial and user data, powering both recommendation logic and analytics.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> ETL / Data Pipeline</h3>
+              <p>
+                <strong>Data Research & Transformation</strong><br>
+                Prepared raw celestial data for the Database, ensuring accuracy and consistency.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> Data Reliability</h3>
+              <p>
+                <strong>Integrity & Observability</strong><br>
+                Ensures all celestial and user data is accurate, consistent, and traceable. Monitors system activity, pipeline health, and logs to maintain trustworthiness of recommendations.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> ML Models</h3>
+              <p>
+                <strong>Trend & Interaction Analysis</strong><br>
+                Processes historical interactions and trends to enhance recommendations via layered scoring and predictions.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> Recommendation Engine</h3>
+              <p>
+                <strong>Layered Algorithm System</strong><br>
+                Combines rule-based layers (1 & 2), matrix factorization (3), neural networks (4), and GA fusion (5) to produce ranked celestial recommendations.
+              </p>
+            </div>
+
+            <div class="tech-card">
+              <h3><span class="card-icon"></span> Ethics & Transparency</h3>
+              <p>
+                <strong>Fairness & Explainability</strong><br>
+                Ensures recommendations are explainable, privacy-conscious, and responsibly presented to users.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="more-info-button" style="text-align: center; margin-top: 20px;">
+            <router-link to="/core-components-details" class="more-info-btn">
+              More Information <span class="arrow">→</span>
+            </router-link>
+          </div>
+        </section>
+
+        <section class="sidebar-group">
+          <section class="component-showcase cosmic-panel small-panel">
+            <h2>⚙️ Poppy's Recommendations</h2>
+            <div class="component-wrapper">
+              <TestComponent />
+            </div>
+          </section>
+
+          <section class="quick-links cosmic-panel small-panel">
+            <h2>🔗 Quick Jumps</h2>
+            <ul class="link-list">
+              <li><a href="/about" class="link-glow">About Poppy Universe</a></li>
+              <li><a href="/explore" class="link-glow">Start Exploring</a></li>
+              <li><a href="/System-Status" class="link-glow">System Status Check &rarr;</a></li>
+              <li><a href="https://github.com/your-repo-link" target="_blank" class="link-glow">Source Code (GitHub)</a></li>
+            </ul>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
-import TestComponent from '../components/TestComponent.vue';
+import TestComponent from '../components/Engine_Summary.vue';
 
 const isLoaded = ref(false);
 const dataFlowMd = ref('Loading data flow...');
@@ -25,99 +193,6 @@ onMounted(async () => {
   }
 });
 </script>
-
-<template>
-  <div class="poppy-universe-home"> 
-    <header class="hero">
-      <h1 :class="['hero-title', { 'loaded': isLoaded }]">
-        Welcome to the <span class="universe-highlight">Poppy Universe</span> 🌌
-      </h1>
-      <p class="hero-subtitle">
-        Explore planets, moons, and Gaia stars while logging your cosmic discoveries.
-      </p>
-      <button class="cta-button" @click="console.log('Start Exploring Clicked!')">
-        Begin Expedition &rarr;
-      </button>
-    </header>
-
-    <main class="content-section">
-      
-      <section class="project-mission cosmic-panel large-panel">
-        <h2>✨ Project Core</h2>
-        <p class="mission-text">
-          Poppy Universe is a **cosmic exploration platform** for recording and analyzing celestial data. Log planets, moons, and stars, and get **AI-powered recommendations** for your next discoveries.
-        </p>
-        <div class="mission-details">
-          <strong>Core Features:</strong>
-          <ul class="feature-list">
-            <li><span class="bullet-glow">🌍</span> Planet & Moon Database (Solar System only)</li>
-            <li><span class="bullet-glow">🌟</span> Gaia Star Observations</li>
-            <li><span class="bullet-glow">🤖</span> Explorer Recommendations Engine</li>
-            <li><span class="bullet-glow">🔐</span> Secure Authentication & Data Logging</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="architecture-hint cosmic-panel large-panel">
-        <h2>🏗️ Data Flow Overview</h2>
-        <p class="mission-text">
-          All explorer observations and logs are processed through a structured data flow. Below is the full pipeline from frontend to backend (Refer to the linked MD file for backend/frontend/data flow of explorer data):
-        </p>
-        <div class="diagram-placeholder">
-          <pre class="dataflow-md">
-{{ dataFlowMd }}
-          </pre>
-        </div>
-      </section>
-
-      <div class="content-row">
-        <section class="tech-overview cosmic-panel">
-          <h2>💻 Technologies Used</h2>
-          <div class="tech-grid">
-            <div class="tech-card">
-              <h3><span class="card-icon">💅</span> Frontend</h3>
-              <p><strong>Vue 3 (Composition API)</strong><br>Reactive, modular, and high-performance explorer interfaces.</p>
-            </div>
-            <div class="tech-card">
-              <h3><span class="card-icon">🧠</span> Backend</h3>
-              <p><strong>Node.js & Express</strong><br>Handles all explorer submissions and AI recommendation logic.</p>
-            </div>
-            <div class="tech-card">
-              <h3><span class="card-icon">💾</span> Database</h3>
-              <p><strong>MySQL/MariaDB</strong><br>Stores planets, moons, star data, and explorer logs.</p>
-            </div>
-            <div class="tech-card">
-              <h3><span class="card-icon">🔑</span> Security</h3>
-              <p><strong>JWT & bcrypt</strong><br>Token-based authentication and password protection.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="sidebar-group">
-          <section class="component-showcase cosmic-panel small-panel">
-            <h2>⚙️ Current Feature Showcase</h2>
-            <div class="component-wrapper">
-              <TestComponent />
-              <p class="test-component-note">
-                (The TestComponent displays current explorer logs and AI recommendations.)
-              </p>
-            </div>
-          </section>
-
-          <section class="quick-links cosmic-panel small-panel">
-            <h2>🔗 Quick Jumps</h2>
-            <ul class="link-list">
-              <li><a href="/about" class="link-glow">About Poppy Universe</a></li>
-              <li><a href="/explore" class="link-glow">Start Exploring</a></li>
-              <li><a href="/System-Status" class="link-glow">System Status Check &rarr;</a></li>
-              <li><a href="https://github.com/your-repo-link" target="_blank" class="link-glow">Source Code (GitHub)</a></li>
-            </ul>
-          </section>
-        </section>
-      </div>
-    </main>
-  </div>
-</template>
 
 <style scoped>
 
@@ -220,24 +295,31 @@ onMounted(async () => {
       width: 100%;
   }
 
+  .small-panel {
+    width: 100%;
+    box-sizing: border-box;
+}
+
   /* Two-column container for the remaining content */
   .content-row {
-      display: flex;
-      gap: 50px;
-      max-width: 1000px;
-      width: 100%;
-  }
+    display: flex;
+    gap: 50px;
+    max-width: 1200px; /* Increase the total "table" width */
+    width: 100%;
+}
 
-  .sidebar-group {
-      display: flex;
-      flex-direction: column;
-      gap: 50px;
-      width: 40%; /* Make the sidebar smaller */
-      min-width: 300px;
-  }
-  .tech-overview {
-      width: 60%; /* Make the tech overview larger */
-  }
+  /* Change this section */
+.sidebar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    flex: 1; /* Allows it to grow to fill space */
+    min-width: 450px; /* Increase this so the Engine Summary has room */
+}
+
+.tech-overview {
+    flex: 1.5; /* Keeps the tech section slightly larger than sidebar but flexible */
+}
 
   /* Universal Panel Styles */
   .cosmic-panel {
@@ -263,6 +345,39 @@ onMounted(async () => {
       font-weight: 700;
       text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); 
   }
+
+  .more-info-btn {
+  text-decoration: none;
+  background: rgba(0, 210, 255, 0.1); /* soft cosmic glow */
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid rgba(0, 210, 255, 0.4);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(4px);
+}
+
+.more-info-btn:hover {
+  background: rgba(0, 210, 255, 0.3);
+  border-color: #00f0ff;
+  color: #00f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
+}
+
+.more-info-btn .arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.more-info-btn:hover .arrow {
+  transform: translateX(6px);
+}
 
   /*
   |--------------------------------------------------------------------------
@@ -368,11 +483,13 @@ onMounted(async () => {
   |--------------------------------------------------------------------------
   */
   .component-wrapper {
-      padding: 25px;
-      border: 2px dashed #ff69b4; 
-      border-radius: 15px;
-      background-color: rgba(5, 0, 30, 0.6); 
-  }
+    padding: 15px; /* Reduced from 25px to give inner component more room */
+    border: 2px dashed #ff69b4; 
+    border-radius: 15px;
+    background-color: rgba(5, 0, 30, 0.6); 
+    width: 100%; /* Ensure it takes full width of sidebar */
+    box-sizing: border-box; /* Crucial to include padding in width calculation */
+}
 
   .test-component-note {
       color: #ffb6c1; 

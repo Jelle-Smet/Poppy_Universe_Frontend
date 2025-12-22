@@ -16,6 +16,10 @@ import Moon_Encyclopedia from '../views/Encyclopedia_Moons.vue';
 import Liked_Objects from '../views/Liked_Objects.vue';
 import Interacted_Objects from '../views/Interacted_Objects.vue';
 import User_Settings from '../views/User_Settings.vue';
+import Layer_1_Best_Right_Now from '../views/Layer_1_Best_Right_Now.vue';
+import Calender_Component from '../components/Celestial_Calender.vue';
+import Location_Component from '../components/Location_Component.vue';
+import Layer_2_Trending_Community from '../views/Layer_2_Trending_Community.vue';
 
 // define your routes
 const routes = [
@@ -100,6 +104,40 @@ const routes = [
         path: '/User_Settings',   
         name: 'User Settings',
         component: User_Settings,
+      },
+      {
+        path: '/Layer1_Recommendations',   
+        name: 'Layer 1 Recommendations',
+        component: Layer_1_Best_Right_Now,
+        children: [
+          {
+            path: 'calendar', // Access via /Layer1_Recommendations/calendar
+            name: 'Celestial Calendar',
+            component: Calender_Component,
+          },
+          {
+            path: 'location', // Access via /Layer1_Recommendations/location
+            name: 'Galactic GPS',
+            component: Location_Component,
+          }
+        ]
+      },
+      {
+        path: '/Layer2_Recommendations',   
+        name: 'Layer 2 Recommendations',
+        component: Layer_2_Trending_Community,
+        children: [
+          {
+            path: 'calendar', // Access via /Layer1_Recommendations/calendar
+            name: 'Celestial Calendar',
+            component: Calender_Component,
+          },
+          {
+            path: 'location', // Access via /Layer1_Recommendations/location
+            name: 'Galactic GPS',
+            component: Location_Component,
+          }
+        ]
       },
     ],
   },

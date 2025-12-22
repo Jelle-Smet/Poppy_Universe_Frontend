@@ -10,43 +10,75 @@
               class="planet-orb"
               :class="planetClass"
               :style="planetStyle"
-              title="Visual representation based on planet characteristics"
             >
-              <!-- Earth continents and clouds -->
-              <div v-if="planet.Planet_ID === 4" class="earth-continents"></div>
-              <div v-if="planet.Planet_ID === 4" class="earth-clouds"></div>
+              <div class="planet-surface-overlay" :class="getPlanetTexture(planet)"></div>
               
-              <!-- Jupiter bands -->
-              <div v-if="planet.Planet_ID === 6" class="jupiter-bands">
-                <div class="band band-1"></div>
-                <div class="band band-2"></div>
-                <div class="band band-3"></div>
-                <div class="band band-4"></div>
+              <template v-if="planet.Planet_ID === 4">
+                <div class="earth-window">
+                  <div class="pole north-pole"></div>
+                  <div class="pole south-pole"></div>
+
+                  <div class="earth-track">
+                    <div class="map-instance">
+                      <div class="land n-america"></div>
+                      <div class="land s-america"></div>
+                      <div class="land europe"></div> 
+                      <div class="land africa"></div>
+                      <div class="land asia"></div>
+                      <div class="land australia"></div>
+                    </div>
+                    <div class="map-instance">
+                      <div class="land n-america"></div>
+                      <div class="land s-america"></div>
+                      <div class="land europe"></div> 
+                      <div class="land africa"></div>
+                      <div class="land asia"></div>
+                      <div class="land australia"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="earth-clouds"></div>
+                  <div class="earth-shimmer"></div>
+                </div>
+              </template>
+              
+              <div v-if="planet.Planet_ID === 6" class="jupiter-features">
                 <div class="great-red-spot"></div>
               </div>
-              
-              <!-- Mars polar caps -->
-              <div v-if="planet.Planet_ID === 5" class="mars-polar-cap mars-north"></div>
-              <div v-if="planet.Planet_ID === 5" class="mars-polar-cap mars-south"></div>
-              
-              <!-- Neptune storms -->
+
               <div v-if="planet.Planet_ID === 9" class="neptune-spot"></div>
-              
-              <!-- Uranus tilt indicator -->
-              <div v-if="planet.Planet_ID === 8" class="uranus-bands"></div>
-            </div>
-            
-            <!-- Saturn's Rings -->
-           <div v-if="planet.Planet_ID === 7" class="saturn-ring-system">
-              <div class="ring outer-ring"></div>
-              <div class="ring middle-ring"></div>
-              <div class="ring inner-ring"></div>
+
+              <div class="planet-internal-shadow"></div>
             </div>
 
-            <!-- Uranus Rings -->
-            <div v-if="planet.Planet_ID === 8" class="uranus-ring-system">
-              <div class="ring-thin"></div>
+            <template v-if="planet.Planet_ID === 5">
+              <div class="mars-cap mars-north"></div>
+              <div class="mars-cap mars-south"></div>
+            </template>
+
+            <template v-if="planet.Planet_ID === 7">
+            <div class="saturn-ring-system back">
+              <div class="ring-dust outer"></div>
+              <div class="ring-dust middle"></div>
+              <div class="ring-dust inner"></div>
             </div>
+
+            <div class="saturn-ring-system front">
+              <div class="ring-dust outer"></div>
+              <div class="ring-dust middle"></div>
+              <div class="ring-dust inner"></div>
+            </div>
+          </template>
+
+          <template v-if="planet.Planet_ID === 8">
+            <div class="uranus-ring-system back">
+              <div class="uranus-ring"></div>
+            </div>
+
+            <div class="uranus-ring-system front">
+              <div class="uranus-ring"></div>
+            </div>
+          </template>
           </div>
         </div>
 
@@ -189,6 +221,14 @@ export default {
         background: colorMap[planet.value.Planet_ID] || '#ffffff'
       };
     });
+    const getPlanetTexture = (p) => {
+      if (!p) return '';
+      const id = p.Planet_ID;
+      if ([6, 7].includes(id)) return 'striped-texture'; // Jupiter, Saturn
+      if ([2, 3, 5, 10, 11, 12, 14].includes(id)) return 'rocky-texture'; // Mercury, Venus, Mars, Dwarfs
+      if ([8, 9].includes(id)) return 'gas-haze'; // Uranus, Neptune
+      return '';
+    };
 
     const planetData = computed(() => {
       if (!planet.value) return {};
@@ -271,6 +311,7 @@ export default {
       viewOnMap,
       planetClass,
       planetStyle,
+      getPlanetTexture,
       planetData,
       formatValue,
       ratingMessage
@@ -341,6 +382,7 @@ export default {
   height: 120px;
   border-radius: 50%;
   flex-shrink: 0;
+  z-index: 5;
   position: relative;
   overflow: hidden;
   box-shadow: 
@@ -363,83 +405,223 @@ export default {
   to { transform: rotate(360deg); }
 }
 
-/* Earth specific features */
-.earth-continents {
+/* --- THE EARTH CONTAINER --- */
+.planet-orb.planet-4 {
+  width: 140px;
+  height: 140px;
+  background-color: #054a91 !important;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 30px rgba(74, 144, 226, 0.4), 
+    inset -15px -15px 40px rgba(0,0,0,0.7) !important;
+  z-index: 1;
+}
+
+/* --- THE ROTATION TRACK --- */
+.earth-track {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 250%; /* Widened to allow continents to "disappear" for longer */
   height: 100%;
-  background: 
-    /* North America */
-    radial-gradient(ellipse 20px 32px at 26% 32%, #2d5a2d 50%, transparent 50%),
-    radial-gradient(ellipse 14px 22px at 30% 26%, #3d6a3d 50%, transparent 50%),
-    radial-gradient(ellipse 16px 18px at 24% 40%, #3d6a3d 50%, transparent 50%),
-    /* Central America bridge */
-    radial-gradient(ellipse 6px 12px at 30% 48%, #2d5a2d 50%, transparent 50%),
-    /* South America */
-    radial-gradient(ellipse 12px 26px at 34% 60%, #2d5a2d 50%, transparent 50%),
-    radial-gradient(ellipse 10px 18px at 37% 58%, #3d6a3d 50%, transparent 50%),
-    /* Greenland */
-    radial-gradient(ellipse 10px 14px at 38% 18%, #e8f0e8 50%, transparent 50%),
-    /* Europe */
-    radial-gradient(ellipse 10px 12px at 52% 28%, #2d5a2d 50%, transparent 50%),
-    radial-gradient(ellipse 8px 10px at 56% 26%, #3d6a3d 50%, transparent 50%),
-    /* Africa */
-    radial-gradient(ellipse 18px 28px at 54% 48%, #4a7a4a 50%, transparent 50%),
-    radial-gradient(ellipse 16px 22px at 52% 38%, #3d6a3d 50%, transparent 50%),
-    /* Arabia */
-    radial-gradient(ellipse 8px 12px at 60% 40%, #c4b896 50%, transparent 50%),
-    /* Madagascar */
-    radial-gradient(ellipse 4px 8px at 60% 58%, #2d5a2d 50%, transparent 50%),
-    /* Asia - Siberia/Russia */
-    radial-gradient(ellipse 28px 22px at 70% 26%, #3d6a3d 50%, transparent 50%),
-    radial-gradient(ellipse 20px 18px at 76% 22%, #2d5a2d 50%, transparent 50%),
-    /* Asia - India/Southeast */
-    radial-gradient(ellipse 10px 14px at 68% 42%, #4a7a4a 50%, transparent 50%),
-    radial-gradient(ellipse 12px 10px at 74% 46%, #3d6a3d 50%, transparent 50%),
-    /* Asia - China/East */
-    radial-gradient(ellipse 16px 20px at 76% 34%, #3d6a3d 50%, transparent 50%),
-    /* Japan arc */
-    radial-gradient(ellipse 4px 10px at 82% 36%, #2d5a2d 50%, transparent 50%),
-    /* Australia */
-    radial-gradient(ellipse 14px 12px at 80% 64%, #c4936f 50%, transparent 50%),
-    radial-gradient(ellipse 10px 8px at 78% 66%, #4a7a4a 50%, transparent 50%),
-    /* New Zealand */
-    radial-gradient(ellipse 3px 6px at 88% 72%, #2d5a2d 50%, transparent 50%),
-    /* Antarctica (bottom ice cap) */
-    radial-gradient(ellipse 45px 18px at 50% 88%, #f0f8ff 50%, transparent 50%);
-  opacity: 0.9;
+  display: flex;
+  animation: earth-spin 50s linear infinite;
+  z-index: 2;
 }
 
+.map-instance {
+  position: relative;
+  width: 40%; /* Adjusted to match the 250% track width */
+  height: 100%;
+  flex-shrink: 0;
+}
+
+/* --- THE JAGGED CONTINENTS --- */
+.land {
+  position: absolute;
+  background: linear-gradient(135deg, #2d5a2d, #3d6a3d);
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.4));
+  z-index: 3;
+}
+
+/* NORTH AMERICA - Massive northern landmass, smaller southern Gulf */
+.n-america {
+  width: 45px;  /* Increased width for a bigger Canada/USA */
+  height: 50px; /* Increased height */
+  top: 12%; 
+  left: 5%;
+  background: linear-gradient(135deg, #3d6a3d, #2d5a2d);
+  /* Polygons: 0-40% height is now the massive "North", 40-70% is the Gulf area */
+  clip-path: polygon(
+    0% 30%, 20% 5%, 50% 0%, 90% 5%, 100% 15%, 
+    100% 50%, /* Solid East Coast (NYC is safe!) */
+    85% 65%,  /* Florida Peninsula */
+    75% 55%,  /* East side of Gulf */
+    55% 55%,  /* Top of Gulf (now much lower down the continent) */
+    45% 65%,  /* West side of Gulf */
+    50% 100%, /* Panama bridge tail */
+    35% 85%, 
+    15% 70%, 
+    5% 50%
+  );
+}
+
+/* SOUTH AMERICA - Aligned to the new bridge position */
+.s-america {
+  width: 28px; 
+  height: 52px; 
+  top: 42%; 
+  left: 10%; 
+  background: linear-gradient(135deg, #2d5a2d, #1e3d1e);
+  clip-path: polygon(
+    25% 0%,   
+    90% 15%, 
+    100% 40%, 
+    75% 60%, 
+    45% 100%, 
+    20% 85%, 
+    5% 30%
+  );
+}
+
+/* --- THE FIXED POLES --- */
+.pole {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  width: 100%; /* Spans the whole width */
+  z-index: 5;
+  filter: blur(1px);
+}
+
+.north-pole {
+  top: -2px;
+  height: 12px;
+  clip-path: ellipse(50% 100% at 50% 0%); /* Curves with the top of the orb */
+}
+
+.south-pole {
+  bottom: -2px;
+  height: 15px;
+  clip-path: ellipse(50% 100% at 50% 100%); /* Curves with the bottom of the orb */
+}
+
+/* --- REVISED EURASIA & AFRICA --- */
+
+/* Europe: Made bigger and moved lower */
+.europe {
+  width: 32px; 
+  height: 25px; 
+  top: 22%; 
+  left: 46%; 
+  background-color: #3d6a3d;
+  /* Jagged shape that reaches down toward Africa */
+  clip-path: polygon(10% 90%, 0% 40%, 30% 0%, 80% 10%, 100% 40%, 80% 90%, 50% 100%);
+  z-index: 4;
+}
+
+/* Africa: Moved up to almost touch Europe */
+.africa {
+  width: 42px; 
+  height: 55px; 
+  top: 38%; /* Adjusted to sit just below Europe */
+  left: 48%; 
+  background: linear-gradient(to bottom, #4a7a4a 20%, #c4b896 80%);
+  clip-path: polygon(5% 10%, 95% 5%, 100% 30%, 70% 100%, 35% 95%, 0% 40%);
+  z-index: 3;
+}
+
+/* Asia: Connecting to the side of the larger Europe */
+.asia {
+  width: 71px; 
+  height: 50px; 
+  top: 10%; 
+  left: 55%; 
+  background: linear-gradient(to bottom, #2d5a2d, #4a7a4a);
+  clip-path: polygon(0% 50%, 20% 10%, 70% 0%, 100% 20%, 95% 70%, 75% 90%, 30% 95%);
+  z-index: 2;
+}
+
+/* AUSTRALIA - Adjusted for a wider Pacific gap */
+.australia {
+  width: 24px; 
+  height: 20px; 
+  top: 65%; 
+  left: 80%; /* Moved left to create a larger gap with South America */
+  background: #c4936f; /* Slightly desert-orange/tan */
+  /* More detailed polygon for the 'land down under' */
+  clip-path: polygon(
+    15% 15%, 40% 10%, 55% 25%, 85% 15%, 100% 40%, 
+    90% 85%, 60% 100%, 30% 95%, 15% 70%, 0% 40%
+  );
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.3));
+}
+
+/* --- THE FIXED POLES --- */
+.pole {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  width: 100%; /* Spans the whole width */
+  z-index: 5;
+  filter: blur(1px);
+}
+
+.north-pole {
+  top: -2px;
+  height: 12px;
+  clip-path: ellipse(50% 100% at 50% 0%); /* Curves with the top of the orb */
+}
+
+.south-pole {
+  bottom: -2px;
+  height: 15px;
+  clip-path: ellipse(50% 100% at 50% 100%); /* Curves with the bottom of the orb */
+}
+
+/* Swirling Clouds with realistic drift */
 .earth-clouds {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    /* Clouds over Pacific */
-    radial-gradient(ellipse 35px 14px at 18% 35%, rgba(255,255,255,0.5) 50%, transparent 50%),
-    radial-gradient(ellipse 28px 12px at 14% 52%, rgba(255,255,255,0.48) 50%, transparent 50%),
-    /* Clouds over Atlantic */
-    radial-gradient(ellipse 32px 15px at 42% 24%, rgba(255,255,255,0.52) 50%, transparent 50%),
-    radial-gradient(ellipse 26px 13px at 40% 46%, rgba(255,255,255,0.5) 50%, transparent 50%),
-    /* Clouds over Africa/Indian Ocean */
-    radial-gradient(ellipse 30px 14px at 62% 50%, rgba(255,255,255,0.48) 50%, transparent 50%),
-    /* Clouds over Asia/Pacific */
-    radial-gradient(ellipse 34px 16px at 80% 32%, rgba(255,255,255,0.5) 50%, transparent 50%),
-    radial-gradient(ellipse 28px 13px at 84% 56%, rgba(255,255,255,0.49) 50%, transparent 50%),
-    /* Tropical clouds */
-    radial-gradient(ellipse 24px 11px at 26% 48%, rgba(255,255,255,0.46) 50%, transparent 50%),
-    /* Arctic clouds */
-    radial-gradient(ellipse 30px 12px at 45% 14%, rgba(255,255,255,0.54) 50%, transparent 50%);
-  animation: drift 60s linear infinite;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  background-image: 
+    radial-gradient(ellipse 30px 10px at 20% 30%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(ellipse 40px 15px at 70% 60%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(ellipse 25px 8px at 50% 10%, rgba(255,255,255,0.2), transparent);
+  filter: blur(5px);
+  animation: atmosphere-swirl 30s linear infinite;
+  z-index: 6;
+  pointer-events: none;
 }
 
-@keyframes drift {
+/* The Sphere Mask (Hides continents on the "back" of the planet) */
+.earth-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* This creates a shadow at the edges so continents "disappear" into the darkness */
+  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.25) 0%, transparent 60%, rgba(0,0,0,0.5) 100%);
+  box-shadow: inset -15px -15px 30px rgba(0,0,0,0.7);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* --- ANIMATIONS --- */
+
+@keyframes earth-spin {
   from { transform: translateX(0); }
-  to { transform: translateX(10px); }
+  to { transform: translateX(-40%); } /* Cycles through one 100% map instance */
+}
+
+@keyframes atmosphere-swirl {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  to { transform: rotate(360deg) scale(1); }
 }
 
 /* Jupiter bands and Great Red Spot */
@@ -495,29 +677,18 @@ export default {
   box-shadow: inset -5px -5px 10px rgba(0,0,0,0.3);
 }
 
-/* Mars polar caps */
-.mars-polar-cap {
+.mars-cap {
   position: absolute;
-  background: radial-gradient(circle, #ffffff 30%, #f0f0f0 60%, transparent 100%);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
   border-radius: 50%;
-  opacity: 0.85;
+  opacity: 0.8;
+  filter: blur(2px);
+  z-index: 5; /* Sit on top of the rotating orb */
 }
-
-.mars-north {
-  width: 22px;
-  height: 22px;
-  top: 8%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.mars-south {
-  width: 26px;
-  height: 26px;
-  bottom: 6%;
-  left: 50%;
-  transform: translateX(-50%);
-}
+.mars-north { width: 30px; height: 10px; top: 15px; }
+.mars-south { width: 35px; height: 12px; bottom: 15px; }
 
 /* Neptune storm */
 .neptune-spot {
@@ -552,59 +723,68 @@ export default {
     );
 }
 
-/* Container for the ring system to handle the 3D tilt without black overlays */
-.saturn-ring-system, .uranus-ring-system {
+/* --- SATURN RINGS --- */
+.saturn-ring-system {
   position: absolute;
+  width: 300px; 
+  height: 300px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotateX(75deg) rotateY(-10deg);
+  transform: translate(-50%, -50%) rotateX(75deg);
   pointer-events: none;
-  z-index: 1; 
 }
 
-/* Uranus rings are tilted differently */
+.saturn-ring-system.back {
+  z-index: 1; /* Behind planet */
+  clip-path: inset(0 0 50% 0); /* Show only top half */
+}
+
+.saturn-ring-system.front {
+  z-index: 10; /* In front of planet */
+  clip-path: inset(50% 0 0 0); /* Show only bottom half */
+}
+
+.ring-dust {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border-style: solid;
+}
+
+.outer { width: 260px; height: 260px; border-width: 8px; border-color: rgba(200, 180, 150, 0.2); }
+.middle { width: 230px; height: 230px; border-width: 15px; border-color: rgba(220, 200, 170, 0.4); }
+.inner { width: 180px; height: 180px; border-width: 5px; border-color: rgba(160, 140, 110, 0.3); }
+
+/* --- URANUS RINGS (Vertical Tilt) --- */
 .uranus-ring-system {
-  transform: translate(-50%, -50%) rotateX(85deg) rotateZ(90deg);
-}
-
-/* Base style for all rings - using borders to keep the center transparent */
-.ring {
   position: absolute;
+  width: 220px;
+  height: 220px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotateY(80deg) rotateX(10deg);
+  pointer-events: none;
+}
+
+.uranus-ring-system.back {
+  z-index: 1;
+  clip-path: inset(0 50% 0 0); /* Show only left half (back) */
+}
+
+.uranus-ring-system.front {
+  z-index: 10;
+  clip-path: inset(0 0 0 50%); /* Show only right half (front) */
+}
+
+.uranus-ring {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(150, 200, 255, 0.3);
   border-radius: 50%;
-  background: transparent; 
+  box-shadow: 0 0 10px rgba(150, 200, 255, 0.1);
 }
 
-.outer-ring {
-  width: 210px;
-  height: 210px;
-  border: 8px solid rgba(200, 180, 150, 0.3);
-}
-
-.middle-ring {
-  width: 185px;
-  height: 185px;
-  border: 12px solid rgba(220, 200, 170, 0.6);
-}
-
-.inner-ring {
-  width: 145px;
-  height: 145px;
-  border: 4px solid rgba(160, 140, 110, 0.4);
-}
-
-.ring-thin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 160px;
-  height: 160px;
-  border: 2px solid rgba(150, 200, 255, 0.4);
-  border-radius: 50%;
-}
 
 .planet-title {
   display: flex;
@@ -632,6 +812,39 @@ export default {
   flex-direction: column;
   gap: 0.75rem;
   align-items: flex-end;
+}
+
+/* --- SURFACE TEXTURES --- */
+.planet-surface-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.striped-texture {
+  background: repeating-linear-gradient(
+    transparent,
+    rgba(0,0,0,0.3) 10px,
+    transparent 20px
+  );
+}
+
+.rocky-texture {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.gas-haze {
+  background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.4) 100%);
+}
+
+.planet-internal-shadow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(0,0,0,0.5) 100%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .map-btn, .like-btn, .rating-box {

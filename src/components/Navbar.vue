@@ -62,20 +62,22 @@
             </a>
             <ul v-if="selectedMenu === 'recommendations'" class="dropdown-menu">
               <li>
-                <router-link to="/all-recommendations" class="dropdown-item poppys-pick-highlight">Poppy's Pick</router-link>
+                <router-link to="/Layer1_Recommendations" class="dropdown-item"> Poppy’s Right Now</router-link>
               </li>
               <li>
-                <router-link to="/personal-recommendations" class="dropdown-item">Activity Suggestions</router-link>
+                <router-link to="Layer2_Recommendations" class="dropdown-item"> Poppy's Trend Booser </router-link>
               </li>
               <li>
-                <router-link to="/popular-by-users" class="dropdown-item">Community Populars</router-link>
+                <router-link to="/matrix-factorization" class="dropdown-item"> Poppy’s Familiar Picks </router-link>
               </li>
               <li>
-                <router-link to="/matrix-factorization" class="dropdown-item">Category Deep Dive</router-link>
+                <router-link to="/hidden-matches" class="dropdown-item"> Poppy’s Hidden Matches </router-link>
+              </li>
+              <li>
+                <router-link to="/all-recommendations" class="dropdown-item poppys-pick-highlight"> Poppy’s Pick ⭐ </router-link>
               </li>
             </ul>
           </li>
-
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'encyclopedia' }">
             <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('encyclopedia')">
               Encyclopedia 
