@@ -19,7 +19,16 @@ import User_Settings from '../views/User_Settings.vue';
 import Layer_1_Best_Right_Now from '../views/Layer_1_Best_Right_Now.vue';
 import Calender_Component from '../components/Celestial_Calender.vue';
 import Location_Component from '../components/Location_Component.vue';
-import Layer_2_Trending_Community from '../views/Layer_2_Trending_Community.vue';
+import Layer_2_Trend_Booster from '../views/Layer_2_Trend_Booster.vue';
+import Layer_3_Familiar_Picks from '../views/Layer_3_Familiar_Picks.vue';
+import Layer_4_Hidden_Matches from '../views/Layer_4_Hidden_Matches.vue';
+import Layer_5_Poppys_Pick from '../views/Layer_5_Poppys_Pick.vue';
+import Recommendation_Information from '../views/Recommendation_Information.vue';
+import Stargazing_Forecast from '../views/Stargazing_Forecast.vue';
+import Stargaze_Guide from '../views/Stargaze_Guide.vue';
+import Equipment_Guide from '../views/Equipment_Guide.vue';
+import Object_Identification from '../views/Identify_Your_Object.vue';
+import Tips_And_Tricks_Guide from '../views/Tips_And_Tricks_Guide.vue';
 
 // define your routes
 const routes = [
@@ -125,20 +134,102 @@ const routes = [
       {
         path: '/Layer2_Recommendations',   
         name: 'Layer 2 Recommendations',
-        component: Layer_2_Trending_Community,
+        component: Layer_2_Trend_Booster,
         children: [
           {
-            path: 'calendar', // Access via /Layer1_Recommendations/calendar
+            path: 'calendar', 
             name: 'Celestial Calendar',
             component: Calender_Component,
           },
           {
-            path: 'location', // Access via /Layer1_Recommendations/location
+            path: 'location', 
             name: 'Galactic GPS',
             component: Location_Component,
           }
         ]
       },
+      {
+        path: '/Layer3_Recommendations',   
+        name: 'Layer 3 Recommendations',
+        component: Layer_3_Familiar_Picks,
+        children: [
+          {
+            path: 'calendar', 
+            name: 'Celestial Calendar',
+            component: Calender_Component,
+          },
+          {
+            path: 'location', 
+            name: 'Galactic GPS',
+            component: Location_Component,
+          }
+        ]
+      },
+      {
+        path: '/Layer4_Recommendations',   
+        name: 'Layer 4 Recommendations',
+        component: Layer_4_Hidden_Matches,
+        children: [
+          {
+            path: 'calendar', 
+            name: 'Celestial Calendar',
+            component: Calender_Component,
+          },
+          {
+            path: 'location', 
+            name: 'Galactic GPS',
+            component: Location_Component,
+          }
+        ]
+      },
+      {
+        path: '/Layer5_Recommendations',   
+        name: 'Layer 5 Recommendations',
+        component: Layer_5_Poppys_Pick,
+        children: [
+          {
+            path: 'calendar', 
+            name: 'Celestial Calendar',
+            component: Calender_Component,
+          },
+          {
+            path: 'location', 
+            name: 'Galactic GPS',
+            component: Location_Component,
+          }
+        ]
+      },
+      {
+        path: '/engine-details',
+        name: "Recommendation Info",
+        component: Recommendation_Information
+      },
+      {
+        path: '/stargazing-forecast',
+        name: "Stargazing Forecast",
+        component: Stargazing_Forecast
+      },
+      {
+        path: '/stargazing-guide',
+        name: "Stargazing Guide",
+        component: Stargaze_Guide
+      },
+      {
+        path: '/equipment-guide',
+        name: "Equipment Guide",
+        component: Equipment_Guide
+      },
+      {
+        path: '/object-identification',
+        name: "Object Identification",
+        component: Object_Identification
+      },
+      {
+        path: '/tips_and_tricks',
+        name: "Tips And Tricks",
+        component: Tips_And_Tricks_Guide
+      },
+      
     ],
   },
   // you can add more routes here later (e.g., path: 'about', component: AboutPage)
