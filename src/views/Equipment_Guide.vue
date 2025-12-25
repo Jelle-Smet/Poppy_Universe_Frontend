@@ -45,7 +45,7 @@
             <h4 class="meta-label">Other Modules</h4>
             <div class="resource-box">
               <router-link to="/stargazing-guide" class="guide-link">How to Stargaze</router-link>
-              <router-link to="/Poppy's-Tips-&-Tricks" class="guide-link">Tips & Tricks</router-link>
+              <router-link to="/tips_and_tricks" class="guide-link">Tips & Tricks</router-link>
             </div>
           </div>
         </div>

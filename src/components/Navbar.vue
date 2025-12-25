@@ -104,19 +104,19 @@
             </a>
             <ul v-if="selectedMenu === 'objects'" class="dropdown-menu">
               <li>
-                <router-link to="/all-spots" class="dropdown-item">All Objects</router-link>
+                <router-link to="/all_objects" class="dropdown-item">All Objects</router-link>
               </li>
               <li>
                 <router-link to="/top-booked" class="dropdown-item">Popular Objects</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/categories">Categories</router-link>
+                <router-link to="/object_category" class="dropdown-item" >Categories</router-link>
               </li>
                <li>
                 <router-link class="dropdown-item" to="/owner-spots">Owners</router-link>
               </li>
               <li>
-                <router-link to="/Search-Spots" class="dropdown-item">Search Objects</router-link>
+                <router-link to="/deep_space_scanner" class="dropdown-item">Space Scanner</router-link>
               </li>
             </ul>
           </li>
@@ -137,7 +137,11 @@
               </li>
             </ul>
           </li>
-
+          <li class="nav-item category claim-star-tab">
+            <router-link to="/star_catalog" class="nav-link highlight-text">
+              Adopt a Star
+            </router-link>
+          </li>
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'poppys-guide' }">
             <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('poppys-guide')">
               Poppy's Guide
@@ -177,9 +181,9 @@
                 </li>
             </ul>
           </li>
-
+          
           <li class="nav-item category">
-            <router-link to="/Contact" class="nav-link">Contact</router-link>
+            <router-link to="/contact_hub" class="nav-link">Contact Hub</router-link>
           </li>
         </div>
         <a class="extra space" href="#">

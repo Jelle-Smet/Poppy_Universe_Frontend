@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="glass-header">
-      <h1>🌌 Galactic Dashboard</h1>
+      <h1>🌌 My Favorite Galactic Objects</h1>
       <p class="intro">Manage and compare your discovered celestial collection.</p>
 
       <div class="search-and-filters">

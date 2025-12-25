@@ -29,6 +29,12 @@ import Stargaze_Guide from '../views/Stargaze_Guide.vue';
 import Equipment_Guide from '../views/Equipment_Guide.vue';
 import Object_Identification from '../views/Identify_Your_Object.vue';
 import Tips_And_Tricks_Guide from '../views/Tips_And_Tricks_Guide.vue';
+import All_Objects from '../views/All_Objects.vue';
+import Object_Category from '../views/Object_Category.vue';
+import Deep_Space_Scanner from '../views/Deep_Space_Scanner.vue';
+import Star_Catalog from '../views/Star_Catalog.vue';
+import Purchase_Star from '../views/Purchase_Star.vue';
+import Contact_Hub from '../views/Contact_Hub.vue';
 
 // define your routes
 const routes = [
@@ -229,6 +235,37 @@ const routes = [
         name: "Tips And Tricks",
         component: Tips_And_Tricks_Guide
       },
+      {
+        path: '/all_objects',
+        name: "All Objects",
+        component: All_Objects
+      },
+      {
+        path: '/object_category',
+        name: "Object Category",
+        component: Object_Category
+      },
+      {
+        path: '/deep_space_scanner',
+        name: "Deep Space Scanner",
+        component: Deep_Space_Scanner
+      },
+      {
+        path: '/star_catalog',
+        name: "Star Catalog",
+        component: Star_Catalog
+      },
+      {
+        path: '/purchase_star/:id',   
+        name: 'Purchase Star',
+        component: Purchase_Star,
+        props: true           
+      },
+      {
+        path: '/contact_hub',   
+        name: 'Contact Hub',
+        component: Contact_Hub,
+      },
       
     ],
   },
@@ -239,6 +276,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  // Add this part:
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      // If they hit the 'back' button, take them to where they were
+      return savedPosition;
+    } else {
+      // For new links, always go to the top
+      return { top: 0 };
+    }
+  },
 });
+
 
 export default router;

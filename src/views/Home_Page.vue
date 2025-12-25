@@ -154,9 +154,9 @@
           <section class="quick-links cosmic-panel small-panel">
             <h2>🔗 Quick Jumps</h2>
             <ul class="link-list">
-              <li><a href="/about" class="link-glow">About Poppy Universe</a></li>
-              <li><a href="/explore" class="link-glow">Start Exploring</a></li>
-              <li><a href="/System-Status" class="link-glow">System Status Check &rarr;</a></li>
+              <li><router-link to="/about" class="link-glow">About Poppy Universe</router-link></li>
+              <li><router-link to="/all_objects" class="link-glow">Start Exploring</router-link></li>
+              <li><router-link to="/System-Status" class="link-glow">System Status Check &rarr; </router-link></li>
               <li><a href="https://github.com/your-repo-link" target="_blank" class="link-glow">Source Code (GitHub)</a></li>
             </ul>
           </section>
