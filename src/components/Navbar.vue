@@ -48,9 +48,6 @@
                 <router-link to="/Liked_Objects" class="dropdown-item">My Favorites</router-link>
               </li>
               <li>
-                <router-link to="/Notifications" class="dropdown-item">Notifications & Alerts</router-link>
-              </li>
-              <li>
                 <router-link to="/User_Settings" class="dropdown-item">Settings</router-link>
               </li>
             </ul>
@@ -127,7 +124,7 @@
             </a>
             <ul v-if="selectedMenu === 'exploration'" class="dropdown-menu">
               <li>
-                <router-link to="/interactive-map" class="dropdown-item">Interactive Sky Map</router-link>
+                <router-link to="/comparison_lab" class="dropdown-item">Comparison Lab</router-link>
               </li>
               <li>
                 <router-link to="/stargazing-forecast" class="dropdown-item">Stargazing Forecast</router-link>

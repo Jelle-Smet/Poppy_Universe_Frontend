@@ -20,7 +20,13 @@
       </div>
 
       <div class="star-buttons">
-        <button class="map-btn" @click="viewOnMap">View on Interactive Map 🌌</button>
+        <router-link 
+          :to="{ path: '/comparison_lab', query: { type: 'Star', id: star.Star_ID } }" 
+          class="map-btn"
+        >
+          Compare this Star 🔬
+        </router-link>
+
         <button class="like-btn" @click="toggleLike">
           {{ isLiked ? '💔 Unlike this star' : '⭐ Like this star ⭐' }}
         </button>
@@ -74,6 +80,7 @@ export default {
     const router = useRouter();
     const isLiked = ref(false);
     const ratingMessage = ref('');
+    const userRating = ref(0);
     const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
@@ -109,7 +116,6 @@ export default {
       let r, g, b;
 
       if (T) {
-        // Temperature-based color
         if (T >= 10000) { r = 155; g = 180; b = 255; }
         else if (T >= 7500) { r = 170; g = 190; b = 255; }
         else if (T >= 6000) { r = 200; g = 215; b = 255; }
@@ -118,14 +124,12 @@ export default {
         else if (T >= 3500) { r = 255; g = 210; b = 160; }
         else { r = 255; g = 204; b = 111; }
 
-        // BP-RP color correction (only on detail page for accuracy)
         if (star.value.Star_BPMag && star.value.Star_RPMag) {
           const bv = star.value.Star_BPMag - star.value.Star_RPMag;
           r = Math.min(255, r + bv * 10);
           g = Math.min(255, g + bv * 5);
         }
       } else {
-        // Fallback to spectral type
         switch (star.value.Star_SpType) {
           case 'O': return '#9bb0ff';
           case 'B': return '#aabfff';
@@ -181,7 +185,6 @@ export default {
       return star.value?.User_Name || 'Missing';
     });
 
-    const userRating = ref(0);
     const setRating = (n) => {
       userRating.value = n;
     };
@@ -225,10 +228,6 @@ export default {
       }
     };
 
-    const viewOnMap = () => {
-      router.push(`/interactive-map/${star.value.Star_ID}`);
-    };
-
     return {
       star,
       isLiked,
@@ -236,7 +235,6 @@ export default {
       setRating,
       submitRating,
       toggleLike,
-      viewOnMap,
       starColorRGB,
       starGlow,
       starData,
@@ -248,7 +246,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .star-detail-container {

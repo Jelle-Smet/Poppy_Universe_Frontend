@@ -44,7 +44,13 @@
       </div>
 
       <div class="moon-buttons">
-        <button class="map-btn" @click="viewOnMap">View on Interactive Map 🌌</button>
+        <router-link 
+          :to="{ path: '/comparison_lab', query: { type: 'Moon', id: moon.Moon_ID } }" 
+          class="map-btn"
+        >
+          Compare this Moon 🔬
+        </router-link>
+
         <button class="like-btn" @click="toggleLike">
           {{ isLiked ? '💔 Unlike this moon' : '🌙 Like this moon 🌙' }}
         </button>
@@ -121,7 +127,6 @@ export default {
 
     const hasFeature = (feature) => {
         if (!moon.value?.Moon_Surface_Features) return false;
-        // Check for composition keywords as well for better visual variety
         return moon.value.Moon_Surface_Features.includes(feature) || 
                moon.value.Moon_Composition?.includes(feature);
     };
@@ -144,8 +149,7 @@ export default {
 
       const bg = colorMap[moon.value.Moon_Color] || 'radial-gradient(circle at 30% 30%, #ccc, #888, #444)';
       
-      // Glow intensity based on surface features (Ice reflects more, Dark Grey less)
-      const isIce = moon.value.Moon_Composition?.includes('Ice') || moon.value.Moon_Color.includes('White');
+      const isIce = moon.value.Moon_Composition?.includes('Ice') || (moon.value.Moon_Color && moon.value.Moon_Color.includes('White'));
       const isVolcanic = moon.value.Moon_Surface_Features?.includes('Volcanoes');
       
       let glow = 'rgba(255, 255, 255, 0.1)';
@@ -216,11 +220,9 @@ export default {
       } catch (err) { console.error(err); }
     };
 
-    const viewOnMap = () => router.push(`/interactive-map/moon/${moon.value.Moon_ID}`);
-
     return { 
       moon, isLiked, userRating, setRating, submitRating, toggleLike, 
-      viewOnMap, moonStyle, moonData, formatValue, ratingMessage, 
+      moonStyle, moonData, formatValue, ratingMessage, 
       hasFeature, goToParentPlanet 
     };
   },

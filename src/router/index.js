@@ -35,6 +35,7 @@ import Deep_Space_Scanner from '../views/Deep_Space_Scanner.vue';
 import Star_Catalog from '../views/Star_Catalog.vue';
 import Purchase_Star from '../views/Purchase_Star.vue';
 import Contact_Hub from '../views/Contact_Hub.vue';
+import Comparison_Lab from '../views/Comparison_Lab.vue';
 
 // define your routes
 const routes = [
@@ -265,6 +266,12 @@ const routes = [
         path: '/contact_hub',   
         name: 'Contact Hub',
         component: Contact_Hub,
+      },
+
+      {
+        path: '/comparison_lab',   
+        name: 'Comparison Lab',
+        component: Comparison_Lab,
       },
       
     ],

@@ -57,28 +57,28 @@
             </template>
 
             <template v-if="planet.Planet_ID === 7">
-            <div class="saturn-ring-system back">
-              <div class="ring-dust outer"></div>
-              <div class="ring-dust middle"></div>
-              <div class="ring-dust inner"></div>
-            </div>
+              <div class="saturn-ring-system back">
+                <div class="ring-dust outer"></div>
+                <div class="ring-dust middle"></div>
+                <div class="ring-dust inner"></div>
+              </div>
 
-            <div class="saturn-ring-system front">
-              <div class="ring-dust outer"></div>
-              <div class="ring-dust middle"></div>
-              <div class="ring-dust inner"></div>
-            </div>
-          </template>
+              <div class="saturn-ring-system front">
+                <div class="ring-dust outer"></div>
+                <div class="ring-dust middle"></div>
+                <div class="ring-dust inner"></div>
+              </div>
+            </template>
 
-          <template v-if="planet.Planet_ID === 8">
-            <div class="uranus-ring-system back">
-              <div class="uranus-ring"></div>
-            </div>
+            <template v-if="planet.Planet_ID === 8">
+              <div class="uranus-ring-system back">
+                <div class="uranus-ring"></div>
+              </div>
 
-            <div class="uranus-ring-system front">
-              <div class="uranus-ring"></div>
-            </div>
-          </template>
+              <div class="uranus-ring-system front">
+                <div class="uranus-ring"></div>
+              </div>
+            </template>
           </div>
         </div>
 
@@ -91,7 +91,13 @@
       </div>
 
       <div class="planet-buttons">
-        <button class="map-btn" @click="viewOnMap">View on Interactive Map 🪐</button>
+        <router-link 
+          :to="{ path: '/comparison_lab', query: { type: 'Planet', id: planet.Planet_ID } }" 
+          class="map-btn"
+        >
+          Compare this Planet 🔬
+        </router-link>
+
         <button class="like-btn" @click="toggleLike">
           {{ isLiked ? '💔 Unlike this planet' : '🌍 Like this planet 🌍' }}
         </button>
@@ -145,6 +151,7 @@ export default {
     const router = useRouter();
     const isLiked = ref(false);
     const ratingMessage = ref('');
+    const userRating = ref(0);
     const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
@@ -174,11 +181,9 @@ export default {
         return val ? 'Yes' : 'No';
       }
       if (typeof val === 'number') {
-        // Handle very large numbers with scientific notation
         if (Math.abs(val) >= 1e6 || (Math.abs(val) < 0.01 && val !== 0)) {
           return val.toExponential(2);
         }
-        // Format large numbers with commas
         if (Math.abs(val) >= 1000) {
           return val.toLocaleString('en-US', { maximumFractionDigits: 2 });
         }
@@ -214,7 +219,7 @@ export default {
       if (planet.value.Planet_ID === 4) {
             return {
                 background: colorMap[4],
-                animation: 'rotate 180s linear infinite' // Earth rotates slower than your 120s default
+                animation: 'rotate 180s linear infinite' 
             };
         }
 
@@ -222,12 +227,13 @@ export default {
         background: colorMap[planet.value.Planet_ID] || '#ffffff'
       };
     });
+
     const getPlanetTexture = (p) => {
       if (!p) return '';
       const id = p.Planet_ID;
-      if ([6, 7].includes(id)) return 'striped-texture'; // Jupiter, Saturn
-      if ([2, 3, 5, 10, 11, 12, 14].includes(id)) return 'rocky-texture'; // Mercury, Venus, Mars, Dwarfs
-      if ([8, 9].includes(id)) return 'gas-haze'; // Uranus, Neptune
+      if ([6, 7].includes(id)) return 'striped-texture'; 
+      if ([2, 3, 5, 10, 11, 12, 14].includes(id)) return 'rocky-texture'; 
+      if ([8, 9].includes(id)) return 'gas-haze'; 
       return '';
     };
 
@@ -254,7 +260,6 @@ export default {
       };
     });
 
-    const userRating = ref(0);
     const setRating = (n) => {
       userRating.value = n;
     };
@@ -298,10 +303,6 @@ export default {
       }
     };
 
-    const viewOnMap = () => {
-      router.push(`/interactive-map/planet/${planet.value.Planet_ID}`);
-    };
-
     return {
       planet,
       isLiked,
@@ -309,7 +310,6 @@ export default {
       setRating,
       submitRating,
       toggleLike,
-      viewOnMap,
       planetClass,
       planetStyle,
       getPlanetTexture,

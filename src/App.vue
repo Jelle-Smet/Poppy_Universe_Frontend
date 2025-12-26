@@ -1,6 +1,5 @@
 <template>
   <div id="app-container">
-    <Nav />
 
     <main class="content-area">
       <router-view />
