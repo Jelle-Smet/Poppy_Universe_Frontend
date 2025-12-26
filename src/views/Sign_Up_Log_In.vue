@@ -98,6 +98,7 @@ export default {
     const currentForm = ref('login');
     const errorMessage = ref('');
     const successMessage = ref('');
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const registerForm = ref({
       firstName: '',
@@ -144,7 +145,7 @@ export default {
       }
 
       try {
-        const response = await fetch('http://localhost:5000/api/signup', {
+        const response = await fetch(`${API_BASE_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -182,7 +183,7 @@ export default {
       clearMessages();
 
       try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch(`${API_BASE_URL}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

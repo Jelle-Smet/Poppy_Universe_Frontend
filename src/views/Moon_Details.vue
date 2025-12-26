@@ -97,18 +97,20 @@ export default {
     const ratingMessage = ref('');
     const userRating = ref(0);
 
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
+
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
     const fetchMoon = async () => {
       try {
         const moonId = parseInt(window.location.pathname.split('/')[2]);
-        const response = await axiosWithAuth.get(`/api/moons/${moonId}`);
+        const response = await axiosWithAuth.get(`/moons/${moonId}`);
         moon.value = response.data.moon;
 
-        const likeStatus = await axiosWithAuth.get(`/api/likes/status?type=Moon&id=${moonId}`);
+        const likeStatus = await axiosWithAuth.get(`/likes/status?type=Moon&id=${moonId}`);
         isLiked.value = likeStatus.data.isLiked;
       } catch (err) {
         console.error('Failed to fetch moon:', err);
@@ -186,7 +188,7 @@ export default {
 
     const submitRating = async () => {
       try {
-        await axiosWithAuth.post('/api/interactions/rate', { 
+        await axiosWithAuth.post('/interactions/rate', { 
           objectType: 'Moon', 
           objectId: moon.value.Moon_ID, 
           rating: userRating.value 
@@ -198,7 +200,7 @@ export default {
 
     const toggleLike = async () => {
       try {
-        const res = await axiosWithAuth.post('/api/likes/toggle', { 
+        const res = await axiosWithAuth.post('/likes/toggle', { 
           objectType: 'Moon', 
           objectId: moon.value.Moon_ID 
         });
@@ -206,7 +208,7 @@ export default {
         isLiked.value = res.data.liked;
 
          if (isLiked.value) {
-          await axiosWithAuth.post('/api/interactions/like', {
+          await axiosWithAuth.post('/interactions/like', {
             objectType: 'Moon',
             objectId: moon.value.Moon_ID
           });

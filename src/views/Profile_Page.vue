@@ -45,6 +45,7 @@ import { useRouter } from 'vue-router';
 export default {
   setup() {
     const router = useRouter();
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const user = ref({
       username: '',
@@ -63,7 +64,7 @@ export default {
       if (!token) return;
 
       try {
-        const res = await fetch('http://localhost:5000/api/account', {
+        const res = await fetch(`${API_BASE_URL}/account`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

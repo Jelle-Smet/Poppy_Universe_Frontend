@@ -93,16 +93,17 @@ export default {
     const viewMode = ref('LIKE'); // Matches your DB Interaction_Type
     const selectedTypes = ref(['stars', 'planets', 'moons']);
     const rawData = ref({ stars: [], planets: [], moons: [] });
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
     const fetchInteractions = async () => {
       loading.value = true;
       try {
-        const res = await axiosWithAuth.get('/api/interactions/user-interactions');
+        const res = await axiosWithAuth.get('/interactions/user-interactions');
         rawData.value = res.data;
       } catch (err) {
         console.error("Error fetching interactions:", err);

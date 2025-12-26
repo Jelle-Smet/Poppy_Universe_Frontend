@@ -159,15 +159,16 @@ export default {
     const agreed = ref(false);
     const route = useRoute();
     const router = useRouter();
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
     onMounted(async () => {
       try {
-        const response = await axiosWithAuth.get(`/api/stars/${route.params.id}`);
+        const response = await axiosWithAuth.get(`/stars/${route.params.id}`);
         star.value = response.data.star || response.data;
       } catch (err) {
         console.error('Fetch failed:', err);
@@ -213,7 +214,7 @@ export default {
     const completePurchase = async () => {
       loading.value = true;
       try {
-        await axiosWithAuth.post(`/api/stars/purchase/${star.value.Star_ID}`, {});
+        await axiosWithAuth.post(`/stars/purchase/${star.value.Star_ID}`, {});
         showModal.value = false;
         showSuccessModal.value = true;
       } catch (err) {

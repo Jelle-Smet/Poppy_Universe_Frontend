@@ -69,9 +69,10 @@ export default {
     const offset = ref(0);
     const loading = ref(false);
     const noMore = ref(false);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
@@ -80,7 +81,7 @@ export default {
       loading.value = true;
 
       try {
-        const res = await axiosWithAuth.get('/api/planets/encyclopedia', {
+        const res = await axiosWithAuth.get('/planets/encyclopedia', {
           params: { limit, offset: offset.value },
         });
 

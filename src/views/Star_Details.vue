@@ -74,19 +74,20 @@ export default {
     const router = useRouter();
     const isLiked = ref(false);
     const ratingMessage = ref('');
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
     const fetchStar = async () => {
       try {
         const starId = parseInt(window.location.pathname.split('/')[2]);
-        const response = await axiosWithAuth.get(`/api/stars/${starId}`);
+        const response = await axiosWithAuth.get(`/stars/${starId}`);
         star.value = response.data.star;
 
-        const likeStatus = await axiosWithAuth.get(`/api/likes/status?type=Star&id=${starId}`);
+        const likeStatus = await axiosWithAuth.get(`/likes/status?type=Star&id=${starId}`);
         isLiked.value = likeStatus.data.isLiked;
 
       } catch (err) {
@@ -187,7 +188,7 @@ export default {
 
     const submitRating = async () => {
       try {
-        await axiosWithAuth.post('/api/interactions/rate', {
+        await axiosWithAuth.post('/interactions/rate', {
           objectType: 'Star',
           objectId: star.value.Star_ID,
           rating: userRating.value
@@ -206,14 +207,14 @@ export default {
     const toggleLike = async () => {
       if (!star.value) return;
       try {
-        const likeResp = await axiosWithAuth.post('/api/likes/toggle', {
+        const likeResp = await axiosWithAuth.post('/likes/toggle', {
           objectType: 'Star',
           objectId: star.value.Star_ID
         });
         isLiked.value = likeResp.data.liked;
 
         if (isLiked.value) {
-          await axiosWithAuth.post('/api/interactions/like', {
+          await axiosWithAuth.post('/interactions/like', {
             objectType: 'Star',
             objectId: star.value.Star_ID
           });

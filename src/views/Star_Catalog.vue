@@ -79,9 +79,10 @@ export default {
     const offset = ref(0);
     const loading = ref(false);
     const noMore = ref(false);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
@@ -91,7 +92,7 @@ export default {
       if (loading.value || noMore.value) return;
       loading.value = true;
       try {
-        const res = await axiosWithAuth.get('/api/stars/encyclopedia', {
+        const res = await axiosWithAuth.get('/stars/encyclopedia', {
           params: { limit, offset: offset.value, random: true },
         });
 

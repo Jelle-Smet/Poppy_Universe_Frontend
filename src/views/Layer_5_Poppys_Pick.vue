@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="glass-header">
       <div class="header-main-content">
-            <h1 class="main-glow-title">Poppy's Rank Fusion Core</h1>
+            <h1 class="main-glow-title">Poppy's Pick</h1>
             <div class="layer-badge secondary">LAYER 5 — GENETIC RANK FUSION</div>
         </div>
 
@@ -223,8 +223,10 @@ export default {
     const showCalendar = ref(false);
     const showLocation = ref(false);
 
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
+
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
@@ -237,7 +239,7 @@ export default {
             observationTime: observationTime.value.toISOString()
             };
 
-            const res = await axiosWithAuth.post('/api/engine/run-l1-l5', payload); // ✅ Fixed endpoint
+            const res = await axiosWithAuth.post('/engine/run-l1-l5', payload); // ✅ Fixed endpoint
             
             if (res.data.success && res.data.results) {
             const data = res.data.results;

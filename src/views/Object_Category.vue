@@ -138,11 +138,12 @@ const selectedTypes = ref(['Stars', 'Planets', 'Moons']);
 const activeCategories = ref([]); 
 const poolData = ref({ Stars: [], Planets: [], Moons: [] });
 const visibleLimit = ref(40);
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const fetchPool = async () => {
   try {
     const token = localStorage.getItem('authToken');
-    const res = await axios.get('http://localhost:5000/api/object_scanner/pool', {
+    const res = await axios.get(`${API_BASE_URL}/object_scanner/pool` , {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.data.success) {

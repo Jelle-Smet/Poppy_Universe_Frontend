@@ -473,7 +473,7 @@ import {
   Search, Sparkles, Target, Eye, Palette, 
   Ruler, Thermometer, Wind 
 } from 'lucide-vue-next';
-
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const activeSection = ref('basic');
 const scanning = ref(false);
 const result = ref(null);
@@ -512,7 +512,7 @@ const fetchCelestialPool = async () => {
     const token = localStorage.getItem('authToken');
     
     // 2. Add the headers object to your fetch call
-    const response = await fetch('http://localhost:5000/api/object_scanner/pool', {
+    const response = await fetch(`${API_BASE_URL}/object_scanner/pool` , {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

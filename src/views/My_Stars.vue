@@ -47,6 +47,7 @@ export default {
   setup() {
     const stars = ref([]);
     const router = useRouter();
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const starColor = (starOrType) => {
       if (typeof starOrType === 'object' && starOrType !== null) {
@@ -95,7 +96,7 @@ export default {
         const token = localStorage.getItem('authToken');
         if (!token) return;
 
-        const res = await fetch('http://localhost:5000/api/stars/mystars', {
+        const res = await fetch(`${API_BASE_URL}/stars/mystars` , {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -117,6 +117,7 @@ const loading = ref(true);
 const activeMode = ref('Stars');
 const visibleLimit = ref(20);
 const poolData = ref({ Stars: [], Planets: [], Moons: [] });
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 // Your color mappings
 const PLANET_MAP = { 'Grey': '#A0A0A0', 'Blue-Green-Brown-White': '#6699CC', 'Red-Brown-Tan': '#C1440E', 'DEFAULT': '#CCCCCC' };
@@ -169,12 +170,13 @@ const hasMore = computed(() => visibleLimit.value < filteredResults.value.length
 const fetchPool = async () => {
   try {
     const token = localStorage.getItem('authToken');
-    const res = await axios.get('http://localhost:5000/api/object_scanner/pool', {
+    const res = await axios.get(`${API_BASE_URL}/object_scanner/pool`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     poolData.value = res.data.data;
   } finally { loading.value = false; }
 };
+
 
 const getTrackStyle = (f) => {
   const range = f.max - f.min;

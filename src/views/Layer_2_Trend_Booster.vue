@@ -212,8 +212,10 @@ export default {
     const showCalendar = ref(false);
     const showLocation = ref(false);
 
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
+
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
@@ -226,7 +228,7 @@ export default {
           observationTime: observationTime.value.toISOString()
         };
 
-        const res = await axiosWithAuth.post('/api/engine/run-l1-l2', payload); 
+        const res = await axiosWithAuth.post('/engine/run-l1-l2', payload); 
         
         if (res.data.success && res.data.results) {
           const data = res.data.results;

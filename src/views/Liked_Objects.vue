@@ -85,14 +85,16 @@ export default {
     const selectedTypes = ref(['stars', 'planets', 'moons']);
     const likedData = ref({ stars: [], planets: [], moons: [] });
 
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
+
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
     const fetchLikes = async () => {
       try {
-        const res = await axiosWithAuth.get('/api/likes/user-likes');
+        const res = await axiosWithAuth.get('/likes/user-likes');
         likedData.value = res.data;
       } catch (err) { console.error(err); } 
       finally { loading.value = false; }

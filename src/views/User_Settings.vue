@@ -80,6 +80,7 @@ export default {
     const message = ref('');
     const messageType = ref('');
     const confirmPassword = ref(''); // New state for confirmation
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     
     const form = ref({
       User_FN: '',
@@ -91,13 +92,13 @@ export default {
     });
 
     const axiosWithAuth = axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: API_BASE_URL,
       headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
     });
 
     const fetchCurrentData = async () => {
       try {
-        const res = await axiosWithAuth.get('/api/account');
+        const res = await axiosWithAuth.get('/account');
         form.value.User_FN = res.data.firstName;
         form.value.User_LN = res.data.lastName;
         form.value.User_Name = res.data.username;
@@ -133,7 +134,7 @@ export default {
         const payload = { ...form.value };
         if (!payload.User_Password) delete payload.User_Password;
 
-        const res = await axiosWithAuth.put('/api/update-profile', payload);
+        const res = await axiosWithAuth.put('/update-profile', payload);
         message.value = res.data.message;
         messageType.value = "success";
         
