@@ -92,7 +92,9 @@
 
         try {
             // Set a 5-second timeout for the request
-            const response = await fetch(API_BASE_URL, { signal: AbortSignal.timeout(5000) }); 
+            const response = await fetch(`${API_BASE_URL}/status`, { 
+                signal: AbortSignal.timeout(5000) 
+            });
             
             if (response.ok) {
                 const data = await response.json(); 
