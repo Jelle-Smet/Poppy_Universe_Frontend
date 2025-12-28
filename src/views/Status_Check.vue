@@ -13,7 +13,7 @@
             Last Checked: <span class="meta-value">{{ lastChecked || 'N/A' }}</span>
         </p>
         <p class="backend-url-note">
-            Target Endpoint: <span class="url-glow">{{ BACKEND_URL }}</span>
+            Target Endpoint: <span class="url-glow">{{ API_BASE_URL }}</span>
         </p>
       </div>
 
@@ -67,9 +67,7 @@
 
 <script setup>
     import { ref, onMounted } from 'vue';
-
-    // The URL for the status check. Adjust this if your actual API endpoint is different.
-    const BACKEND_URL = 'http://localhost:5000/status'; 
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const isLoaded = ref(false);
     const lastChecked = ref(null);
@@ -94,7 +92,7 @@
 
         try {
             // Set a 5-second timeout for the request
-            const response = await fetch(BACKEND_URL, { signal: AbortSignal.timeout(5000) }); 
+            const response = await fetch(API_BASE_URL, { signal: AbortSignal.timeout(5000) }); 
             
             if (response.ok) {
                 const data = await response.json(); 
