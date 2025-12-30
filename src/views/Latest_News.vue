@@ -1,31 +1,26 @@
 <template>
   <div class="news-container">
-    <!-- Subtle Starfield -->
     <canvas id="news-starfield"></canvas>
 
-    <!-- Page Header -->
     <h1>Latest News - Poppy Universe</h1>
     <p>
       Stay updated with all the cosmic news! From new features to stellar events, we’ve got a lot to share.
     </p>
 
-    <!-- Download Button -->
     <div class="download-container">
-      <a href="../../Public/Text_Files/News/Latest_News.pdf" download="Latest_News.pdf" class="download-link">
+      <a href="/Text_Files/News/Latest_News.pdf" download="Latest_News.pdf" class="download-link">
         Download Latest News
       </a>
     </div>
 
     <hr class="divider" />
 
-    <!-- News Section -->
     <div v-if="loading" class="loading-message">🌌 Loading news...</div>
     <div v-else>
       <div v-if="newsItems.length === 0" class="no-news-message">
         No news available at the moment.
       </div>
 
-      <!-- Flip cards -->
       <div class="cards-grid">
         <div 
           v-for="(item, index) in newsItems" 
@@ -46,7 +41,7 @@
 
     <hr class="divider" />
 
-    <router-link to="/Interactive-Map" class="cta-message">Start Exploring</router-link>
+    <router-link to="/all_objects" class="cta-message">Start Exploring</router-link>
   </div>
 </template>
 
@@ -61,23 +56,22 @@ export default {
 
     const fetchNews = async () => {
       try {
-        const response = await fetch('/Public/Text_Files/News/Latest_News.txt');
+        // Fixed Path: Used root / instead of /Public/
+        // When deployed, the contents of the public folder are at the root
+        const response = await fetch('/Text_Files/News/Latest_News.txt');
         if (!response.ok) throw new Error('Failed to load news.');
         const text = await response.text();
 
-        // Split the text by single line breaks and filter out empty lines
         const lines = text.split('\n').filter(l => l.trim() !== '');
         const items = [];
         let currentItem = null;
 
         lines.forEach(line => {
-          // Match the title line with emoji + bold
           const titleMatch = line.match(/^(🌟|🛸|🌌|💫|🎉|🚀|🌐)\s+\*\*(.+)\*\*/);
           if (titleMatch) {
             if (currentItem) items.push(currentItem);
             currentItem = { title: titleMatch[0], content: '' };
           } else if (currentItem) {
-            // Append content lines with a space
             currentItem.content += line + ' ';
           }
         });
@@ -100,8 +94,12 @@ export default {
       const canvas = document.getElementById('news-starfield');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      
+      const setCanvasSize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      setCanvasSize();
 
       const stars = Array.from({ length: 80 }, () => ({
         x: Math.random() * canvas.width,
@@ -127,10 +125,7 @@ export default {
       };
       animate();
 
-      window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
+      window.addEventListener('resize', setCanvasSize);
     };
 
     onMounted(() => {

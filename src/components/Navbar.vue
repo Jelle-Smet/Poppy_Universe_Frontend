@@ -25,7 +25,7 @@
                 <router-link to="/System-Status" class="dropdown-item"> Status </router-link>
               </li>
               <li>
-                <router-link to="/More" class="dropdown-item">More</router-link>
+                <router-link to="/more" class="dropdown-item">More</router-link>
               </li>
             </ul>
           </li>
@@ -110,7 +110,7 @@
                 <router-link to="/object_category" class="dropdown-item" >Categories</router-link>
               </li>
                <li>
-                <router-link class="dropdown-item" to="/owner-spots">Owners</router-link>
+                <router-link to="owned_stars" class="dropdown-item" >Owners</router-link>
               </li>
               <li>
                 <router-link to="/deep_space_scanner" class="dropdown-item">Space Scanner</router-link>
@@ -162,20 +162,17 @@
             </a>
             <ul v-if="selectedMenu === 'about-us'" class="dropdown-menu">
               <li>
-                <router-link to="/Our_Story" class="dropdown-item">Our Story</router-link>
+                <router-link to="/our_story" class="dropdown-item">Our Story</router-link>
               </li>
               <li>
-                <router-link to="/Official-Partners" class="dropdown-item">Official Partners</router-link>
+                <router-link to="/Official_Partners" class="dropdown-item">Official Partners</router-link>
               </li>
               <li>
-                <router-link to="/privacy-policy" class="dropdown-item">Privacy Policy</router-link>
+                <router-link to="/privacy_policy" class="dropdown-item">Privacy Policy</router-link>
               </li>
               <li>
-                <router-link to="/terms-and-conditions" class="dropdown-item">Terms & Conditions</router-link>
+                <router-link to="/terms_and_conditions" class="dropdown-item">Terms & Conditions</router-link>
               </li>
-              <li>
-                <router-link to="/Merchandise" class="dropdown-item">Merchandise</router-link>
-                </li>
             </ul>
           </li>
           

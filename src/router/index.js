@@ -36,6 +36,12 @@ import Star_Catalog from '../views/Star_Catalog.vue';
 import Purchase_Star from '../views/Purchase_Star.vue';
 import Contact_Hub from '../views/Contact_Hub.vue';
 import Comparison_Lab from '../views/Comparison_Lab.vue';
+import More from '../views/More.vue';
+import Our_Story from '../views/Our_Story.vue';
+import Privacy_Policy from '../views/Privacy_Policy.vue';
+import Terms_And_Conditions from '../views/Terms_And_Conditions.vue';
+import Star_Owners_Page from '../views/Star_Owners_Page.vue';
+import Official_Partners from '../views/Official_Partners.vue';
 
 // define your routes
 const routes = [
@@ -272,6 +278,40 @@ const routes = [
         path: '/comparison_lab',   
         name: 'Comparison Lab',
         component: Comparison_Lab,
+      },
+
+      {
+        path: '/more',   
+        name: 'More ',
+        component: More,
+      },
+
+      {
+        path: '/our_story',   
+        name: 'Our Story ',
+        component: Our_Story,
+      },
+
+      {
+        path: '/privacy_policy',   
+        name: 'Privacy Policy ',
+        component: Privacy_Policy,
+      },
+      {
+        path: '/terms_and_conditions',   
+        name: 'Terms And Conditions',
+        component: Terms_And_Conditions,
+      },
+      {
+        path: '/owned_stars',   
+        name: 'Owned Stars',
+        component: Star_Owners_Page,
+      },
+
+      {
+        path: '/official_partners',   
+        name: 'Official partners',
+        component: Official_Partners,
       },
       
     ],

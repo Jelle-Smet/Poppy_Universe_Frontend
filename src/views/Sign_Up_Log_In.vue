@@ -61,9 +61,9 @@
             <label class="terms">
               <input type="checkbox" v-model="registerForm.termsAccepted" />
               I accept the&nbsp;
-              <router-link to="/terms-and-conditions">Terms & Conditions</router-link>
+              <router-link to="/terms_and_conditions">Terms & Conditions</router-link>
               &nbsp;&amp;&nbsp;
-              <router-link to="/privacy-policy">Privacy Policy</router-link>
+              <router-link to="/privacy_policy">Privacy Policy</router-link>
             </label>
 
             <button type="submit" class="cosmic-btn">Register</button>
@@ -195,12 +195,22 @@ export default {
         const data = await response.json();
 
         if (response.ok) {
-          successMessage.value =
-            data.message || 'Login successful! Welcome aboard, Explorer.';
+          successMessage.value = data.message || 'Login successful! Welcome aboard, Explorer.';
 
-          localStorage.setItem('authToken', data.token);
+          // FIXED: Change 'authToken' to 'user_token' to match MainLayout
+          localStorage.setItem('user_token', data.token); 
+          
           localStorage.setItem('userDetails', JSON.stringify(data.user));
           localStorage.setItem('Owner_ID', data.user.ownerId);
+
+          // ADD THIS LINE: This notifies MainLayout to hide the popup instantly!
+          window.dispatchEvent(new Event('storage'));
+
+          // OPTIONAL: Redirect the user to the homepage after 1 second
+          setTimeout(() => {
+            window.location.href = "/"; // This also forces a fresh state
+          }, 1000);
+
         } else {
           errorMessage.value = data.message || 'Login failed. Invalid credentials.';
         }

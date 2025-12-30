@@ -5,8 +5,8 @@
     <div class="footer-content">
       <div class="footer-cta">
         <p class="cta-tagline">Ready to Explore the Universe?</p>
-        <button class="cta-button" @click="$router.push('/dashboard')">
-          Launch Interactive Sky Map <i class="fas fa-rocket"></i>
+        <button class="cta-button" @click="$router.push('/engine-details')">
+          Get My Recommendations <i class="fas fa-rocket"></i>
         </button>
       </div>
 

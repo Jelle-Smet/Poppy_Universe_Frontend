@@ -2,30 +2,37 @@
   <div id="main-layout">
     <Navbar />
 
-    <!-- MOVING STARFIELD -->
     <canvas id="starfield"></canvas>
 
-    <!-- FIXED LOGO OVERLAY -->
     <div class="logo-overlay" :style="logoOverlayStyle"></div>
 
     <main class="content-wrapper">
       <router-view />
     </main>
 
+    <DisclaimerBanner />
+
+    <LoginPopup v-if="showLoginPopup" />
+
     <Footer />
   </div>
 </template>
 
 <script>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, computed, watch, ref } from 'vue'; // Added onUnmounted
+import { useRoute } from 'vue-router';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
+import LoginPopup from '../components/Login_Popup.vue';
+import DisclaimerBanner from '../components/Disclaimer_Banner.vue';
 import PoppyUniverseLogo from '../assets/images/Poppy_Universe_Logo.png';
 
 export default {
   components: {
     Navbar,
     Footer,
+    LoginPopup,
+    DisclaimerBanner,
   },
   computed: {
     logoOverlayStyle() {
@@ -35,15 +42,46 @@ export default {
     },
   },
   setup() {
+    const route = useRoute();
+    
+    // Create a reactive variable for the token
+    const userToken = ref(localStorage.getItem('user_token'));
+
+    // This function refreshes our reactive token from local storage
+    const syncToken = () => {
+      userToken.value = localStorage.getItem('user_token');
+    };
+
+    // SECURITY LOGIC
+    const showLoginPopup = computed(() => {
+      const token = userToken.value;
+      const publicPages = ['Home', 'signUpLogin']; 
+      
+      // Safety check: if there is no route name yet, check the path instead
+      const isPublicPage = publicPages.includes(route.name) || route.path === '/' || route.path === '/sign-up-login';
+
+      return !token && !isPublicPage;
+    });
+
+    // UX POLISH: Stop scrolling
+    watch(showLoginPopup, (shouldBlock) => {
+      document.body.style.overflow = shouldBlock ? 'hidden' : 'auto';
+    }, { immediate: true });
+
+    // THE REAL FIX: Listen for any changes to storage or route
     onMounted(() => {
+      window.addEventListener('storage', syncToken); // Catches logins from other tabs/logic
+      
+      // Watch the route path to re-sync
+      watch(() => route.path, syncToken);
+
+      // Starfield Logic
       const canvas = document.getElementById('starfield');
       const ctx = canvas.getContext('2d');
-
       const resizeCanvas = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       };
-
       resizeCanvas();
       window.addEventListener('resize', resizeCanvas);
 
@@ -58,27 +96,26 @@ export default {
       const draw = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'white';
-
         stars.forEach((s) => {
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fill();
-
-          s.x += s.vx;
-          s.y += s.vy;
-
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+          s.x += s.vx; s.y += s.vy;
           if (s.x < 0 || s.x > canvas.width) s.vx *= -1;
           if (s.y < 0 || s.y > canvas.height) s.vy *= -1;
         });
-
         requestAnimationFrame(draw);
       };
-
       draw();
     });
+
+    onUnmounted(() => {
+      window.removeEventListener('storage', syncToken);
+    });
+
+    return { showLoginPopup };
   },
 };
 </script>
+
 
 <style>
 html, body {
