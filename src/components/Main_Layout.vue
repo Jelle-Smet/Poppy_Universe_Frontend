@@ -45,11 +45,11 @@ export default {
     const route = useRoute();
     
     // Create a reactive variable for the token
-    const userToken = ref(localStorage.getItem('user_token'));
+    const userToken = ref(localStorage.getItem('authToken'));
 
     // This function refreshes our reactive token from local storage
     const syncToken = () => {
-      userToken.value = localStorage.getItem('user_token');
+      userToken.value = localStorage.getItem('authToken');
     };
 
     // SECURITY LOGIC

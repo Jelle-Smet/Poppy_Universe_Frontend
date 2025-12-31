@@ -198,7 +198,7 @@ export default {
           successMessage.value = data.message || 'Login successful! Welcome aboard, Explorer.';
 
           // FIXED: Change 'authToken' to 'user_token' to match MainLayout
-          localStorage.setItem('user_token', data.token); 
+          localStorage.setItem('authToken', data.token); 
           
           localStorage.setItem('userDetails', JSON.stringify(data.user));
           localStorage.setItem('Owner_ID', data.user.ownerId);
