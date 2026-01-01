@@ -1,10 +1,21 @@
 <template>
   <div class="encyclopedia-container">
-    <h1>🌙 Moon Encyclopedia</h1>
-    <p class="intro">
-      Explore the natural satellites orbiting the worlds of our Solar System. 
-      Each glowing orb represents the moon’s distinct color and atmosphere.
-    </p>
+    <div class="cosmic-panel intro-container">
+      <header class="encyclopedia-main-header">
+        <h1 class="hero-title loaded">
+          🌙 Moon <span class="pink-glow">Encyclopedia</span>
+        </h1>
+        <p class="engine-tagline">POPPY UNIVERSE — SATELLITE DIRECTORY V2.0</p>
+      </header>
+      
+      <div class="intro-content">
+        <p class="panel-intro">
+          Cataloging the natural satellites orbiting the worlds of our Solar System. 
+          Each orb is rendered to reflect <strong>surface albedo</strong> and color, 
+          providing a visual scale of the diverse environments found across the planetary orbits.
+        </p>
+      </div>
+    </div>
 
     <div class="moons-grid">
       <div class="moon-card" v-for="moon in moons" :key="moon.Moon_ID">
@@ -144,6 +155,53 @@ export default {
   font-family: 'Poppins', sans-serif;
   color: #fff;
   text-align: center;
+}
+
+/* --- COSMIC PANEL BASE (Shared Archive Styling) --- */
+.cosmic-panel {
+    background-color: rgba(10, 0, 50, 0.85); 
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid #00ffff; 
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); 
+}
+
+/* --- INTRO CONTAINER STYLING --- */
+.intro-container { 
+  text-align: center; 
+  max-width: 1200px; 
+  margin: 0 auto 60px auto; 
+}
+
+.hero-title { 
+  font-size: 3.5rem; 
+  font-weight: 900; 
+  color: #c0fcfc; 
+  text-shadow: 0 0 15px #00ffff; 
+  margin: 0; 
+}
+
+.pink-glow { 
+  color: #ff69b4; 
+  text-shadow: 0 0 15px #ff007f; 
+}
+
+.engine-tagline { 
+  color: #00ffff; 
+  font-size: 0.9rem; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  letter-spacing: 3px; 
+  margin-top: 15px; 
+}
+
+.panel-intro { 
+  max-width: 850px; 
+  margin: 20px auto 0; 
+  color: #a0f0ff; 
+  line-height: 1.8; 
+  font-size: 1.1rem; 
+  font-style: italic; 
 }
 
 h1 {

@@ -54,27 +54,55 @@ export default {
     const newsItems = ref([]);
     const loading = ref(true);
 
+    const isTitleLine = (line) => {
+      const trimmed = line.trim();
+
+      // Emoji at start
+      const emojiTitle = /^[\p{Emoji}]/u.test(trimmed);
+
+      // Mostly uppercase (ignoring symbols)
+      const letters = trimmed.replace(/[^a-zA-Z]/g, '');
+      const uppercaseRatio =
+        letters.length > 0 &&
+        letters === letters.toUpperCase() &&
+        letters.length > 6;
+
+      // Short dramatic sentence
+      const dramaticShort =
+        trimmed.endsWith('!') && trimmed.length < 80;
+
+      return emojiTitle || uppercaseRatio || dramaticShort;
+    };
+
+    const cleanTitle = (line) => {
+      return line
+        .replace(/\*\*/g, '')
+        .replace(/^[\p{Emoji}\s]+/u, '')
+        .trim();
+    };
+
     const fetchNews = async () => {
       try {
-        // Fixed Path: Used root / instead of /Public/
-        // When deployed, the contents of the public folder are at the root
         const response = await fetch('/Text_Files/News/Latest_News.txt');
-        if (!response.ok) throw new Error('Failed to load news.');
-        const text = await response.text();
+        if (!response.ok) throw new Error('Failed to load news');
 
-        const lines = text.split('\n').filter(l => l.trim() !== '');
+        const text = await response.text();
+        const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
         const items = [];
         let currentItem = null;
 
-        lines.forEach(line => {
-          const titleMatch = line.match(/^(🌟|🛸|🌌|💫|🎉|🚀|🌐)\s+\*\*(.+)\*\*/);
-          if (titleMatch) {
+        for (const line of lines) {
+          if (isTitleLine(line)) {
             if (currentItem) items.push(currentItem);
-            currentItem = { title: titleMatch[0], content: '' };
+            currentItem = {
+              title: cleanTitle(line),
+              content: ''
+            };
           } else if (currentItem) {
-            currentItem.content += line + ' ';
+            currentItem.content += line + '\n';
           }
-        });
+        }
 
         if (currentItem) items.push(currentItem);
 
@@ -82,6 +110,7 @@ export default {
           title: i.title,
           content: i.content.trim()
         }));
+
       } catch (err) {
         console.error(err);
         newsItems.value = [];
@@ -90,53 +119,13 @@ export default {
       }
     };
 
-    const initStarfield = () => {
-      const canvas = document.getElementById('news-starfield');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      
-      const setCanvasSize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      };
-      setCanvasSize();
-
-      const stars = Array.from({ length: 80 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1,
-        vx: (Math.random() - 0.5) * 0.1,
-        vy: (Math.random() - 0.5) * 0.1
-      }));
-
-      const animate = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => {
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(255,255,255,0.7)';
-          ctx.fill();
-          s.x += s.vx;
-          s.y += s.vy;
-          if (s.x < 0 || s.x > canvas.width) s.vx *= -1;
-          if (s.y < 0 || s.y > canvas.height) s.vy *= -1;
-        });
-        requestAnimationFrame(animate);
-      };
-      animate();
-
-      window.addEventListener('resize', setCanvasSize);
-    };
-
-    onMounted(() => {
-      fetchNews();
-      initStarfield();
-    });
+    onMounted(fetchNews);
 
     return { newsItems, loading };
   }
 };
 </script>
+
 
 <style scoped>
 .news-container {

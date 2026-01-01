@@ -16,7 +16,7 @@
         </div>
 
         <div class="info-item">
-          <span class="label">Full Name</span>
+          <span class="label">Full Name (FN + LN)</span>
           <span class="value">{{ user.firstName }} {{ user.lastName }}</span>
         </div>
 

@@ -40,7 +40,7 @@
     <transition name="fade">
       <div v-if="showCalendar || showLocation" class="modal-overlay" @click="closeModal">
         <transition name="pop">
-          <div v-if="showCalendar || showLocation" class="modal-window" @click.stop>
+          <div v-if="showCalendar || showLocation" :class="['modal-window', { 'wide-modal': showLocation }]" @click.stop>
             <button class="modal-close-btn" @click="closeModal">✕</button>
             
             <Calender_Component
@@ -329,13 +329,14 @@ onMounted(fetchForecast);
 /* MODAL SYSTEM (Fixed for Cray Cray Sizing) */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 15, 0.9); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; }
 
+/* Default size for Calendar */
 .modal-window { 
   background: rgba(10, 0, 50, 0.95); 
   border: 1px solid rgba(0, 255, 255, 0.3);
   border-radius: 24px; 
   padding: 40px; 
   width: 95%; 
-  max-width: 500px; /* Restricts the Cray Cray sizing */
+  max-width: 450px; /* Perfect for the Calendar */
   max-height: 85vh;
   overflow-y: auto;
   position: relative; 
@@ -343,6 +344,12 @@ onMounted(fetchForecast);
   flex-direction: column;
   align-items: center;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  transition: max-width 0.3s ease; /* Smooth transition when switching */
+}
+
+/* Expanded size only for Location */
+.wide-modal {
+  max-width: 900px; /* Gives the map/location search plenty of room */
 }
 
 .modal-close-btn { position: absolute; top: 10px; right: 10px; background: rgba(255, 59, 107, 0.2); border: 1px solid #ff3b6b; color: #ff3b6b; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100; }

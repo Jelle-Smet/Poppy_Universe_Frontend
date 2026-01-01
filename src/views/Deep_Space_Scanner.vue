@@ -11,14 +11,23 @@
           </div>
           <h1 class="hero-title">DEEP SPACE <span class="pink-glow">SCANNER</span></h1>
           <div class="signal-wave">
-            <div v-for="n in 20" :key="n" class="wave-bar"></div>
+            <div v-for="n in 25" :key="n" class="wave-bar"></div>
           </div>
+          
         </div>
       </header>
 
       <div class="scanner-layout">
         <aside class="controls-sidebar">
           <div class="sidebar-inner">
+            <div class="scanner-info-card">
+            <h3 class="info-title">SCAN PROTOCOL</h3>
+            <p class="info-text">
+              Filter the Poppy Universe database. 
+              Adjust parameters to isolate specific spectral classes, orbital scales, or thermal signatures.
+            </p>
+            <div class="info-divider"></div>
+          </div>
             <div class="mode-glitch-selector">
               <button v-for="mode in ['Stars', 'Planets', 'Moons']" 
                 :key="mode" :class="{ active: activeMode === mode }"
@@ -265,6 +274,37 @@ watch(activeMode, () => visibleLimit.value = 20);
 .status-text { font-family: monospace; font-size: 0.75rem; color: #9aa4ff; letter-spacing: 2px; }
 .hero-title { color: #c0fcfc; font-size: 3rem; font-weight: 900; margin: 0; text-shadow: 0 0 15px rgba(125, 95, 255, 0.7); }
 .pink-glow { color: #ff69b4; text-shadow: 0 0 20px #ff69b4; }
+
+.scanner-info-card {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: rgba(125, 95, 255, 0.05);
+  border-left: 3px solid #ff69b4;
+  border-radius: 0 10px 10px 0;
+}
+
+.info-title {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #ff69b4;
+  margin: 0 0 8px 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.info-text {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #c0fcfc;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.info-divider {
+  height: 1px;
+  background: linear-gradient(90deg, #7d5fff, transparent);
+  margin-top: 15px;
+}
 
 .signal-wave { display: flex; align-items: flex-end; gap: 3px; height: 20px; margin-top: 15px; opacity: 0.6; }
 .wave-bar { width: 4px; height: 100%; background: #ff69b4; animation: wave 1s infinite ease-in-out; }

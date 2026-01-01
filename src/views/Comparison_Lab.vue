@@ -2,9 +2,20 @@
   <div class="lab-container poppy-theme">
     <div class="ui-overlay">
       <div class="glass-header poppy-border">
-        <h1 class="neon-text">🔭 COMPARISON <span class="cyan-text">LAB</span></h1>
-        <p class="registry-sub">TACTICAL SCALING PROTOCOL // POOL v2.0</p>
-      </div>
+          <h1 class="neon-text">🔭 COMPARISON <span class="cyan-text">LAB</span></h1>
+          <p class="registry-sub">TACTICAL SCALING PROTOCOL // POOL v2.0</p>
+          <div class="lab-briefing poppy-border-thin">
+            <div class="briefing-icon">📡</div>
+            <div class="briefing-content">
+              <h3 class="briefing-title">LAB OBJECTIVES</h3>
+              <p class="briefing-text">
+                Analyze celestial scale by linking two analytes. The visualization pods utilize a 1:1 diameter ratio—the largest object anchors the scale while the smaller is mathematically shrunk to match real-world proportions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        
 
       <div class="dual-selector">
         <div class="slot" :class="{ 'is-selected': objA }">
@@ -272,6 +283,55 @@ onMounted(fetchAllData);
 
 .cyan-text { color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
 .pink-text { color: #ff007f; text-shadow: 0 0 10px #ff007f; }
+
+/* NEW: Lab Briefing Styling */
+.lab-briefing {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(0, 255, 255, 0.03);
+  margin: 20px auto;
+  padding: 15px 25px;
+  max-width: 900px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+}
+
+.briefing-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 5px #00ffff);
+}
+
+.briefing-title {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #00ffff;
+  margin: 0 0 5px 0;
+  letter-spacing: 3px;
+}
+
+.briefing-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #e6e6fa;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Enhancing the VS Seal to stand out more */
+.vs-circle {
+  background: #00ffff;
+  color: #030010;
+  font-weight: 900;
+  box-shadow: 0 0 20px #00ffff;
+}
+
+/* Adding a subtle glow to the search boxes when they are active */
+.search-box input:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
 
 .registry-sub {
   font-family: monospace;

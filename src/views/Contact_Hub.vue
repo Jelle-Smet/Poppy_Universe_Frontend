@@ -23,7 +23,7 @@
             <div class="node-text">
               <h4>System Glitch</h4>
               <p>Report bugs or coordinate errors.</p>
-              <a href="mailto:contact@poppyuniverse.dev?subject=[BUG] Technical Error Report">Open Ticket</a>
+              <a href="mailto:PoppyUniverse@outlook.com?subject=[BUG] Technical Error Report">Open Ticket</a>
             </div>
           </div>
 
@@ -32,7 +32,7 @@
             <div class="node-text">
               <h4>Registry Query</h4>
               <p>Issues with star ownership or naming.</p>
-              <a href="mailto:contact@poppyuniverse.dev?subject=[REGISTRY] Ownership Inquiry">Query Data</a>
+              <a href="mailto:PoppyUniverse@outlook.com?subject=[REGISTRY] Ownership Inquiry">Query Data</a>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
             <div class="node-text">
               <h4>Security Node</h4>
               <p>Report private vulnerabilities.</p>
-              <a href="mailto:contact@poppyuniverse.dev?subject=[SECURITY] Vulnerability Report">Secure Comms</a>
+              <a href="mailto:contact@PoppyUniverse@outlook.com?subject=[SECURITY] Vulnerability Report">Secure Comms</a>
             </div>
           </div>
         </div>
@@ -104,9 +104,9 @@ export default {
     const openForm = (type) => {
       // You can create 3 different Google Forms and paste the links here:
       const forms = {
-        suggestions: 'https://forms.google.com/YOUR_SUGGESTIONS_LINK',
-        visuals: 'https://forms.google.com/YOUR_VISUAL_FEEDBACK_LINK',
-        collab: 'https://forms.google.com/YOUR_COLLAB_APPLICATION_LINK'
+        suggestions: 'https://docs.google.com/forms/d/e/1FAIpQLSeCUbcPrehYxxgYhrtpmAmlIjQmh2XBBIpRextpDXcOC3Ts2A/viewform?usp=publish-editor',
+        visuals: 'https://docs.google.com/forms/d/e/1FAIpQLSdc7rulZAT18g7nHNo-kI8pARLtdjuaiV5ykf3A8J4ysGAh2g/viewform?usp=publish-editor',
+        collab: 'https://docs.google.com/forms/d/e/1FAIpQLSdOzfqvHPl09TVB6mW6ys2QdoXPdSYznwgNjWwPvY9DFxyc-A/viewform?usp=header'
       };
 
       window.open(forms[type], '_blank');

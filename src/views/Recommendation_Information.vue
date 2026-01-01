@@ -6,13 +6,13 @@
         <h1 class="hero-title">
           Poppy's <span class="pink-glow">Engine</span> Explained ⚙️
         </h1>
-        <p class="engine-tagline">POPPY UNIVERSE — RECOMMENDATION CORE V1.0</p>
+        <p class="engine-tagline">POPPY UNIVERSE — RECOMMENDATION CORE V1.0.0</p>
       </header>
       
       <div class="intro-content">
         <p class="panel-intro">
           The Poppy Universe Recommendation Engine is a sophisticated, <strong>five-layer pipeline</strong> 
-          built in C#. It intelligently filters millions of celestial data points, refining them through 
+          built in C#. It intelligently filters thousands of celestial data points, refining them through 
           social trends, mathematical modeling, and artificial intelligence to find your perfect night sky.
         </p>
       </div>
@@ -95,7 +95,7 @@
           <div class="troubleshoot-grid">
             <div class="guide-item">
               <h3>Horizon Check</h3>
-              <p>Filters the sky in real-time. If a star is behind the Earth or below the horizon, it's discarded immediately.</p>
+              <p>Filters the sky in real-time. If an object is behind the Earth or below the horizon, it's discarded immediately.</p>
             </div>
             <div class="guide-item">
               <h3>Magnitude Scaling</h3>
@@ -115,7 +115,7 @@
                 <p>Preference database injection</p>
               </div>
             </div>
-            <p class="api-note">*Interpreted: We find everything visible, rank them by how bright they are, and then "bump up" your favorite stars to the top.*</p>
+            <p class="api-note">*Interpreted: We find everything visible, rank them by how bright they are, and then "bump up" your favorite objects to the top.*</p>
           </div>
         </section>
 
@@ -124,7 +124,7 @@
             <span class="layer-dot l2"></span>
             <div class="title-meta">
               <h2>Layer 2 — <span class="pink-text">Social</span> Momentum</h2>
-              <span class="algo-tag">ML Trend Signals</span>
+              <span class="algo-tag">Trend Signals</span>
             </div>
           </div>
 
@@ -158,17 +158,17 @@
           </div>
 
           <div class="engine-description">
-            <p>Captures <strong>Hidden Tastes</strong>. This layer doesn't look at specific stars, but at the <em>types</em> of things you like (e.g., Gas Giants vs. Dwarf Planets).</p>
+            <p>Captures <strong>Hidden Tastes</strong>. This layer doesn't look at specific objects, but at the <em>types</em> of things you like (e.g., Gas Giants vs. Dwarf Planets).</p>
           </div>
           
           <div class="troubleshoot-grid">
             <div class="guide-item">
               <h3>Matrix Construction</h3>
-              <p>Builds a User × Category matrix where Star types (O/B/A/F/G/K/M) and Planet types are columns.</p>
+              <p>Builds a User × Category matrix where Star types (O/B/A/F/G/K/M), Planet types, and Moon types are columns.</p>
             </div>
             <div class="guide-item">
               <h3>Interaction Strength</h3>
-              <p>Learns latent features from interaction strengths (1-5) to estimate scores for unseen categories.</p>
+              <p>Learns latent features from interaction strengths (0-10) to estimate scores for unseen categories.</p>
             </div>
           </div>
           

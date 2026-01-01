@@ -2,63 +2,64 @@
   <div class="poppy-universe-status"> 
     <header class="status-header">
       <h1 :class="['hero-title', { 'loaded': isLoaded }]">
-        <span class="universe-highlight">System Status</span> ⚙️
+        <span class="universe-highlight">Universe Status</span> ⚙️
       </h1>
       <p class="hero-subtitle">
-        Real-time diagnostic health check for the Poppy Universe stack.
+        Live pulse check of the Poppy Universe ecosystem.
       </p>
 
       <div class="status-meta">
         <p class="last-checked">
-            Last Checked: <span class="meta-value">{{ lastChecked || 'N/A' }}</span>
-        </p>
-        <p class="backend-url-note">
-            Target Endpoint: <span class="url-glow">{{ API_BASE_URL }}</span>
+            Last Sync: <span class="meta-value">{{ lastChecked || 'Initialising...' }}</span>
         </p>
       </div>
 
       <button class="cta-button refresh-button" @click="checkBackendStatus" :disabled="!lastChecked">
-        Refresh Status 🔄
+        Refresh Connection 🔄
       </button>
     </header>
 
     <main class="content-section">
       <section class="tech-stack cosmic-panel full-width">
-        <h2>💻 Core Component Health</h2>
+        <h2>🛰️ Service Connectivity</h2>
         <p class="panel-intro">
-            Status is determined by a fast, non-destructive health check (SELECT 1+1) performed by the Node.js backend.
+            We're monitoring the links between our interface, the logic engine, and our AI brain.
         </p>
         <ul class="tech-list">
             <li v-for="tech in techStack" :key="tech.key">
-                <span class="tech-name">{{ tech.name }}</span>
-                <span class="tech-detail">{{ tech.detail }}</span>
+                <div class="tech-info">
+                  <span class="tech-name">{{ tech.name }}</span>
+                  <span class="tech-detail">{{ tech.detail }}</span>
+                </div>
                 <span :class="['tech-status', getStatusClass(tech.status)]">{{ tech.status }}</span>
             </li>
         </ul>
       </section>
 
       <section class="troubleshooting cosmic-panel full-width">
-        <h2>🛠️ Troubleshooting & Usage</h2>
+        <h2>📖 What this means for you</h2>
         <div class="troubleshoot-grid">
             <div class="guide-item">
-                <h3>Backend Offline (❌)</h3>
+                <h3>The "Cold Start" (Checking... 🔄)</h3>
                 <p>
-                    **Symptom:** Both Backend and Database show Offline.
-                    <br>
-                    **Action:** The Express server is not responding. Check your terminal for Node.js process status and ensure the application is running on port 5000.
+                    Our Engine (Render) sometimes "naps" to save energy when no one is around. If it stays on 'Checking' for more than 10 seconds, it's just waking up! Try refreshing once more.
                 </p>
             </div>
             <div class="guide-item">
-                <h3>Database Offline (❌)</h3>
+                <h3>Database Lag (Offline ❌)</h3>
                 <p>
-                    **Symptom:** Backend is Online (✅), but Database is Offline (❌).
-                    <br>
-                    **Action:** The Node server is running but cannot connect to MySQL. Check MySQL credentials, host/port (`.env` file), and ensure the MySQL service is started.
+                    If the Engine is ✅ but the Database is ❌, our Aiven storage is undergoing maintenance. Your profile and stars might be temporarily view-only or unavailable.
+                </p>
+            </div>
+            <div class="guide-item">
+                <h3>AI "Brain" Fog (ML Models)</h3>
+                <p>
+                    If ML Models show an error, our Hugging Face integration is busy. You can still browse the universe, but AI-generated recommendations might be a bit slow to load.
                 </p>
             </div>
         </div>
         <p class="api-note">
-            *For development purposes, the Backend is considered `Online` if it returns an HTTP 200 OK, even if the Database is down.*
+            *Systems are distributed across Render, Aiven, and Hugging Face clusters.*
         </p>
       </section>
     </main>
@@ -72,81 +73,56 @@
     const isLoaded = ref(false);
     const lastChecked = ref(null);
 
-    // State for the tech stack details
     const techStack = ref([
-        { name: 'Frontend', detail: 'Vue 3 Composition API', status: 'Active 🟢', key: 'frontend' },
-        { name: 'Backend', detail: 'Node.js & Express', status: 'Checking... 🔄', key: 'backend' },
-        { name: 'Database', detail: 'MySQL/Poppy_Universe', status: 'Checking... 🔄', key: 'database' },
-        { name: 'Authentication', detail: 'JWT & bcrypt', status: 'Active 🟢', key: 'auth' },
+        { name: 'Interface', detail: 'Vercel Global Edge', status: 'Active 🟢', key: 'frontend' },
+        { name: 'Logic Engine', detail: 'Render Cloud Instance', status: 'Checking... 🔄', key: 'backend' },
+        { name: 'Memory Bank', detail: 'Aiven Managed MySQL', status: 'Checking... 🔄', key: 'database' },
+        { name: 'AI Brain', detail: 'Hugging Face Transformers', status: 'Active 🟢', key: 'ml' },
     ]);
 
-    // Function to check the backend status and parse the complex response
     const checkBackendStatus = async () => {
         const backendItem = techStack.value.find(tech => tech.key === 'backend');
         const databaseItem = techStack.value.find(tech => tech.key === 'database');
         if (!backendItem || !databaseItem) return;
 
-        // Reset statuses to indicate a fresh check
         backendItem.status = 'Checking... 🔄';
         databaseItem.status = 'Checking... 🔄';
 
         try {
-            // Set a 5-second timeout for the request
+            // Render can take a while to spin up on free tiers, so 10s timeout
             const response = await fetch(`${API_BASE_URL}/status`, { 
-                signal: AbortSignal.timeout(5000) 
+                signal: AbortSignal.timeout(10000) 
             });
             
             if (response.ok) {
                 const data = await response.json(); 
-                
-                // Backend status update
-                backendItem.status = (data.serviceStatus && data.serviceStatus === 'Online') ? 'Online ✅' : 'Online ✅';
-                
-                // Database status update
-                if (data.databaseStatus === 'Online') {
-                    databaseItem.status = 'Online ✅'; // Both active
-                } else {
-                    databaseItem.status = 'Offline ❌'; // Backend active, DB inactive
-                }
-                
+                backendItem.status = 'Online ✅';
+                databaseItem.status = (data.databaseStatus === 'Online') ? 'Online ✅' : 'Offline ❌';
             } else {
-                // Server responded, but with an error status (e.g., 404, 500)
-                backendItem.status = `Error ${response.status} 🔴`;
-                databaseItem.status = `Error 🔴`; 
+                backendItem.status = 'Limited 🟡';
+                databaseItem.status = 'Error 🔴'; 
             }
         } catch (error) {
-            // Network error, CORS issue, or timeout (Server is unreachable)
-            console.error("System status check failed:", error);
             backendItem.status = 'Offline ❌';
             databaseItem.status = 'Offline ❌';
         } finally {
-            // Update the last checked time regardless of success or failure
-            lastChecked.value = new Date().toLocaleTimeString();
+            lastChecked.value = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
     };
 
     onMounted(() => {
-        // 1. Check System Status
         checkBackendStatus();
-
-        // 2. Run the initial loading animation trigger
-        setTimeout(() => {
-            isLoaded.value = true;
-        }, 50);
+        setTimeout(() => { isLoaded.value = true; }, 50);
     });
 
-    // Helper function to map status text to CSS class
     function getStatusClass(status) {
-        if (status.includes('Online') || status.includes('Active')) {
-            return 'status-active';
-        } else if (status.includes('Offline') || status.includes('Error')) {
-            return 'status-error';
-        } else if (status.includes('Ready') || status.includes('Checking')) {
-            return 'status-ready';
-        }
-        return ''; // Default class
+        if (status.includes('Online') || status.includes('Active')) return 'status-active';
+        if (status.includes('Offline') || status.includes('Error')) return 'status-error';
+        if (status.includes('Checking') || status.includes('Limited')) return 'status-ready';
+        return '';
     }
 </script>
+
 
 <style scoped>
 /*
@@ -359,7 +335,7 @@ h2 {
 */
 .troubleshoot-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
     gap: 20px;
     margin-top: 10px;
 }
@@ -392,6 +368,29 @@ h2 {
     text-align: center;
     border-top: 1px solid rgba(255, 105, 180, 0.2);
     padding-top: 15px;
+}
+
+.tech-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tech-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+}
+
+.tech-detail {
+    margin-left: 0;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.tech-status {
+    min-width: 100px;
 }
 
 @media (max-width: 768px) {

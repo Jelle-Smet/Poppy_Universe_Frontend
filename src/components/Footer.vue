@@ -13,7 +13,7 @@
       <div class="footer-sections-wrapper">
         <div class="footer-contact">
           <h3>Connect</h3>
-          <p class="email-text">Email: <a href="mailto:contact@poppyuniverse.dev">contact@poppyuniverse.dev</a></p>
+          <p class="email-text">Email: <a href="mailto:PoppyUniverse@outlook.com">PoppyUniverse@outlook.com</a></p>
           <div class="social-icons">
             <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>

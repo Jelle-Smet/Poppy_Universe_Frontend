@@ -20,7 +20,7 @@
           </p>
 
           <p>
-            Through <strong>forward propagation and backpropagation</strong>, the network continuously
+            Through <strong>backpropagation</strong>, the network continuously
             adjusts its weights to minimize prediction error and generate accurate scores for both
             known and unseen user-category interactions.
           </p>

@@ -2,374 +2,295 @@
   <header>
     <nav class="navbar navbar-light bg-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand logo-container" href="#">
+        <div class="logo-container">
           <img src="../assets/images/Poppy_Universe_Logo.png" alt="Logo" class="logo" />
-        </a>
+        </div>
 
         <div class="navbar-nav">
+          <!-- HOME -->
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'home' }">
             <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('home')">
               Home
             </a>
             <ul v-if="selectedMenu === 'home'" class="dropdown-menu">
-              <li>
-                <router-link to="/" class="dropdown-item"> Home Page </router-link>
-              </li>
-              <li>
-                <router-link to="/sign-up-login" class="dropdown-item">Sign Up / Login</router-link>
-              </li>
-              <li>
-                <router-link to="/Latest_News" class="dropdown-item">Latest News</router-link>
-              </li>
-              <li>
-                <router-link to="/System-Status" class="dropdown-item"> Status </router-link>
-              </li>
-              <li>
-                <router-link to="/more" class="dropdown-item">More</router-link>
-              </li>
+              <li><router-link to="/" class="dropdown-item" @click="selectedMenu = null">Home Page</router-link></li>
+              <li><router-link to="/Latest_News" class="dropdown-item" @click="selectedMenu = null">Latest News</router-link></li>
+              <li><router-link to="/System-Status" class="dropdown-item" @click="selectedMenu = null">System Status</router-link></li>
+              <li><router-link to="/sign-up-login" class="dropdown-item" @click="selectedMenu = null">Sign Up / Login</router-link></li>
             </ul>
           </li>
 
-          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'account' }">
-            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('account')">
-              Account
-            </a>
-            <ul v-if="selectedMenu === 'account'" class="dropdown-menu">
-              <li>
-                <router-link to="/Profile_Page" class="dropdown-item">Profile</router-link>
-              </li>
-               <li>
-                <router-link to="/My_Stars" class="dropdown-item">My Stars</router-link>
-              </li>
-              <li>
-                <router-link to="/Interacted_Objects" class="dropdown-item">My History</router-link>
-              </li>
-              <li>
-                <router-link to="/Liked_Objects" class="dropdown-item">My Favorites</router-link>
-              </li>
-              <li>
-                <router-link to="/User_Settings" class="dropdown-item">Settings</router-link>
-              </li>
-            </ul>
-          </li>
-
+          <!-- RECOMMENDATIONS -->
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'recommendations' }">
             <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('recommendations')">
               Recommendations
             </a>
             <ul v-if="selectedMenu === 'recommendations'" class="dropdown-menu">
-              <li>
-                <router-link to="/engine-details" class="dropdown-item"> Engine Details</router-link>
-              </li>
-              <li>
-                <router-link to="/Layer1_Recommendations" class="dropdown-item"> Poppy’s Right Now</router-link>
-              </li>
-              <li>
-                <router-link to="Layer2_Recommendations" class="dropdown-item"> Poppy's Trend Booser </router-link>
-              </li>
-              <li>
-                <router-link to="/Layer3_Recommendations" class="dropdown-item"> Poppy’s Familiar Picks </router-link>
-              </li>
-              <li>
-                <router-link to="/Layer4_Recommendations" class="dropdown-item"> Poppy’s Hidden Matches </router-link>
-              </li>
-              <li>
-                <router-link to="/Layer5_Recommendations" class="dropdown-item poppys-pick-highlight"> Poppy’s Pick ⭐ </router-link>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'encyclopedia' }">
-            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('encyclopedia')">
-              Encyclopedia 
-            </a>
-            <ul v-if="selectedMenu === 'encyclopedia'" class="dropdown-menu">
-              <li>
-                <router-link to="/Encyclopedia_stars" class="dropdown-item" > Stars</router-link>
-              </li>
-              <li>
-                <router-link to="/Encyclopedia_Planets" class="dropdown-item">Planets</router-link>
-              </li>
-              <li>
-                <router-link to= "/Encyclopedia_Moons" class="dropdown-item"> Moons</router-link>
+              <li><router-link to="/engine-details" class="dropdown-item" @click="selectedMenu = null">Engine Details</router-link></li>
+              <li><router-link to="/Layer1_Recommendations" class="dropdown-item" @click="selectedMenu = null">Poppy's Right Now</router-link></li>
+              <li><router-link to="/Layer2_Recommendations" class="dropdown-item" @click="selectedMenu = null">Poppy's Trend Booster</router-link></li>
+              <li><router-link to="/Layer3_Recommendations" class="dropdown-item" @click="selectedMenu = null">Poppy's Familiar Picks</router-link></li>
+              <li><router-link to="/Layer4_Recommendations" class="dropdown-item" @click="selectedMenu = null">Poppy's Hidden Matches</router-link></li>
+              <li class="poppys-pick-highlight">
+                <router-link to="/Layer5_Recommendations" class="dropdown-item" @click="selectedMenu = null">Poppy's Pick ⭐</router-link>
               </li>
             </ul>
           </li>
 
-          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'objects' }">
-            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('objects')">
-              Objects
-            </a>
-            <ul v-if="selectedMenu === 'objects'" class="dropdown-menu">
-              <li>
-                <router-link to="/all_objects" class="dropdown-item">All Objects</router-link>
-              </li>
-              <li>
-                <router-link to="/top-booked" class="dropdown-item">Popular Objects</router-link>
-              </li>
-              <li>
-                <router-link to="/object_category" class="dropdown-item" >Categories</router-link>
-              </li>
-               <li>
-                <router-link to="owned_stars" class="dropdown-item" >Owners</router-link>
-              </li>
-              <li>
-                <router-link to="/deep_space_scanner" class="dropdown-item">Space Scanner</router-link>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'exploration' }">
-            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('exploration')">
-              Exploration
-            </a>
-            <ul v-if="selectedMenu === 'exploration'" class="dropdown-menu">
-              <li>
-                <router-link to="/comparison_lab" class="dropdown-item">Comparison Lab</router-link>
-              </li>
-              <li>
-                <router-link to="/stargazing-forecast" class="dropdown-item">Stargazing Forecast</router-link>
-              </li>
-              <li>
-                <router-link to="/object-identification" class="dropdown-item">Identify Your Discovery</router-link>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item category claim-star-tab">
-            <router-link to="/star_catalog" class="nav-link highlight-text">
+          <!-- ADOPT A STAR -->
+          <li class="nav-item category">
+            <router-link to="/star_catalog" class="nav-link">
               Adopt a Star
             </router-link>
           </li>
+
+          <!-- ACCOUNT -->
+          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'account' }">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('account')">
+              Account
+            </a>
+            <ul v-if="selectedMenu === 'account'" class="dropdown-menu">
+              <li><router-link to="/Profile_Page" class="dropdown-item" @click="selectedMenu = null">Profile</router-link></li>
+              <li><router-link to="/My_Stars" class="dropdown-item" @click="selectedMenu = null">My Stars</router-link></li>
+              <li><router-link to="/Interacted_Objects" class="dropdown-item" @click="selectedMenu = null">My History</router-link></li>
+              <li><router-link to="/Liked_Objects" class="dropdown-item" @click="selectedMenu = null">My Favorites</router-link></li>
+              <li><router-link to="/User_Settings" class="dropdown-item" @click="selectedMenu = null">Settings</router-link></li>
+            </ul>
+          </li>
+
+          <!-- EXPLORE OBJECTS -->
+          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'explore' }">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('explore')">
+              Explore
+            </a>
+            <ul v-if="selectedMenu === 'explore'" class="dropdown-menu">
+              <li><router-link to="/all_objects" class="dropdown-item" @click="selectedMenu = null">All Objects</router-link></li>
+              <li><router-link to="/object_category" class="dropdown-item" @click="selectedMenu = null">Categories</router-link></li>
+              <li><router-link to="/owned_stars" class="dropdown-item" @click="selectedMenu = null">Owned Stars</router-link></li>
+              <li><router-link to="/deep_space_scanner" class="dropdown-item" @click="selectedMenu = null">Space Scanner</router-link></li>
+            </ul>
+          </li>
+
+          <!-- TOOLS & ACTIVITIES -->
+          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'tools' }">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('tools')">
+              Tools
+            </a>
+            <ul v-if="selectedMenu === 'tools'" class="dropdown-menu">
+              <li><router-link to="/comparison_lab" class="dropdown-item" @click="selectedMenu = null">Comparison Lab</router-link></li>
+              <li><router-link to="/stargazing-forecast" class="dropdown-item" @click="selectedMenu = null">Stargazing Forecast</router-link></li>
+              <li><router-link to="/object-identification" class="dropdown-item" @click="selectedMenu = null">Identify Your Discovery</router-link></li>
+            </ul>
+          </li>
+
+          <!-- ENCYCLOPEDIA -->
+          <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'encyclopedia' }">
+            <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('encyclopedia')">
+              Encyclopedia
+            </a>
+            <ul v-if="selectedMenu === 'encyclopedia'" class="dropdown-menu">
+              <li><router-link to="/cosmic_glossary" class="dropdown-item" @click="selectedMenu = null">Cosmic Glossary</router-link></li>
+              <li><router-link to="/Encyclopedia_stars" class="dropdown-item" @click="selectedMenu = null">Stars</router-link></li>
+              <li><router-link to="/Encyclopedia_Planets" class="dropdown-item" @click="selectedMenu = null">Planets</router-link></li>
+              <li><router-link to="/Encyclopedia_Moons" class="dropdown-item" @click="selectedMenu = null">Moons</router-link></li>
+            </ul>
+          </li>
+
+          <!-- POPPY'S GUIDE -->
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'poppys-guide' }">
             <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('poppys-guide')">
               Poppy's Guide
             </a>
             <ul v-if="selectedMenu === 'poppys-guide'" class="dropdown-menu">
-               <li>
-                <router-link to="/tips_and_tricks" class="dropdown-item">Tips & Tricks for Explorers</router-link>
-              </li>
-              <li>
-                <router-link to="/stargazing-guide" class="dropdown-item">How to Stargaze</router-link>
-              </li>
-              <li>
-                <router-link to="/equipment-guide" class="dropdown-item">Equipment Guide</router-link>
-              </li>
+              <li><router-link to="/tips_and_tricks" class="dropdown-item" @click="selectedMenu = null">Tips & Tricks</router-link></li>
+              <li><router-link to="/stargazing-guide" class="dropdown-item" @click="selectedMenu = null">How to Stargaze</router-link></li>
+              <li><router-link to="/equipment-guide" class="dropdown-item" @click="selectedMenu = null">Equipment Guide</router-link></li>
             </ul>
           </li>
 
+          <!-- ABOUT US -->
           <li class="nav-item category" :class="{ 'bg-dark': selectedMenu === 'about-us' }">
             <a class="nav-link dropdown-toggle" href="#" @click.prevent="toggleSubMenu('about-us')">
               About Us
             </a>
             <ul v-if="selectedMenu === 'about-us'" class="dropdown-menu">
-              <li>
-                <router-link to="/our_story" class="dropdown-item">Our Story</router-link>
-              </li>
-              <li>
-                <router-link to="/Official_Partners" class="dropdown-item">Official Partners</router-link>
-              </li>
-              <li>
-                <router-link to="/privacy_policy" class="dropdown-item">Privacy Policy</router-link>
-              </li>
-              <li>
-                <router-link to="/terms_and_conditions" class="dropdown-item">Terms & Conditions</router-link>
-              </li>
+              <li><router-link to="/our_story" class="dropdown-item" @click="selectedMenu = null">Our Story</router-link></li>
+              <li><router-link to="/Official_Partners" class="dropdown-item" @click="selectedMenu = null">Official Partners</router-link></li>
+              <li><router-link to="/core_components" class="dropdown-item" @click="selectedMenu = null">Core Components</router-link></li>
+              <li><router-link to="/privacy_policy" class="dropdown-item" @click="selectedMenu = null">Privacy Policy</router-link></li>
+              <li><router-link to="/terms_and_conditions" class="dropdown-item" @click="selectedMenu = null">Terms & Conditions</router-link></li>
             </ul>
           </li>
           
+          <!-- CONTACT HUB -->
           <li class="nav-item category">
             <router-link to="/contact_hub" class="nav-link">Contact Hub</router-link>
           </li>
         </div>
-        <a class="extra space" href="#">
-        </a>
+        <a class="extra space" href="#"></a>
       </div>
     </nav>
   </header>
 
-  <div class="content">
-    </div>
+  <div class="content"></div>
 </template>
 
----
 <script>
 export default {
   data() {
     return {
-      selectedMenu: null, // Controls menu state via *click* (sticky open/close)
-      hoverMenu: null,    // Controls menu state via *hover*
-      // Added a small delay to close on mouseleave for better user experience
-      closeTimer: null,
-      CLOSE_DELAY: 150, // 150ms delay to allow mouse to move to the dropdown
+      selectedMenu: null,
     };
   },
   methods: {
-    // 1. Toggles the menu state on click (your original click behavior)
     toggleSubMenu(menu) {
-      // Clear any pending close actions
-      clearTimeout(this.closeTimer);
-      
-      // If the same menu is clicked, close it. Otherwise, open the new menu and clear hover state.
       this.selectedMenu = this.selectedMenu === menu ? null : menu;
-      this.hoverMenu = null; 
     },
-
-    // 2. Opens menu on hover
-    openSubMenu(menu) {
-      // Clear any pending close actions
-      clearTimeout(this.closeTimer);
-
-      // Only open via hover if no menu is actively opened by click
-      if (this.selectedMenu === null) {
-        this.hoverMenu = menu;
-      }
-    },
-
-    // 3. Closes menu when moving mouse away from the category block OR when a dropdown item is clicked
-    closeSubMenu() {
-      // Set a slight delay before closing to allow the mouse to move from the <li> title 
-      // to the dropdown <ul> without closing the menu prematurely.
-      clearTimeout(this.closeTimer);
-      this.closeTimer = setTimeout(() => {
-        // Only clear the hover state if the menu is NOT open via a click
-        if (this.selectedMenu === null) {
-          this.hoverMenu = null;
-        }
-        // Always clear the click state
-        this.selectedMenu = null;
-      }, this.CLOSE_DELAY);
-    }
   },
 };
 </script>
 
 <style scoped>
-/* Navbar background color */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
-  /* RESTORED: width: auto; */
   width: auto;
   z-index: 999;
-  background-color: #0b0c1a; /* Deep space navy */
+  background-color: #0b0c1a;
   padding: 0px;
-  border: 2px solid #7fdbff; /* Starry light blue */
-  /* RESTORED: original border radius styles */
+  border: 2px solid #7fdbff;
   border-radius: 5px;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
-  overflow:hidden;
-  height: auto; /* RESTORED: Full height for the fixed sidebar */
+  overflow: hidden;
+  height: auto;
 }
 
-/* Logo styling */
 .navbar .logo-container {
-  margin-right: 0px;
+  display: block;
+  margin: 0;
+  padding: 10px;
+  overflow: hidden;
+  border-top-right-radius: 48px;
+  background-color: #0b0c1a;
 }
 
 .navbar .logo {
   width: 150px;
   height: auto;
+  display: block;
 }
 
-/* Categories listed vertically */
 .navbar-nav {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
 }
 
-/* Styling for each category */
 .navbar-nav .category {
-  border: 2px solid #9b59b6; /* Purple nebula border */
+  border: 2px solid #9b59b6;
   padding: 10px 20px;
   margin-bottom: 10px;
   border-radius: 5px;
   width: auto;
 }
 
-/* Dropdown menu styling */
+/* Featured category styling for Recommendations */
+.featured-category {
+  border: 2px solid #ff6ec7 !important;
+  box-shadow: 0 0 10px rgba(255, 110, 199, 0.3);
+}
+
+.featured-category .nav-link {
+  color: #ff6ec7 !important;
+  font-weight: 600;
+}
+
 .nav-item .dropdown-menu {
-  border: 1px solid #555; /* subtle cosmic glow */
+  border: 1px solid #555;
   border-radius: 5px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
-/* Hover effect for standard dropdown items */
 .nav-item .dropdown-menu .dropdown-item:hover {
-  background-color: #1f1b3a; /* Dark purple galaxy */
-  color: #f0f8ff !important; /* Light blue star text */
-  border-color: #7fdbff; /* Starry border on hover */
+  background-color: #1f1b3a;
+  color: #f0f8ff !important;
+  border-color: #7fdbff;
 }
 
-/* Dark background and white text for the selected menu */
 .nav-item.bg-dark .nav-link {
-  background-color: #1f1b3a !important; /* matching galaxy hover */
+  background-color: #1f1b3a !important;
   color: #f0f8ff !important;
 }
 
-/* Text color for navbar items */
 .nav-item .nav-link {
-  color: #c0c0ff !important; /* soft cosmic glow text */
+  color: #c0c0ff !important;
 }
 
-/* Active state text color */
-.nav-item.bg-dark .nav-link {
-  color: #f0f8ff !important;
-}
-
-/* Dropdown items text color (Standard Items) */
 .nav-item .dropdown-menu .dropdown-item {
-  color: #dcdcff !important; /* faint starry text */
+  color: #dcdcff !important;
 }
 
-/* Apply hover effect for main categories */
 .nav-item .nav-link:hover {
-  background-color: #1f1b3a; /* Dark purple galaxy */
+  background-color: #1f1b3a;
   color: #f0f8ff !important;
 }
 
-
-/* ------------------------------------------------------------------ */
-/* --- START: New style for Poppy's Pick (FINAL ROBUST IMPLEMENTATION) --- */
-/* 1. Style the parent list item (li) for the premium look */
+/* Poppy's Pick - Modern Supernova Styling */
 .poppys-pick-highlight {
-  /* Set a contrasting background for the entire row */
-  background-color: #3b0e4a !important; /* Darker, distinct background */
-  
-  /* Add a premium border glow effect (using existing color) */
-  border-left: 3px solid #ffc87c; /* Adds a visible golden line on the left */
-  
-  /* Ensure NO padding/margin on the LI itself to prevent overflow */
-  margin: 0;
-  padding: 0px; 
+  /* Ultra-subtle Cyan-to-Transparent gradient */
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.1) 0%, transparent 100%) !important;
+  /* Sharp Electric-Cyan edge */
+  border-left: 2px solid #00ffff;
+  margin: 2px 0;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* 2. Style the actual link inside the featured list item */
-.poppys-pick-highlight .featured-link {
-  /* CRITICAL: Make the link fill the LI container */
-  display: block; 
-  width: 100%;
-  
-  /* Inherit standard dropdown padding for alignment */
-  padding: 8px 15px; 
-  
-  /* Text styling */
-  color: #ffc87c !important; /* Bright, glowing golden color */
-  font-weight: 700 !important; /* Ensure it's bold */
-  text-shadow: 0 0 3px rgba(255, 200, 124, 0.4); /* Subtle glow */
-  text-decoration: none; /* Remove underline */
+.poppys-pick-highlight .dropdown-item {
+  /* Bright Diamond White for high visibility */
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px;
+  /* Subtle Cyan glow behind the text */
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  padding-left: 15px;
 }
 
-/* 3. Style the hover effect on the entire featured item */
+/* Hover State: The "Supernova" Activation */
 .poppys-pick-highlight:hover {
-  background-color: #4a0f60 !important; /* Even darker on hover */
-  border-left: 5px solid #ffc87c; /* Thicker left border on hover */
+  /* Intensify the Cyan wash */
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.2) 0%, transparent 100%) !important;
+  /* Glow the border pure white */
+  border-left: 4px solid #ffffff;
+  box-shadow: inset 12px 0 20px -10px rgba(0, 255, 255, 0.6);
 }
 
-/* 4. Ensure the text color stays bright on hover */
-.poppys-pick-highlight:hover .featured-link {
-  color: #ffffff !important; 
+.poppys-pick-highlight:hover .dropdown-item {
+  color: #00ffff !important; /* Text flips to Cyan on hover */
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+  transform: translateX(4px); /* Smooth horizontal nudge */
 }
-/* --- END: New style for Poppy's Pick --- */
+
+/* Optional: Adding a tiny glowing dot before the text for extra 'Pop' */
+.poppys-pick-highlight .dropdown-item::before {
+  content: '•';
+  color: #00ffff;
+  margin-right: 8px;
+  text-shadow: 0 0 8px #00ffff;
+}
+
+/* Adopt a Star highlighting */
+.claim-star-tab .highlight-text {
+  color: #ffd700 !important;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+.claim-star-tab:hover .highlight-text {
+  color: #fff !important;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
 </style>

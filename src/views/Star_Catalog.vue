@@ -4,7 +4,7 @@
       <div class="sparkle-icon">✨</div>
       <h1>Claim Your Corner of the Cosmos</h1>
       <p class="intro">
-        Every star has a story, and now, it can have a name. Become a permanent part of the Poppy Universe. 
+        Every star has a story, and now, it can have an owner. Become a permanent part of the Poppy Universe. 
         From flickering dwarfs to roaring blue giants, find the star that speaks to your soul.
       </p>
       <div class="market-status">

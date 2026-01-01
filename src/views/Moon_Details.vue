@@ -82,7 +82,7 @@
     <div class="owner-info">
       <h2>Owner Info</h2>
       <p><strong class="label">Name:</strong> Poppy</p>
-      <p><strong class="label">Username:</strong> @poppy_space</p>
+      <p><strong class="label">Username:</strong> @poppy_universe</p>
     </div>
   </div>
 

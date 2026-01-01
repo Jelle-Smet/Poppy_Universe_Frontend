@@ -7,9 +7,9 @@
       <p class="hero-subtitle">
         Explore planets, moons, and Gaia stars while logging your cosmic discoveries.
       </p>
-      <button class="cta-button" @click="console.log('Start Exploring Clicked!')">
-        Begin Expedition &rarr;
-      </button>
+      <router-link to="/all_objects" class="cta-button">
+        Begin Expedition →
+      </router-link>
     </header>
 
     <main class="content-section">
@@ -122,7 +122,7 @@
               <h3><span class="card-icon"></span> Recommendation Engine</h3>
               <p>
                 <strong>Layered Algorithm System</strong><br>
-                Combines rule-based layers (1 & 2), matrix factorization (3), neural networks (4), and GA fusion (5) to produce ranked celestial recommendations.
+                Combines rule-based layers (1 & 2), matrix factorization (3), neural networks (4), and a genetic Algorithm fusion (5) to produce ranked celestial recommendations.
               </p>
             </div>
 
@@ -137,7 +137,7 @@
           </div>
 
           <div class="more-info-button" style="text-align: center; margin-top: 20px;">
-            <router-link to="/core-components-details" class="more-info-btn">
+            <router-link to="/core_components" class="more-info-btn">
               More Information <span class="arrow">→</span>
             </router-link>
           </div>
@@ -154,7 +154,7 @@
           <section class="quick-links cosmic-panel small-panel">
             <h2>🔗 Quick Jumps</h2>
             <ul class="link-list">
-              <li><router-link to="/about" class="link-glow">About Poppy Universe</router-link></li>
+              <li><router-link to="/our_story" class="link-glow">About Poppy Universe</router-link></li>
               <li><router-link to="/all_objects" class="link-glow">Start Exploring</router-link></li>
               <li><router-link to="/System-Status" class="link-glow">System Status Check &rarr; </router-link></li>
               <li><a href="https://github.com/your-repo-link" target="_blank" class="link-glow">Source Code (GitHub)</a></li>
@@ -181,7 +181,7 @@ onMounted(async () => {
 
   // Fetch the Markdown data flow file
   try {
-    const response = await fetch('../../Public/Data_Flow/Poppy_Universe_Data_Flow.md');
+    const response = await fetch('/Data_Flow/Poppy_Universe_Data_Flow.md');
     if (response.ok) {
       dataFlowMd.value = await response.text();
     } else {

@@ -179,6 +179,13 @@ const goTo = (type, id) => router.push(`/${type}/${id}`);
 </script>
 
 <style scoped>
+.loading-state {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center;     /* Centers vertically */
+  min-height: 200px;       /* Gives it space to be "middle" in */
+  width: 100%;
+}
 .dashboard-container {
   min-height: 100vh;
   padding: 40px 20px;

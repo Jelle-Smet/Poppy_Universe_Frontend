@@ -42,6 +42,8 @@ import Privacy_Policy from '../views/Privacy_Policy.vue';
 import Terms_And_Conditions from '../views/Terms_And_Conditions.vue';
 import Star_Owners_Page from '../views/Star_Owners_Page.vue';
 import Official_Partners from '../views/Official_Partners.vue';
+import Core_Components from '../views/Core_Components.vue';
+import Cosmic_Glossary from '../views/Cosmic_Glossary.vue';
 
 // define your routes
 const routes = [
@@ -307,11 +309,20 @@ const routes = [
         name: 'Owned Stars',
         component: Star_Owners_Page,
       },
-
       {
         path: '/official_partners',   
         name: 'Official partners',
         component: Official_Partners,
+      },
+      {
+        path: '/core_components',   
+        name: 'Core Components',
+        component: Core_Components,
+      },
+      {
+        path: '/cosmic_glossary',   
+        name: 'Cosmic Glossary',
+        component: Cosmic_Glossary,
       },
       
     ],

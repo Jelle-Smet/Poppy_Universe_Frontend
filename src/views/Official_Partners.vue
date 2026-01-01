@@ -97,7 +97,7 @@
               <div class="step"><span class="step-num">03</span><p><strong>Launch:</strong> Your profile is activated on the registry.</p></div>
             </div>
           </div>
-          <a href="https://example.com/partner-form" target="_blank" class="glow-link-btn" @click="showInquiry = false">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5IXcKttDMCG7J4dVH_SxRMnL8ktFD1OLIs4gwMKLfYGYlxw/viewform?usp=header" target="_blank" class="glow-link-btn" @click="showInquiry = false">
             OPEN_APPLICATION_FORM →
           </a>
         </div>
@@ -138,8 +138,8 @@ const partners = ref([
 /* GENESIS COLOR PALETTE */
 .partners-container {
   min-height: 100vh;
-  padding: 80px 20px 100px; /* Extra bottom padding for footer clearance */
-  background: #050010; /* Genesis Obsidian */
+  padding: 80px 40px 100px; 
+  background: #050010; /* Fallback */
   color: #e6e6fa;
   font-family: 'Inter', sans-serif;
   display: flex;
@@ -147,11 +147,22 @@ const partners = ref([
   align-items: center;
   gap: 60px;
   position: relative;
-  /* Removed overflow: hidden to allow the page to scroll to the layout footer */
+  
+  /* --- NEW: The Frame Logic --- */
+  border: 2px solid #c0fcfc; /* Neon Blue Edge */
+  border-radius: 40px;      /* Rounded Edges */
+  margin: 20px;             /* Space around the frame */
+  overflow: hidden;         /* CRITICAL: This clips the cosmic-bg to the rounded corners */
+  
+  /* Glow Effects */
+  box-shadow: 0 0 25px rgba(192, 252, 252, 0.2), 
+              inset 0 0 20px rgba(192, 252, 252, 0.1);
+  
+  /* Color Shift Transition */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cosmic-bg {
-  /* Changed to absolute to sit behind content without locking the viewport height */
   position: absolute; 
   top: 0; 
   left: 0; 
@@ -159,6 +170,14 @@ const partners = ref([
   height: 100%;
   background: radial-gradient(circle at 50% 50%, rgba(15, 0, 40, 1) 0%, rgba(5, 0, 16, 1) 100%);
   z-index: 0;
+  /* No need to change this, the container's overflow: hidden handles it now! */
+}
+
+/* --- HOVER EFFECT --- */
+.partners-container:hover {
+  border-color: #ff69b4; /* Flips to Pink */
+  box-shadow: 0 0 45px rgba(255, 105, 180, 0.4), 
+              inset 0 0 25px rgba(255, 105, 180, 0.2);
 }
 
 /* PANELS - Matching Genesis "cosmic-glass-panel" */
