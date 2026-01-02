@@ -167,8 +167,8 @@
             <h3>🔭 Mission Status: {{ completedSteps.size === 4 ? 'COMPLETE' : 'IN PROGRESS' }}</h3>
             <p class="panel-intro">Visit your personalized recommendations or check the current sky forecast.</p>
             <div class="footer-btns">
-              <router-link to="/Layer1_Recommendations" class="details-link">Launch Engine</router-link>
-              <router-link to="/stargazing-forecast" class="details-link secondary-btn">Check Forecast</router-link>
+              <router-link to="/engine-details" class="details-link">Launch Recommendations</router-link>
+              <router-link to="/stargazing-forecast" class="details-link secondary-btn">Check Stargaze Forecast</router-link>
             </div>
         </footer>
       </main>

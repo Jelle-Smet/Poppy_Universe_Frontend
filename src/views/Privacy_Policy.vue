@@ -5,7 +5,7 @@
         <div class="icon">🛰️</div>
         <h1>Privacy Protocol</h1>
         <p class="status">Classification: Educational / Internal Use Only</p>
-        <p class="revision">Document Ref: PU-2025-PRIVACY | Revision: 1.1.1</p>
+        <p class="revision">Document Ref: PU-2026-PRIVACY | Version: 1.0.0</p>
       </header>
 
       <section class="protocol-section">

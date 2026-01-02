@@ -3,7 +3,7 @@
     <div class="ui-overlay">
       <div class="glass-header poppy-border">
           <h1 class="neon-text">🔭 COMPARISON <span class="cyan-text">LAB</span></h1>
-          <p class="registry-sub">TACTICAL SCALING PROTOCOL // POOL v2.0</p>
+          <p class="registry-sub">TACTICAL SCALING PROTOCOL // POOL v1.0.0</p>
           <div class="lab-briefing poppy-border-thin">
             <div class="briefing-icon">📡</div>
             <div class="briefing-content">

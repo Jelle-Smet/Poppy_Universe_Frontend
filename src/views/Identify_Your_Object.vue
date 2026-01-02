@@ -10,7 +10,7 @@
         <div class="tech-bracket left">[</div>
         <div class="title-group">
           <h1 class="hero-title">CELESTIAL <span class="pink-glow">SCANNER</span></h1>
-          <p class="hero-subtitle">PHASE_03 // HEURISTIC_IDENTIFICATION_CORE</p>
+          <p class="hero-subtitle">PHASE_01 // HEURISTIC_IDENTIFICATION_CORE</p>
         </div>
         <div class="tech-bracket right">]</div>
       </div>

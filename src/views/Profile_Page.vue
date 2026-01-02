@@ -56,7 +56,7 @@ export default {
     });
 
     const goToSettings = () => {
-      router.push('/settings');
+      router.push('/User_Settings');
     };
 
     onMounted(async () => {

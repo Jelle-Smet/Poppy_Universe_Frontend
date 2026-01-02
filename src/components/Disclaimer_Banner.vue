@@ -20,7 +20,7 @@
             <p class="data-notice">
               <strong>Data Transparency:</strong> We do not use tracking cookies for marketing. We only store 
               your account data (email/username) to allow you to interact with the project. 
-              Review our <router-link to="/privacy" class="legal-link">Privacy Protocol</router-link>.
+              Review our <router-link to="/privacy_policy" class="legal-link">Privacy Protocol</router-link>.
             </p>
           </div>
         </div>

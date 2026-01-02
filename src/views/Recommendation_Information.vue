@@ -35,7 +35,7 @@
 
           <div class="cosmic-panel sidebar-extra-section">
                 <h4 class="meta-label">Pipeline <span class="pink-text">Status</span></h4>
-                <p class="sidebar-info-text">Select a thread to view live layer results.</p>
+                <p class="sidebar-info-text">Live heartbeat of the recommendation layers.</p>
                 <div class="status-grid-mini">
                     <div 
                         v-for="layer in pipelineLayers" 
@@ -44,16 +44,39 @@
                         @click="navigateToLayer(layer.route)"
                     >
                         <span>{{ layer.id }}</span> 
-                        <span :class="['tech-status', layer.statusClass]">
-                            {{ layer.label }} <span class="arrow-mini">→</span>
+                        <span :class="['tech-status', getStatusClass(layer.status)]">
+                            {{ layer.status }} <span class="arrow-mini">→</span>
                         </span>
                     </div>
                 </div>
+                <p class="last-checked" v-if="lastChecked">Last sync: {{ lastChecked }}</p>
             </div>
 
           <div class="cosmic-panel sidebar-extra-section">
+            <h4 class="meta-label">Engine <span class="pink-text">Architecture</span></h4>
+            <div class="hierarchy-map">
+                <div class="h-stage">Stage 3: The Winner</div>
+                <div class="h-block fusion">L5: Consensus Ranker</div>
+                <div class="h-connector">▲</div>
+                
+                <div class="h-stage">Stage 2: Intelligence Layers</div>
+                <div class="h-row">
+                    <div class="h-block branch">L2: Social</div>
+                    <div class="h-block branch">L3: Taste</div>
+                    <div class="h-block branch">L4: AI</div>
+                </div>
+                <div class="h-connector">▲</div>
+                
+                <div class="h-stage">Stage 1: Physical Reality</div>
+                <div class="h-block base">L1: Horizon Visibility</div>
+            </div>
+            <p class="sidebar-info-text" style="margin-top: 15px; border-top: 1px solid rgba(0, 255, 255, 0.1); padding-top: 10px;">
+                <strong>How it works:</strong> Visibility is checked first. Then, Social, Taste, and AI analyze the visible stars. Finally, the Ranker picks the #1 spot.
+            </p>
+          </div>
+
+          <div class="cosmic-panel sidebar-extra-section">
             <h4 class="meta-label">Technical Resources</h4>
-            <p class="sidebar-info-text">Deep dive into the math and logic structures powering our recommendation layers.</p>
             <div class="resource-box">
               <a href="https://en.wikipedia.org/wiki/Rule-based_system" target="_blank" class="guide-link">Deterministic Logic</a>
               <a href="https://developers.google.com/machine-learning/recommendation/overview" target="_blank" class="guide-link">Recommender Systems</a>
@@ -63,11 +86,8 @@
             </div>
           </div>
 
-          
-          
           <div class="cosmic-panel sidebar-extra-section">
             <h4 class="meta-label">Stack Specs</h4>
-            <p class="sidebar-info-text">Underlying environment parameters for the recommendation runtime.</p>
             <div class="nav-footer-info">
               <div class="stack-pill">.NET 8 C# Core</div>
               <div class="stack-pill">Layered Architecture</div>
@@ -267,22 +287,59 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-// Define the layers and their corresponding routes
-const pipelineLayers = [
-    { id: 'L1', label: 'ACTIVE', statusClass: 'status-active', route: '/Layer1_Recommendations' },
-    { id: 'L2', label: 'ACTIVE', statusClass: 'status-active', route: '/Layer2_Recommendations' },
-    { id: 'L3', label: 'ACTIVE', statusClass: 'status-active', route: '/Layer3_Recommendations' },
-    { id: 'L4', label: 'ACTIVE', statusClass: 'status-active', route: '/Layer4_Recommendations' },
-    { id: 'L5', label: 'STABLE', statusClass: 'status-ready',  route: '/Layer5_Recommendations' }
-];
+const lastChecked = ref(null);
+
+// Define layers with reactive status
+const pipelineLayers = ref([
+    { id: 'L1', status: 'Checking... 🔄', route: '/Layer1_Recommendations' },
+    { id: 'L2', status: 'Checking... 🔄', route: '/Layer2_Recommendations' },
+    { id: 'L3', status: 'Checking... 🔄', route: '/Layer3_Recommendations' },
+    { id: 'L4', status: 'Checking... 🔄', route: '/Layer4_Recommendations' },
+    { id: 'L5', status: 'Checking... 🔄', route: '/Layer5_Recommendations' }
+]);
+
+const checkPipelineStatus = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/status`, { 
+            signal: AbortSignal.timeout(10000) 
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            pipelineLayers.value.forEach((layer, index) => {
+                if (index < 4) layer.status = 'Active 🟢';
+                else layer.status = 'Stable ✅';
+            });
+        } else {
+            pipelineLayers.value.forEach(layer => layer.status = 'Limited 🟡');
+        }
+    } catch (error) {
+        pipelineLayers.value.forEach(layer => layer.status = 'Offline ❌');
+    } finally {
+        lastChecked.value = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+};
+
+function getStatusClass(status) {
+    if (status.includes('Active') || status.includes('Stable') || status.includes('✅') || status.includes('🟢')) return 'status-active';
+    if (status.includes('Offline') || status.includes('❌')) return 'status-error';
+    if (status.includes('Checking') || status.includes('Limited')) return 'status-ready';
+    return '';
+}
 
 const navigateToLayer = (routePath) => {
     router.push(routePath);
 };
+
+onMounted(() => {
+    checkPipelineStatus();
+});
 </script>
 
 <style scoped>
@@ -310,20 +367,17 @@ const navigateToLayer = (routePath) => {
 .engine-tagline { color: #00ffff; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-top: 15px; }
 .panel-intro { max-width: 850px; margin: 20px auto 0; color: #a0f0ff; line-height: 1.8; font-size: 1.1rem; font-style: italic; }
 
-/* |--------------------------------------------------------------------------
-| LAYOUT SYSTEM (Fixed Overlap & Stickiness)
-|--------------------------------------------------------------------------
-*/
+/* LAYOUT SYSTEM */
 .details-layout {
   display: flex;
   align-items: flex-start;
   max-width: 1300px;
   margin: 0 auto;
-  gap: 50px; /* Space between sidebar and content */
+  gap: 50px;
 }
 
 .side-nav-rail {
-  flex: 0 0 320px; /* Fixed width prevents overlap */
+  flex: 0 0 320px;
   position: sticky;
   top: 40px;
   z-index: 10;
@@ -332,7 +386,7 @@ const navigateToLayer = (routePath) => {
 .nav-rail-stack {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Gaps between individual sidebar containers */
+  gap: 20px;
 }
 
 /* CONTENT AREA */
@@ -415,7 +469,7 @@ const navigateToLayer = (routePath) => {
 .clickable-status {
     cursor: pointer;
     transition: all 0.2s ease;
-    padding: 4px 8px; /* Give it some hit area */
+    padding: 4px 8px;
     border-radius: 4px;
 }
 
@@ -424,20 +478,49 @@ const navigateToLayer = (routePath) => {
     transform: translateX(5px);
 }
 
-.clickable-status:hover .tech-status {
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+.last-checked {
+    font-size: 0.65rem;
+    color: rgba(0, 255, 255, 0.5);
+    margin-top: 10px;
+    text-align: right;
 }
 
-.arrow-mini {
-    font-size: 0.7rem;
-    margin-left: 4px;
-    opacity: 0.7;
-}
-
-/* Ensure L5 looks distinct but clickable */
-.status-ready {
+/* HIERARCHY MAP STYLES */
+.hierarchy-map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 12px;
     border: 1px solid rgba(0, 255, 255, 0.3);
 }
+.h-stage {
+    font-size: 0.6rem;
+    color: #ff69b4;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+.h-block {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.h-block.fusion { background: #ff69b4; color: #000; width: 100%; }
+.h-block.base { background: #00ff00; color: #000; width: 100%; }
+.h-row { display: flex; gap: 6px; width: 100%; justify-content: center; }
+.h-block.branch { 
+    background: rgba(0, 255, 255, 0.1); 
+    border: 1px solid #00ffff; 
+    color: #00ffff; 
+    flex: 1; 
+}
+.h-connector { color: #00ffff; font-weight: bold; margin: 8px 0; font-size: 1rem; }
 
 /* COMPONENT ACCENTS */
 .section-header { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
@@ -467,12 +550,13 @@ const navigateToLayer = (routePath) => {
 
 /* SIDEBAR FOOTER */
 .meta-label { color: #ff69b4; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; display: block;}
-.stack-pill { font-size: 0.75rem; color: #c0fcfc; font-weight: bold; margin-bottom: 5px; }
+.stack-pill { font-size: 0.75rem; color: #c0fcfc; font-weight: bold; margin-bottom: 5px; display: block; }
 
 /* REUSED STATUS STYLES */
 .tech-status { padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.65rem; }
 .status-active { background: rgba(0, 255, 0, 0.1); color: #00ff00; }
 .status-ready { background: rgba(0, 255, 255, 0.1); color: #00ffff; }
+.status-error { background: rgba(255, 0, 0, 0.1); color: #ff0000; }
 
 /* DOTS */
 .layer-dot, .nav-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px currentColor; }
