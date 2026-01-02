@@ -13,7 +13,6 @@
         <p class="panel-intro">
           Navigate the night sky smarter, not harder. These <strong>pro tips and hacks</strong> will enhance your stargazing, equipment usage, and data logging experience.
           <br><br>
-          Reference Page: "<span class="reference-placeholder"></span>"
         </p>
       </div>
     </div>
