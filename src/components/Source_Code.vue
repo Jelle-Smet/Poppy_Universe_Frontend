@@ -38,7 +38,7 @@
               Looking for the entire Poppy Universe in one place? Access the full integrated codebase, documentation, and architecture.
             </p>
             <a 
-              href="https://github.com/your-username/poppy-universe" 
+              href="https://github.com/Jelle-Smet/The_Poppy_Universe.git" 
               target="_blank" 
               rel="noopener noreferrer"
               class="primary-button"
@@ -119,31 +119,31 @@ const repositories = [
     name: 'Backend',
     icon: '🔧',
     description: 'Node.js API, database connections, authentication',
-    url: 'https://github.com/your-username/poppy-backend'
+    url: 'https://github.com/Jelle-Smet/Poppy_Universe_Backend.git'
   },
   {
     name: 'Frontend',
     icon: '🎨',
     description: 'Vue 3 interface, components, user experience',
-    url: 'https://github.com/your-username/poppy-frontend'
+    url: 'https://github.com/Jelle-Smet/Poppy_Universe_Frontend.git'
   },
   {
     name: 'ML Models',
     icon: '🤖',
     description: 'Neural networks, matrix factorization, predictions',
-    url: 'https://github.com/your-username/poppy-ml'
+    url: 'https://github.com/Jelle-Smet/Poppy_Universe_Machine_Learning.git'
   },
   {
     name: 'Recommendation Engine',
     icon: '⚡',
     description: 'Multi-layer algorithm system, genetic fusion',
-    url: 'https://github.com/your-username/poppy-engine'
+    url: 'https://github.com/Jelle-Smet/Poppy_Universe_Engine.git'
   },
   {
     name: 'Data Notebooks',
     icon: '📊',
     description: 'ETL pipelines, data cleaning, research analysis',
-    url: 'https://github.com/your-username/poppy-data'
+    url: 'https://github.com/Jelle-Smet/Poppy_Universe_Data_Notebooks.git'
   }
 ];
 </script>
