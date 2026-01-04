@@ -157,21 +157,25 @@
               <li><router-link to="/our_story" class="link-glow">About Poppy Universe</router-link></li>
               <li><router-link to="/all_objects" class="link-glow">Start Exploring</router-link></li>
               <li><router-link to="/System-Status" class="link-glow">System Status Check &rarr; </router-link></li>
-              <li><a href="https://github.com/your-repo-link" target="_blank" class="link-glow">Source Code (GitHub)</a></li>
+              <li><button @click="showSourceModal = true" class="link-glow source-button">Source Code (GitHub)</button></li>
             </ul>
           </section>
         </section>
       </div>
     </main>
+    <!-- Source Code Modal -->
+    <SourceCode :isVisible="showSourceModal" @close="showSourceModal = false" />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import TestComponent from '../components/Engine_Summary.vue';
+import SourceCode from '../components/Source_Code.vue';
 
 const isLoaded = ref(false);
 const dataFlowMd = ref('Loading data flow...');
+const showSourceModal = ref(false);
 
 onMounted(async () => {
   // Trigger initial animation
@@ -195,7 +199,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
+  .source-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+  }
   .dataflow-md {
     font-size: 0.85rem; 
     line-height: 1.4;
