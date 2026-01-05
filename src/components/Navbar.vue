@@ -156,6 +156,7 @@ export default {
   top: 0;
   left: 0;
   width: auto;
+  max-height: 100vh;
   z-index: 999;
   background-color: #0b0c1a;
   padding: 0px;
@@ -164,28 +165,73 @@ export default {
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
   overflow: hidden;
-  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar .container-fluid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .navbar .logo-container {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0;
   padding: 10px;
   overflow: hidden;
   border-top-right-radius: 48px;
   background-color: #0b0c1a;
+  flex-shrink: 0;
 }
 
 .navbar .logo {
   width: 150px;
   height: auto;
   display: block;
+  border-top-right-radius: 48px;
 }
 
 .navbar-nav {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  margin-right: 5px;
+  flex: 1;
+}
+
+/* Custom Scrollbar Styling */
+.navbar-nav::-webkit-scrollbar {
+  width: 8px;
+}
+
+.navbar-nav::-webkit-scrollbar-track {
+  background: rgba(27, 28, 42, 0.5);
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.navbar-nav::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7fdbff 0%, #9b59b6 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(127, 219, 255, 0.3);
+}
+
+.navbar-nav::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00ffff 0%, #ff6ec7 100%);
+  box-shadow: 0 0 10px rgba(127, 219, 255, 0.5);
+}
+
+/* Firefox Scrollbar */
+.navbar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: #7fdbff rgba(27, 28, 42, 0.5);
 }
 
 .navbar-nav .category {
@@ -194,6 +240,7 @@ export default {
   margin-bottom: 10px;
   border-radius: 5px;
   width: auto;
+  flex-shrink: 0;
 }
 
 /* Featured category styling for Recommendations */
@@ -292,5 +339,12 @@ export default {
 .claim-star-tab:hover .highlight-text {
   color: #fff !important;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+/* Extra space at bottom */
+.extra.space {
+  height: 10px;
+  display: block;
+  flex-shrink: 0;
 }
 </style>
