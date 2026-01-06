@@ -39,30 +39,61 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, onUnmounted, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { checkTokenValidity } from '../utils/auth.js';
 
 export default {
   name: 'DisclaimerBanner',
   setup() {
     const isVisible = ref(false);
+    const route = useRoute();
+    const isTokenValid = ref(false);
+    const isCheckingToken = ref(true);
+
+    const isPublicRoute = computed(() => {
+      const publicPaths = ['/', '/sign-up-login'];
+      const publicNames = ['Home', 'signUpLogin'];
+      return publicPaths.includes(route.path) || publicNames.includes(route.name);
+    });
+
+    const validateToken = async () => {
+      isCheckingToken.value = true;
+      isTokenValid.value = await checkTokenValidity();
+      isCheckingToken.value = false;
+    };
+
+    const checkShouldShow = async () => {
+      await validateToken();
+      
+      console.log('Disclaimer check - Token valid:', isTokenValid.value, 'Public route:', isPublicRoute.value);
+
+      // Show if token is INVALID and NOT on public page
+      if (!isTokenValid.value && !isPublicRoute.value) {
+        console.log('Showing disclaimer');
+        isVisible.value = true;
+      } else {
+        isVisible.value = false;
+      }
+    };
 
     onMounted(() => {
-      const hasAccepted = localStorage.getItem('disclaimer_accepted');
-      if (!hasAccepted) {
-        // Delayed appearance for better impact
-        setTimeout(() => {
-          isVisible.value = true;
-        }, 800);
-      }
+      console.log('Disclaimer mounted');
+      setTimeout(checkShouldShow, 100);
+      
+      window.addEventListener('storage', checkShouldShow);
+      watch(() => route.path, checkShouldShow);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('storage', checkShouldShow);
     });
 
     const acceptDisclaimer = () => {
-      localStorage.setItem('disclaimer_accepted', 'true');
       isVisible.value = false;
     };
 
     const declineAndExit = () => {
-      // Redirects user away if they don't agree to the project terms
       window.location.href = "https://www.google.com";
     };
 

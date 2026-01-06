@@ -19,13 +19,14 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, computed, watch, ref } from 'vue'; // Added onUnmounted
+import { onMounted, onUnmounted, computed, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
 import LoginPopup from '../components/Login_Popup.vue';
 import DisclaimerBanner from '../components/Disclaimer_Banner.vue';
 import PoppyUniverseLogo from '../assets/images/Poppy_Universe_Logo.png';
+import { checkTokenValidity } from '../utils/auth.js'; // Import the auth checker
 
 export default {
   components: {
@@ -44,36 +45,52 @@ export default {
   setup() {
     const route = useRoute();
     
-    // Create a reactive variable for the token
-    const userToken = ref(localStorage.getItem('authToken'));
+    const isTokenValid = ref(false);
+    const isCheckingToken = ref(true);
 
-    // This function refreshes our reactive token from local storage
-    const syncToken = () => {
-      userToken.value = localStorage.getItem('authToken');
+    // Validate token on mount and route changes
+    const validateToken = async () => {
+      isCheckingToken.value = true;
+      isTokenValid.value = await checkTokenValidity();
+      isCheckingToken.value = false;
+      console.log('Token valid:', isTokenValid.value);
     };
 
-    // SECURITY LOGIC
-    const showLoginPopup = computed(() => {
-      const token = userToken.value;
-      const publicPages = ['Home', 'signUpLogin']; 
+    // Helper function to check if current route is public
+    const isPublicRoute = computed(() => {
+      const publicPaths = ['/', '/sign-up-login'];
+      const publicNames = ['Home', 'signUpLogin'];
       
-      // Safety check: if there is no route name yet, check the path instead
-      const isPublicPage = publicPages.includes(route.name) || route.path === '/' || route.path === '/sign-up-login';
-
-      return !token && !isPublicPage;
+      return publicPaths.includes(route.path) || publicNames.includes(route.name);
     });
 
-    // UX POLISH: Stop scrolling
+    // SECURITY LOGIC - Show login popup if token is invalid and not on public page
+    const showLoginPopup = computed(() => {
+      // Don't show popup while checking token
+      if (isCheckingToken.value) return false;
+      
+      const shouldShow = !isTokenValid.value && !isPublicRoute.value;
+      console.log('Should show login popup:', shouldShow);
+      return shouldShow;
+    });
+
+    // UX POLISH: Stop scrolling when popup is visible
     watch(showLoginPopup, (shouldBlock) => {
       document.body.style.overflow = shouldBlock ? 'hidden' : 'auto';
     }, { immediate: true });
 
-    // THE REAL FIX: Listen for any changes to storage or route
     onMounted(() => {
-      window.addEventListener('storage', syncToken); // Catches logins from other tabs/logic
+      console.log('Main Layout mounted');
+      validateToken(); // Check token on mount
       
-      // Watch the route path to re-sync
-      watch(() => route.path, syncToken);
+      // Re-validate token when route changes
+      watch(() => route.path, () => {
+        console.log('Route changed to:', route.path);
+        validateToken();
+      });
+
+      // Listen for storage events (e.g., logout in another tab)
+      window.addEventListener('storage', validateToken);
 
       // Starfield Logic
       const canvas = document.getElementById('starfield');
@@ -108,14 +125,13 @@ export default {
     });
 
     onUnmounted(() => {
-      window.removeEventListener('storage', syncToken);
+      window.removeEventListener('storage', validateToken);
     });
 
     return { showLoginPopup };
   },
 };
 </script>
-
 
 <style>
 html, body {
