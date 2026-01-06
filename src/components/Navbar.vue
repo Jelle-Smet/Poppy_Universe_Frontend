@@ -121,6 +121,11 @@
               <li><router-link to="/terms_and_conditions" class="dropdown-item" @click="selectedMenu = null">Terms & Conditions</router-link></li>
             </ul>
           </li>
+
+          <!-- Log out button -->
+          <li class="nav-item category">
+            <router-link to="/contact_hub" class="nav-link">Log Out</router-link>
+          </li>
           
           <!-- CONTACT HUB -->
           <li class="nav-item category">

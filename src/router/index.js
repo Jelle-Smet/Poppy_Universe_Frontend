@@ -44,6 +44,7 @@ import Star_Owners_Page from '../views/Star_Owners_Page.vue';
 import Official_Partners from '../views/Official_Partners.vue';
 import Core_Components from '../views/Core_Components.vue';
 import Cosmic_Glossary from '../views/Cosmic_Glossary.vue';
+import Log_Out from '../views/Log_Out.vue';
 
 // define your routes
 const routes = [
@@ -323,6 +324,11 @@ const routes = [
         path: '/cosmic_glossary',   
         name: 'Cosmic Glossary',
         component: Cosmic_Glossary,
+      },
+      {
+        path: '/log_out',   
+        name: 'Log Out ',
+        component: Log_Out,
       },
       
     ],

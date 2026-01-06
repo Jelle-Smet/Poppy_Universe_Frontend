@@ -10,9 +10,11 @@
       <router-view />
     </main>
 
-    <DisclaimerBanner />
+    <!-- FIXED: Only show disclaimer when NOT checking auth -->
+    <DisclaimerBanner v-if="!isCheckingAuth" />
 
-    <LoginPopup v-if="showLoginPopup" />
+    <!-- FIXED: Only show login popup when NOT checking auth -->
+    <LoginPopup v-if="showLoginPopup && !isCheckingAuth" />
 
     <Footer />
   </div>
@@ -26,7 +28,7 @@ import Footer from '../components/Footer.vue';
 import LoginPopup from '../components/Login_Popup.vue';
 import DisclaimerBanner from '../components/Disclaimer_Banner.vue';
 import PoppyUniverseLogo from '../assets/images/Poppy_Universe_Logo.png';
-import { checkTokenValidity } from '../utils/auth.js'; // Import the auth checker
+import { checkTokenValidity } from '../utils/auth.js';
 
 export default {
   components: {
@@ -46,13 +48,13 @@ export default {
     const route = useRoute();
     
     const isTokenValid = ref(false);
-    const isCheckingToken = ref(true);
+    const isCheckingAuth = ref(true);
 
     // Validate token on mount and route changes
     const validateToken = async () => {
-      isCheckingToken.value = true;
+      isCheckingAuth.value = true;
       isTokenValid.value = await checkTokenValidity();
-      isCheckingToken.value = false;
+      isCheckingAuth.value = false;
       console.log('Token valid:', isTokenValid.value);
     };
 
@@ -66,22 +68,22 @@ export default {
 
     // SECURITY LOGIC - Show login popup if token is invalid and not on public page
     const showLoginPopup = computed(() => {
-      // Don't show popup while checking token
-      if (isCheckingToken.value) return false;
-      
       const shouldShow = !isTokenValid.value && !isPublicRoute.value;
-      console.log('Should show login popup:', shouldShow);
+      console.log('Should show login popup:', shouldShow, '| Checking:', isCheckingAuth.value);
       return shouldShow;
     });
 
     // UX POLISH: Stop scrolling when popup is visible
     watch(showLoginPopup, (shouldBlock) => {
-      document.body.style.overflow = shouldBlock ? 'hidden' : 'auto';
+      // Only block scroll if we're not checking auth AND popup should show
+      if (!isCheckingAuth.value) {
+        document.body.style.overflow = shouldBlock ? 'hidden' : 'auto';
+      }
     }, { immediate: true });
 
     onMounted(() => {
       console.log('Main Layout mounted');
-      validateToken(); // Check token on mount
+      validateToken();
       
       // Re-validate token when route changes
       watch(() => route.path, () => {
@@ -89,7 +91,7 @@ export default {
         validateToken();
       });
 
-      // Listen for storage events (e.g., logout in another tab)
+      // Listen for storage events (login/logout in other tabs)
       window.addEventListener('storage', validateToken);
 
       // Starfield Logic
@@ -128,7 +130,7 @@ export default {
       window.removeEventListener('storage', validateToken);
     });
 
-    return { showLoginPopup };
+    return { showLoginPopup, isCheckingAuth };
   },
 };
 </script>

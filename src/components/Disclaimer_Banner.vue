@@ -66,10 +66,10 @@ export default {
     const checkShouldShow = async () => {
       await validateToken();
       
-      console.log('Disclaimer check - Token valid:', isTokenValid.value, 'Public route:', isPublicRoute.value);
+      console.log('Disclaimer check - Token valid:', isTokenValid.value, 'Public route:', isPublicRoute.value, 'Checking:', isCheckingToken.value);
 
-      // Show if token is INVALID and NOT on public page
-      if (!isTokenValid.value && !isPublicRoute.value) {
+      // Show if token is INVALID and NOT on public page and NOT checking
+      if (!isTokenValid.value && !isPublicRoute.value && !isCheckingToken.value) {
         console.log('Showing disclaimer');
         isVisible.value = true;
       } else {

@@ -92,9 +92,11 @@
 
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter();
     const currentForm = ref('login');
     const errorMessage = ref('');
     const successMessage = ref('');
@@ -182,6 +184,8 @@ export default {
     const submitLogin = async () => {
       clearMessages();
 
+      console.log('🚀 LOGIN ATTEMPT - API URL:', API_BASE_URL); // DEBUG
+
       try {
         const response = await fetch(`${API_BASE_URL}/login`, {
           method: 'POST',
@@ -192,30 +196,50 @@ export default {
           }),
         });
 
+        console.log('📡 Response status:', response.status); // DEBUG
+
         const data = await response.json();
+        console.log('📦 Response data:', data); // DEBUG
 
         if (response.ok) {
+          console.log('✅ Login successful!'); // DEBUG
+          console.log('🔑 Token from response:', data.token); // DEBUG
+          console.log('👤 User data:', data.user); // DEBUG
+
           successMessage.value = data.message || 'Login successful! Welcome aboard, Explorer.';
 
-          // FIXED: Change 'authToken' to 'user_token' to match MainLayout
-          localStorage.setItem('authToken', data.token); 
+          // Store token
+          localStorage.setItem('authToken', data.token);
+          console.log('💾 Token saved to localStorage'); // DEBUG
           
-          localStorage.setItem('userDetails', JSON.stringify(data.user));
-          localStorage.setItem('Owner_ID', data.user.ownerId);
+          // Verify it was saved
+          const savedToken = localStorage.getItem('authToken');
+          console.log('🔍 Verify token in localStorage:', savedToken); // DEBUG
 
-          // ADD THIS LINE: This notifies MainLayout to hide the popup instantly!
+          // Store other data
+          if (data.user) {
+            localStorage.setItem('userDetails', JSON.stringify(data.user));
+            if (data.user.ownerId) {
+              localStorage.setItem('Owner_ID', data.user.ownerId);
+            }
+          }
+
+          // Notify other components about login
+          console.log('📢 Dispatching storage event'); // DEBUG
           window.dispatchEvent(new Event('storage'));
 
-          // OPTIONAL: Redirect the user to the homepage after 1 second
+          // Navigate home
+          console.log('🏠 Navigating to home...'); // DEBUG
           setTimeout(() => {
-            window.location.href = "/"; // This also forces a fresh state
+            router.push('/');
           }, 1000);
 
         } else {
+          console.log('❌ Login failed:', data.message); // DEBUG
           errorMessage.value = data.message || 'Login failed. Invalid credentials.';
         }
       } catch (err) {
-        console.error(err);
+        console.error('💥 Login error:', err); // DEBUG
         errorMessage.value = 'Login failed. The cosmic winds say try again.';
       }
     };

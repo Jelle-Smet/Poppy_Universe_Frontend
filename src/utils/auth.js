@@ -1,5 +1,7 @@
 // auth.js - Centralized authentication logic
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export const checkTokenValidity = async () => {
   const token = localStorage.getItem('authToken');
   
@@ -8,8 +10,8 @@ export const checkTokenValidity = async () => {
   }
 
   try {
-    // Replace this URL with your actual backend endpoint
-    const response = await fetch('http://your-backend-url/api/verify-token', {
+    // Use your existing account endpoint to verify token
+    const response = await fetch(`${API_BASE_URL}/account`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -18,22 +20,26 @@ export const checkTokenValidity = async () => {
     });
 
     if (response.ok) {
-      return true; // Token is valid
+      // Token is valid - user account data returned successfully
+      return true;
     } else {
-      // Token is invalid/expired - clean it up
+      // Token is invalid/expired (401 Unauthorized or other error)
+      console.log('Token validation failed, cleaning up...');
       localStorage.removeItem('authToken');
+      localStorage.removeItem('disclaimer_accepted'); // Clean up disclaimer too
       return false;
     }
   } catch (error) {
-    console.error('Token validation failed:', error);
-    // If server is unreachable, assume token is invalid to be safe
+    console.error('Token validation error:', error);
+    // Network error or server down - assume token is invalid to be safe
     localStorage.removeItem('authToken');
+    localStorage.removeItem('disclaimer_accepted');
     return false;
   }
 };
 
-// Optional: Clear token helper
+// Optional: Clear all auth data helper
 export const clearAuth = () => {
   localStorage.removeItem('authToken');
-  localStorage.removeItem('disclaimer_accepted'); // Clear disclaimer too
+  localStorage.removeItem('disclaimer_accepted');
 };
