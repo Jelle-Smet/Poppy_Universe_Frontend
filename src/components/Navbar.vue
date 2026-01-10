@@ -124,7 +124,7 @@
 
           <!-- Log out button -->
           <li class="nav-item category">
-            <router-link to="/contact_hub" class="nav-link">Log Out</router-link>
+            <router-link to="/log_out" class="nav-link">Log Out</router-link>
           </li>
           
           <!-- CONTACT HUB -->

@@ -78,11 +78,11 @@
           <div class="cosmic-panel sidebar-extra-section">
             <h4 class="meta-label">Technical Resources</h4>
             <div class="resource-box">
-              <a href="https://en.wikipedia.org/wiki/Rule-based_system" target="_blank" class="guide-link">Deterministic Logic</a>
-              <a href="https://developers.google.com/machine-learning/recommendation/overview" target="_blank" class="guide-link">Recommender Systems</a>
-              <a href="https://developers.google.com/machine-learning/recommendation/collaborative/matrix" target="_blank" class="guide-link">Matrix Factorization</a>
-              <a href="https://www.ibm.com/topics/neural-networks" target="_blank" class="guide-link">Neural Architectures</a>
-              <a href="https://en.wikipedia.org/wiki/Genetic_algorithm" target="_blank" class="guide-link">Evolutionary Computing</a>
+              <a href="https://en.wikipedia.org/wiki/Rule-based_system?utm_source=poppy_universe&utm_medium=wiki_links&utm_campaign=internal" target="_blank" class="guide-link">Deterministic Logic</a>
+                <a href="https://developers.google.com/machine-learning/recommendation/overview?utm_source=poppy_universe&utm_medium=wiki_links&utm_campaign=internal" target="_blank" class="guide-link">Recommender Systems</a>
+                <a href="https://developers.google.com/machine-learning/recommendation/collaborative/matrix?utm_source=poppy_universe&utm_medium=wiki_links&utm_campaign=internal" target="_blank" class="guide-link">Matrix Factorization</a>
+                <a href="https://www.ibm.com/topics/neural-networks?utm_source=poppy_universe&utm_medium=wiki_links&utm_campaign=internal" target="_blank" class="guide-link">Neural Architectures</a>
+                <a href="https://en.wikipedia.org/wiki/Genetic_algorithm?utm_source=poppy_universe&utm_medium=wiki_links&utm_campaign=internal" target="_blank" class="guide-link">Evolutionary Computing</a>
             </div>
           </div>
 
