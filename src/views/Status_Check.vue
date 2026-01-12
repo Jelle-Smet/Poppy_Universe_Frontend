@@ -74,26 +74,34 @@
     const lastChecked = ref(null);
 
     const techStack = ref([
-        { name: 'Interface', detail: 'Vercel Global Edge', status: 'Active 🟢', key: 'frontend' },
+        // Start this as checking too!
+        { name: 'Interface', detail: 'Vercel Global Edge', status: 'Checking... 🔄', key: 'frontend' },
         { name: 'Logic Engine', detail: 'Render Cloud Instance', status: 'Checking... 🔄', key: 'backend' },
         { name: 'Memory Bank', detail: 'Aiven Managed MySQL', status: 'Checking... 🔄', key: 'database' },
-        // Changed "AI Brain" to "Checking" by default
         { name: 'AI Brain', detail: 'Hugging Face Transformers', status: 'Checking... 🔄', key: 'ml' },
     ]);
 
     const checkBackendStatus = async () => {
-        // Find all three items we want to update
+        const frontendItem = techStack.value.find(tech => tech.key === 'frontend');
         const backendItem = techStack.value.find(tech => tech.key === 'backend');
         const databaseItem = techStack.value.find(tech => tech.key === 'database');
         const aiItem = techStack.value.find(tech => tech.key === 'ml');
 
-        if (!backendItem || !databaseItem || !aiItem) return;
+        // Reset all UI states
+        techStack.value.forEach(tech => tech.status = 'Checking... 🔄');
 
-        // Set all to "Checking" at the start
-        backendItem.status = 'Checking... 🔄';
-        databaseItem.status = 'Checking... 🔄';
-        aiItem.status = 'Checking... 🔄';
+        // --- 1. Fake/Real Frontend Check ---
+        // We wait 600ms just to let the animation play out for the user
+        await new Promise(resolve => setTimeout(resolve, 600));
+        if (navigator.onLine) {
+            frontendItem.status = 'Active 🟢';
+        } else {
+            frontendItem.status = 'Offline ❌';
+            // If the user is literally offline, we might as well stop here
+            return;
+        }
 
+        // --- 2. Real Backend Check ---
         try {
             const response = await fetch(`${API_BASE_URL}/status`, { 
                 signal: AbortSignal.timeout(10000) 
@@ -102,13 +110,9 @@
             if (response.ok) {
                 const data = await response.json(); 
                 
-                // 1. Logic Engine Status
                 backendItem.status = 'Online ✅';
-
-                // 2. Database Status
                 databaseItem.status = (data.databaseStatus === 'Online') ? 'Online ✅' : 'Offline ❌';
 
-                // 3. AI Brain Status (New variable check)
                 if (data.aiStatus === 'Online') {
                     aiItem.status = 'Active 🟢';
                 } else if (data.aiStatus === 'Limited') {
@@ -116,7 +120,6 @@
                 } else {
                     aiItem.status = 'Offline ❌';
                 }
-
             } else {
                 backendItem.status = 'Limited 🟡';
                 databaseItem.status = 'Error 🔴';
