@@ -77,34 +77,55 @@
         { name: 'Interface', detail: 'Vercel Global Edge', status: 'Active 🟢', key: 'frontend' },
         { name: 'Logic Engine', detail: 'Render Cloud Instance', status: 'Checking... 🔄', key: 'backend' },
         { name: 'Memory Bank', detail: 'Aiven Managed MySQL', status: 'Checking... 🔄', key: 'database' },
-        { name: 'AI Brain', detail: 'Hugging Face Transformers', status: 'Active 🟢', key: 'ml' },
+        // Changed "AI Brain" to "Checking" by default
+        { name: 'AI Brain', detail: 'Hugging Face Transformers', status: 'Checking... 🔄', key: 'ml' },
     ]);
 
     const checkBackendStatus = async () => {
+        // Find all three items we want to update
         const backendItem = techStack.value.find(tech => tech.key === 'backend');
         const databaseItem = techStack.value.find(tech => tech.key === 'database');
-        if (!backendItem || !databaseItem) return;
+        const aiItem = techStack.value.find(tech => tech.key === 'ml');
 
+        if (!backendItem || !databaseItem || !aiItem) return;
+
+        // Set all to "Checking" at the start
         backendItem.status = 'Checking... 🔄';
         databaseItem.status = 'Checking... 🔄';
+        aiItem.status = 'Checking... 🔄';
 
         try {
-            // Render can take a while to spin up on free tiers, so 10s timeout
             const response = await fetch(`${API_BASE_URL}/status`, { 
                 signal: AbortSignal.timeout(10000) 
             });
             
             if (response.ok) {
                 const data = await response.json(); 
+                
+                // 1. Logic Engine Status
                 backendItem.status = 'Online ✅';
+
+                // 2. Database Status
                 databaseItem.status = (data.databaseStatus === 'Online') ? 'Online ✅' : 'Offline ❌';
+
+                // 3. AI Brain Status (New variable check)
+                if (data.aiStatus === 'Online') {
+                    aiItem.status = 'Active 🟢';
+                } else if (data.aiStatus === 'Limited') {
+                    aiItem.status = 'Limited 🟡';
+                } else {
+                    aiItem.status = 'Offline ❌';
+                }
+
             } else {
                 backendItem.status = 'Limited 🟡';
-                databaseItem.status = 'Error 🔴'; 
+                databaseItem.status = 'Error 🔴';
+                aiItem.status = 'Error 🔴'; 
             }
         } catch (error) {
             backendItem.status = 'Offline ❌';
             databaseItem.status = 'Offline ❌';
+            aiItem.status = 'Offline ❌';
         } finally {
             lastChecked.value = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
